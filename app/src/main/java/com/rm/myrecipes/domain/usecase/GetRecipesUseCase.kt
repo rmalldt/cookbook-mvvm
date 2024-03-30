@@ -1,8 +1,8 @@
 package com.rm.myrecipes.domain.usecase
 
-import com.rm.myrecipes.data.dto.ExtendedIngredientDefinition
-import com.rm.myrecipes.data.dto.RecipeDefinition
-import com.rm.myrecipes.data.dto.RecipesResponse
+import com.rm.myrecipes.data.network.dto.ExtendedIngredientDefinition
+import com.rm.myrecipes.data.network.dto.RecipeDefinition
+import com.rm.myrecipes.data.network.dto.RecipesResponse
 import com.rm.myrecipes.domain.data.ExtendedIngredient
 import com.rm.myrecipes.domain.data.Recipe
 import com.rm.myrecipes.domain.data.RecipeRepository

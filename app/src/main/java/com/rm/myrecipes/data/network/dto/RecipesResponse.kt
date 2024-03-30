@@ -1,4 +1,4 @@
-package com.rm.myrecipes.data.dto
+package com.rm.myrecipes.data.network.dto
 
 import com.google.gson.annotations.SerializedName
 

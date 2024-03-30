@@ -1,5 +1,7 @@
 package com.rm.myrecipes.domain.data
 
+data class Recipes(val recipes: List<Recipe>)
+
 data class Recipe(
     val aggregateLikes: Int,
     val cheap: Boolean,

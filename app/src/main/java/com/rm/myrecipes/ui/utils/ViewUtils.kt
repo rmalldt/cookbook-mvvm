@@ -3,9 +3,12 @@ package com.rm.myrecipes.ui.utils
 import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.bumptech.glide.Glide
 import com.rm.myrecipes.R
 
 fun Context?.toast(text: CharSequence, duration: Int = Toast.LENGTH_SHORT) =
@@ -27,6 +30,18 @@ fun initItemDecorator(context: Context): DividerItemDecoration {
     val itemDecorator = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
     itemDecorator.setDrawable(ContextCompat.getDrawable(context, R.drawable.recyclerview_divider)!!)
     return itemDecorator
+}
+
+fun ImageView.loadImageWithGlide(
+    imageUrl: String?,
+    @DrawableRes resourceIdForError: Int,
+    @DrawableRes resourceIdForPlaceHolder: Int
+) {
+    Glide.with(context)
+        .load(imageUrl)
+        .error(resourceIdForError)
+        .placeholder(resourceIdForPlaceHolder)
+        .into(this)
 }
 
 /**

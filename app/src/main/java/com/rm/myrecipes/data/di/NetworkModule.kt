@@ -4,6 +4,7 @@ import com.rm.myrecipes.data.RecipeRepositoryImpl
 import com.rm.myrecipes.data.common.Constants
 import com.rm.myrecipes.data.network.RecipesApi
 import com.rm.myrecipes.data.network.RemoteDataSource
+import com.rm.myrecipes.data.room.LocalDataSource
 import com.rm.myrecipes.domain.data.RecipeRepository
 import dagger.Module
 import dagger.Provides
@@ -21,12 +22,10 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideOkhttpClient(): OkHttpClient {
-        return OkHttpClient.Builder()
+    fun provideOkhttpClient(): OkHttpClient = OkHttpClient.Builder()
             .readTimeout(10, TimeUnit.SECONDS)
             .connectTimeout(10, TimeUnit.SECONDS )
             .build()
-    }
 
     @Singleton
     @Provides
@@ -37,23 +36,18 @@ object NetworkModule {
     fun provideRetrofitInstance(
         okHttpClient: OkHttpClient,
         gsonConverterFactory: GsonConverterFactory
-    ): Retrofit  {
-        return Retrofit.Builder()
+    ): Retrofit = Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(gsonConverterFactory)
             .build()
-    }
 
     @Singleton
     @Provides
-    fun provideRecipesApi(retrofit: Retrofit): RecipesApi {
-        return retrofit.create(RecipesApi::class.java)
-    }
+    fun provideRecipesApi(retrofit: Retrofit): RecipesApi = retrofit.create(RecipesApi::class.java)
 
     @Singleton
     @Provides
-    fun provideRecipeRepository(remoteDataSource: RemoteDataSource): RecipeRepository {
-        return RecipeRepositoryImpl(remoteDataSource)
-    }
+    fun provideRecipeRepository(remoteDataSource: RemoteDataSource, localDataSource: LocalDataSource): RecipeRepository =
+        RecipeRepositoryImpl(remoteDataSource, localDataSource)
 }
