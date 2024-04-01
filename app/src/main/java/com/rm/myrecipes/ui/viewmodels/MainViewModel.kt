@@ -4,15 +4,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rm.myrecipes.data.common.Constants
 import com.rm.myrecipes.domain.data.Recipe
+import com.rm.myrecipes.domain.data.Recipes
 import com.rm.myrecipes.domain.usecase.GetRecipesUseCase
 import com.rm.myrecipes.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -21,10 +24,10 @@ class MainViewModel @Inject constructor(
     getRecipesUseCase: GetRecipesUseCase
 ) : ViewModel() {
 
-    val uiState: Flow<UiState<List<Recipe>>> = getRecipesUseCase
-        .invoke(applyQueries())
-        .map { recipeList ->
-            UiState.Success(recipeList) as UiState<List<Recipe>>
+
+    val uiState: Flow<UiState<Recipes>> = getRecipesUseCase.invoke(applyQueries())
+        .map { recipesList ->
+            UiState.Success(recipesList) as UiState<Recipes>
         }
         .onCompletion {
             Timber.tag("Recipe").d("Flow has completed.")

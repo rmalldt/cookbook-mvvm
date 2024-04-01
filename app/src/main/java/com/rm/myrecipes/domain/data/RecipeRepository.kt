@@ -1,15 +1,10 @@
 package com.rm.myrecipes.domain.data
 
-import com.rm.myrecipes.data.network.dto.RecipesResponse
-import com.rm.myrecipes.data.room.RecipesEntity
+import com.rm.myrecipes.data.BaseRepository
 import kotlinx.coroutines.flow.Flow
 
 
-interface RecipeRepository {
-    fun getRecipes(queries: Map<String, String>): Flow<RecipesResponse>
+interface RecipeRepository : BaseRepository {
 
-    fun loadRecipes(): Flow<List<RecipesEntity>>
-
-    suspend fun insertRecipes(recipesEntity: RecipesEntity)
-
+    fun getRecipes(queries: Map<String, String>): Flow<Recipes>
 }

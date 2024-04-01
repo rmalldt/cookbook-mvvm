@@ -1,14 +1,20 @@
 package com.rm.myrecipes.data.di
 
+import android.content.Context
 import com.rm.myrecipes.data.RecipeRepositoryImpl
 import com.rm.myrecipes.data.common.Constants
 import com.rm.myrecipes.data.network.RecipesApi
 import com.rm.myrecipes.data.network.RemoteDataSource
+import com.rm.myrecipes.data.network.RetryInterceptor
+import com.rm.myrecipes.data.network.dto.RecipeResponseMapper
+import com.rm.myrecipes.data.room.AppDatabase
 import com.rm.myrecipes.data.room.LocalDataSource
+import com.rm.myrecipes.data.room.RecipesDao
 import com.rm.myrecipes.domain.data.RecipeRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -18,11 +24,12 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object NetworkModule {
+object DataModule {
 
     @Singleton
     @Provides
     fun provideOkhttpClient(): OkHttpClient = OkHttpClient.Builder()
+            .addInterceptor(RetryInterceptor())
             .readTimeout(10, TimeUnit.SECONDS)
             .connectTimeout(10, TimeUnit.SECONDS )
             .build()
@@ -48,6 +55,17 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRecipeRepository(remoteDataSource: RemoteDataSource, localDataSource: LocalDataSource): RecipeRepository =
-        RecipeRepositoryImpl(remoteDataSource, localDataSource)
+    fun providesAppDatabase(@ApplicationContext context: Context) : AppDatabase = AppDatabase.getInstance(context)
+
+    @Singleton
+    @Provides
+    fun providesRecipesDao(database: AppDatabase): RecipesDao = database.recipesDao()
+
+    @Singleton
+    @Provides
+    fun provideRecipeRepository(
+        remoteDataSource: RemoteDataSource,
+        localDataSource: LocalDataSource,
+        recipeResponseMapper: RecipeResponseMapper
+    ): RecipeRepository = RecipeRepositoryImpl(remoteDataSource, localDataSource, recipeResponseMapper)
 }

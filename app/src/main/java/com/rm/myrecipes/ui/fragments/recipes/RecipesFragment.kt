@@ -1,17 +1,17 @@
 package com.rm.myrecipes.ui.fragments.recipes
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rm.myrecipes.databinding.FragmentRecipesBinding
-import com.rm.myrecipes.domain.data.Recipe
+import com.rm.myrecipes.domain.data.Recipes
 import com.rm.myrecipes.ui.common.UiState
 import com.rm.myrecipes.ui.utils.initItemDecorator
 import com.rm.myrecipes.ui.utils.setGone
@@ -28,10 +28,7 @@ class RecipesFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var mainViewModel: MainViewModel
-
-    private val recipeAdapter by lazy {
-        RecipesAdapter()
-    }
+    private val recipeAdapter by lazy { RecipesAdapter() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,7 +55,7 @@ class RecipesFragment : Fragment() {
         }
     }
 
-    private fun render(uiState: UiState<List<Recipe>>) = with(binding) {
+    private fun render(uiState: UiState<Recipes>) = with(binding) {
         when (uiState) {
             is UiState.Loading -> {
                 ivNoConnection.setGone()
@@ -67,7 +64,7 @@ class RecipesFragment : Fragment() {
             is UiState.Success -> {
                 ivNoConnection.setGone()
                 txtNoConnection.setGone()
-                recipeAdapter.recipeList= uiState.data
+                recipeAdapter.recipeList = uiState.data.recipes
             }
             is UiState.Error -> {
                 requireContext().toast(uiState.message)
@@ -81,7 +78,6 @@ class RecipesFragment : Fragment() {
         binding.recyclerView.apply {
             adapter = recipeAdapter
             layoutManager = LinearLayoutManager(requireContext())
-            addItemDecoration(initItemDecorator(requireContext()))
         }
     }
 
