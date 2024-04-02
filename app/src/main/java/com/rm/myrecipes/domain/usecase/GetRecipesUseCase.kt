@@ -9,7 +9,7 @@ class GetRecipesUseCase @Inject constructor(
     private val recipeRepository: RecipeRepository
 ) {
 
-    fun invoke(queries: Map<String, String>): Flow<Recipes> {
-        return recipeRepository.getRecipes(queries)
+    fun invoke(): Flow<Recipes> {
+        return recipeRepository.getRecipes()
     }
 }

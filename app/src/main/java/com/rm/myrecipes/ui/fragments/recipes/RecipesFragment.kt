@@ -9,15 +9,16 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.rm.myrecipes.R
 import com.rm.myrecipes.databinding.FragmentRecipesBinding
 import com.rm.myrecipes.domain.data.Recipes
 import com.rm.myrecipes.ui.common.UiState
-import com.rm.myrecipes.ui.utils.initItemDecorator
 import com.rm.myrecipes.ui.utils.setGone
 import com.rm.myrecipes.ui.utils.setVisible
 import com.rm.myrecipes.ui.utils.toast
-import com.rm.myrecipes.ui.viewmodels.MainViewModel
+import com.rm.myrecipes.ui.viewmodels.RecipeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -27,7 +28,7 @@ class RecipesFragment : Fragment() {
     private var _binding: FragmentRecipesBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var mainViewModel: MainViewModel
+    private lateinit var recipeViewModel: RecipeViewModel
     private val recipeAdapter by lazy { RecipesAdapter() }
 
     override fun onCreateView(
@@ -42,13 +43,18 @@ class RecipesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initRecyclerView()
-        mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
-        useFlowWithLifecycle()
+
+        recipeViewModel = ViewModelProvider(requireActivity())[RecipeViewModel::class.java]
+        collectRecipeFlow()
+
+        binding.fabRecipes.setOnClickListener {
+            findNavController().navigate(R.id.action_recipesFragment_to_recipesBottomSheetFragment)
+        }
     }
 
-    private fun useFlowWithLifecycle() {
+    private fun collectRecipeFlow() {
         lifecycleScope.launch {
-            mainViewModel.uiState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            recipeViewModel.recipesState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
                 .collect { uiState ->
                     render(uiState)
                 }

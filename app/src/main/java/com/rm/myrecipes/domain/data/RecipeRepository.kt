@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface RecipeRepository : BaseRepository {
 
-    fun getRecipes(queries: Map<String, String>): Flow<Recipes>
+    fun getRecipes(): Flow<Recipes>
 }

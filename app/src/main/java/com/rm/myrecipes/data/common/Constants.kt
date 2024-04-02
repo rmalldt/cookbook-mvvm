@@ -13,5 +13,12 @@ class Constants {
         const val QUERY_DIET = "diet"
         const val QUERY_ADD_RECIPE_INFORMATION = "addRecipeInformation"
         const val QUERY_FILL_INGREDIENTS = "fillIngredients"
+
+        // Recipe Default Meal and Diet types
+        const val DEFAULT_MEAL_TYPE = "main course"
+        const val DEFAULT_DIET_TYPE = "gluten free"
+        const val DEFAULT_QUERY_NUMBER = "20"
+        const val TRUE = "true"
+        const val FALSE = "false"
     }
 }

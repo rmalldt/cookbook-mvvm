@@ -1,6 +1,10 @@
 package com.rm.myrecipes.data.di
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
+import com.rm.myrecipes.data.DataStoreRepository
 import com.rm.myrecipes.data.RecipeRepositoryImpl
 import com.rm.myrecipes.data.common.Constants
 import com.rm.myrecipes.data.network.RecipesApi
@@ -25,6 +29,12 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object DataModule {
+
+    private val Context.dataStore by preferencesDataStore("recipe_datastore")
+
+    @Provides
+    @Singleton
+    fun provideDataStore(@ApplicationContext context: Context): DataStore<Preferences> = context.dataStore
 
     @Singleton
     @Provides
@@ -66,6 +76,13 @@ object DataModule {
     fun provideRecipeRepository(
         remoteDataSource: RemoteDataSource,
         localDataSource: LocalDataSource,
+        dataStoreRepository: DataStoreRepository,
         recipeResponseMapper: RecipeResponseMapper
-    ): RecipeRepository = RecipeRepositoryImpl(remoteDataSource, localDataSource, recipeResponseMapper)
+    ): RecipeRepository =
+        RecipeRepositoryImpl(
+            remoteDataSource,
+            localDataSource,
+            dataStoreRepository,
+            recipeResponseMapper
+        )
 }
