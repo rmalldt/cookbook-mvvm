@@ -29,14 +29,17 @@ class RecipeRepositoryImpl @Inject constructor(
 
     override fun getRecipes(fetchState: FetchState): Flow<Recipes> = flow {
         val res = when (fetchState) {
-            is FetchState.FetchLocal -> loadRecipesFromLocal().first()
+            is FetchState.FetchLocal -> {
+                val localData = fetchRecipesFromLocal()
+                if (localData.isNotEmpty()) localData.first() else fetchAndSave()
+            }
             is FetchState.FetchRemote -> fetchAndSave()
-            is FetchState.FetchSearch -> fetchSearch()
+            is FetchState.FetchSearch -> fetchSearchRecipesFromRemote(fetchState.data)
         }
         emit(res)
     }
 
-    private fun loadRecipesFromLocal(): List<Recipes> = localDataSource.loadRecipes()
+    private fun fetchRecipesFromLocal(): List<Recipes> = localDataSource.loadRecipes()
         .map { entity -> entity.toRecipes() }
 
     private suspend fun fetchAndSave(): Recipes {
@@ -47,7 +50,7 @@ class RecipeRepositoryImpl @Inject constructor(
 
     private suspend fun fetchRecipesFromRemote(): Recipes {
         val localePreferences = dataStoreRepository.data.first()
-        val query = applyQueries(localePreferences.selectedMealType, localePreferences.selectedDietType)
+        val query = applyRecipeQuery(localePreferences.selectedMealType, localePreferences.selectedDietType)
         Timber.tag("Recipe").d("${query.entries}")
         return when (val result =  call { remoteDataSource.getRecipes(query) }) {
             is Result.NetworkError -> throw result.exception
@@ -55,18 +58,29 @@ class RecipeRepositoryImpl @Inject constructor(
         }
     }
 
-    private fun fetchSearch(): Recipes {
-        TODO("Not yet implemented")
+    private suspend fun fetchSearchRecipesFromRemote(queryString: String): Recipes {
+        applySearchRecipeQuery(queryString)
+        return MockCall.fetchDummySearch()
     }
 
     private suspend fun insertRecipes(recipesEntity: RecipesEntity) = localDataSource.insertRecipes(recipesEntity)
 
-    private fun applyQueries(mealType: String, dietType: String): HashMap<String, String> {
+    private fun applyRecipeQuery(mealType: String, dietType: String): HashMap<String, String> {
         val query: HashMap<String, String> = hashMapOf()
         query[Constants.QUERY_NUMBER] = Constants.DEFAULT_QUERY_NUMBER
         query[Constants.QUERY_API_KEY] = Constants.API_KEY
         query[Constants.QUERY_TYPE] = mealType
         query[Constants.QUERY_DIET] = dietType
+        query[Constants.QUERY_ADD_RECIPE_INFORMATION] = Constants.TRUE
+        query[Constants.QUERY_FILL_INGREDIENTS] = Constants.TRUE
+        return query
+    }
+
+    private fun applySearchRecipeQuery(searchString: String): HashMap<String, String> {
+        val query: HashMap<String, String> = hashMapOf()
+        query[Constants.QUERY_SEARCH] = searchString
+        query[Constants.QUERY_NUMBER] = Constants.DEFAULT_QUERY_NUMBER
+        query[Constants.QUERY_API_KEY] = Constants.API_KEY
         query[Constants.QUERY_ADD_RECIPE_INFORMATION] = Constants.TRUE
         query[Constants.QUERY_FILL_INGREDIENTS] = Constants.TRUE
         return query

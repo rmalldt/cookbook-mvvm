@@ -39,9 +39,10 @@ class RecipeViewModel @Inject constructor(
         initialValue = UiState.Loading
     )
 
+    private var lastFetchJob: Job? = null
+
     init { fetchSafe(FetchState.FetchLocal) }
 
-    private var lastFetchJob: Job? = null
 
     fun fetchSafe(fetchState: FetchState) {
         val isNetwork = networkChecker.hasInternetConnection()
