@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface RecipeRepository : BaseRepository {
 
-    fun getRecipes(applied: Boolean): Flow<Recipes>
+    fun getRecipes(applied: Boolean, isNetwork: Boolean): Flow<Recipes>
 }

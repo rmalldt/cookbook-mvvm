@@ -16,6 +16,7 @@ import com.rm.myrecipes.R
 import com.rm.myrecipes.databinding.FragmentRecipesBinding
 import com.rm.myrecipes.domain.data.Recipes
 import com.rm.myrecipes.ui.common.UiState
+import com.rm.myrecipes.ui.utils.NetworkListener
 import com.rm.myrecipes.ui.utils.setGone
 import com.rm.myrecipes.ui.utils.setVisible
 import com.rm.myrecipes.ui.utils.toast
@@ -25,7 +26,8 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @AndroidEntryPoint
-class RecipesFragment : Fragment() {
+class RecipesFragment(
+) : Fragment() {
 
     private var _binding: FragmentRecipesBinding? = null
     private val binding get() = _binding!!
@@ -49,7 +51,8 @@ class RecipesFragment : Fragment() {
         recipeViewModel = ViewModelProvider(requireActivity())[RecipeViewModel::class.java]
 
         lifecycleScope.launch {
-            recipeViewModel.recipesState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            recipeViewModel.recipesState
+                .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
                 .collect { uiState ->
                     render(uiState)
                 }

@@ -3,24 +3,23 @@ package com.rm.myrecipes.ui.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rm.myrecipes.data.SelectedChipPreferences
+import com.rm.myrecipes.data.common.Constants.Companion.APPLY_MEAL_DIET_TYPE
 import com.rm.myrecipes.data.di.IoDispatcher
 import com.rm.myrecipes.domain.data.Recipes
 import com.rm.myrecipes.domain.usecase.GetRecipesUseCase
 import com.rm.myrecipes.domain.usecase.SelectedChipUseCase
 import com.rm.myrecipes.ui.common.UiState
+import com.rm.myrecipes.ui.utils.NetworkChecker
+import com.rm.myrecipes.ui.utils.NetworkListener
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
@@ -33,6 +32,7 @@ import javax.inject.Inject
 class RecipeViewModel @Inject constructor(
     private val getRecipesUseCase: GetRecipesUseCase,
     private val selectedChipUseCase: SelectedChipUseCase,
+    private val networkChecker: NetworkChecker,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
@@ -43,14 +43,16 @@ class RecipeViewModel @Inject constructor(
         initialValue = UiState.Loading
     )
 
-    init { fetchRecipes(false) }
+    init { fetchRecipes() }
 
     private var lastFetchJob: Job? = null
 
-    fun fetchRecipes(applied: Boolean) {
+    fun fetchRecipes(applied: Boolean = false) {
+        val isNetwork = networkChecker.hasInternetConnection()
         lastFetchJob?.cancel()
+
         lastFetchJob = viewModelScope.launch(dispatcher) {
-            getRecipesUseCase.invoke(applied)
+            getRecipesUseCase.invoke(applied, isNetwork)
                 .map { recipesList ->
                     UiState.Success(recipesList) as UiState<Recipes>
                 }
@@ -76,19 +78,19 @@ class RecipeViewModel @Inject constructor(
             Timber.tag("Recipe").d("Caught: $throwable")
         }
 
-    fun saveSelectedChipTypes(
+    fun applyMealDietType(
         mealType: String,
         mealId: Int,
         dietType: String,
         dietId: Int,
-        block: () -> Unit
+        call: () -> Unit
     ) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(dispatcher) {
             launch {
                 selectedChipUseCase.saveSelectedChipTypes(mealType, mealId, dietType, dietId)
             }.join()
 
-            block()
+            call()
         }
     }
 }

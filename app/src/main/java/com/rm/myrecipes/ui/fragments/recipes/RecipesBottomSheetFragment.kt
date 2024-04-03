@@ -4,20 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Lifecycle.*
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.Navigator
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
-import com.rm.myrecipes.R
 import com.rm.myrecipes.data.SelectedChipPreferences
+import com.rm.myrecipes.data.common.Constants.Companion.APPLY_MEAL_DIET_TYPE
 import com.rm.myrecipes.data.common.Constants.Companion.DEFAULT_DIET_TYPE
 import com.rm.myrecipes.data.common.Constants.Companion.DEFAULT_MEAL_TYPE
 import com.rm.myrecipes.databinding.FragmentRecipesBottomSheetBinding
@@ -52,6 +48,7 @@ class RecipesBottomSheetFragment : BottomSheetDialogFragment() {
                     render(uiState)
                 }
         }
+
         applyChipState()
     }
 
@@ -97,13 +94,13 @@ class RecipesBottomSheetFragment : BottomSheetDialogFragment() {
         }
 
         btnApply.setOnClickListener {
-            recipeViewModel.saveSelectedChipTypes(
+            recipeViewModel.applyMealDietType(
                 selectedMealType,
                 selectedMealId,
                 selectedDietType,
                 selectedDietId
             ) {
-                recipeViewModel.fetchRecipes(true)
+                recipeViewModel.fetchRecipes(APPLY_MEAL_DIET_TYPE)
             }
 
             findNavController().navigate(RecipesBottomSheetFragmentDirections

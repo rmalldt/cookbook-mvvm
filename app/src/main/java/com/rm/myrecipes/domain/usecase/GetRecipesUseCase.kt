@@ -11,7 +11,7 @@ class GetRecipesUseCase @Inject constructor(
     private val recipeRepository: RecipeRepositoryImpl
 ) {
 
-    fun invoke(applied: Boolean): Flow<Recipes> {
-        return recipeRepository.getRecipes(applied)
+    fun invoke(applied: Boolean, isInternet: Boolean): Flow<Recipes> {
+        return recipeRepository.getRecipes(applied, isInternet)
     }
 }

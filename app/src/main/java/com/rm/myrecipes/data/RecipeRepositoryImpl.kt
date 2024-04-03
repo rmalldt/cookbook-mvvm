@@ -35,11 +35,15 @@ class RecipeRepositoryImpl @Inject constructor(
     private val mapper: RecipeResponseMapper
 ) : RecipeRepository {
 
-    override fun getRecipes(applied: Boolean): Flow<Recipes> = flow {
+    override fun getRecipes(applied: Boolean, isNetwork: Boolean): Flow<Recipes> = flow {
         val localData = loadRecipesFromLocal()
-        val res = when {
-            localData.isNotEmpty() && !applied -> localData.first()
-            else -> fetchAndSave()
+        val res = if (!isNetwork && localData.isNotEmpty()) {
+            localData.first()
+        } else {
+            when {
+                !applied && localData.isNotEmpty() -> localData.first()
+                else -> fetchAndSave()
+            }
         }
         emit(res)
     }
