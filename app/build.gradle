@@ -5,6 +5,7 @@ plugins {
     id 'com.google.devtools.ksp'
     id 'kotlin-kapt'
     id 'com.google.dagger.hilt.android'
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
@@ -53,6 +54,7 @@ dependencies {
     def nav_version = "2.7.7"
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
     // Feature module Support
     implementation "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
     // Jetpack Compose Integration
@@ -95,9 +97,6 @@ dependencies {
 
     // Jsoup
     implementation 'org.jsoup:jsoup:1.13.1'
-
-    // Image Loading library Coil
-    implementation "io.coil-kt:coil:0.13.0"
 
     // Glide
     implementation 'com.github.bumptech.glide:glide:4.16.0'

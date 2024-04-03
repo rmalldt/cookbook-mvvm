@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rm.myrecipes.R
 import com.rm.myrecipes.databinding.FragmentRecipesBinding
@@ -21,6 +22,7 @@ import com.rm.myrecipes.ui.utils.toast
 import com.rm.myrecipes.ui.viewmodels.RecipeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class RecipesFragment : Fragment() {
@@ -45,19 +47,18 @@ class RecipesFragment : Fragment() {
         initRecyclerView()
 
         recipeViewModel = ViewModelProvider(requireActivity())[RecipeViewModel::class.java]
-        collectRecipeFlow()
 
-        binding.fabRecipes.setOnClickListener {
-            findNavController().navigate(R.id.action_recipesFragment_to_recipesBottomSheetFragment)
-        }
-    }
-
-    private fun collectRecipeFlow() {
         lifecycleScope.launch {
             recipeViewModel.recipesState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
                 .collect { uiState ->
                     render(uiState)
                 }
+        }
+
+        binding.fabRecipes.setOnClickListener {
+            findNavController().navigate(
+                RecipesFragmentDirections.actionRecipesFragmentToRecipesBottomSheetFragment()
+            )
         }
     }
 

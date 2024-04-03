@@ -4,13 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Lifecycle.*
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.Navigator
+import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.rm.myrecipes.R
 import com.rm.myrecipes.data.SelectedChipPreferences
 import com.rm.myrecipes.data.common.Constants.Companion.DEFAULT_DIET_TYPE
 import com.rm.myrecipes.data.common.Constants.Companion.DEFAULT_MEAL_TYPE
@@ -39,17 +45,14 @@ class RecipesBottomSheetFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         recipeViewModel = ViewModelProvider(requireActivity())[RecipeViewModel::class.java]
-        collectChipState()
-        applyChipState()
-    }
 
-    private fun collectChipState() {
         lifecycleScope.launch {
             recipeViewModel.selectedChipState.flowWithLifecycle(lifecycle, State.STARTED)
                 .collect { uiState ->
                     render(uiState)
                 }
         }
+        applyChipState()
     }
 
     private fun render(uiState: UiState<SelectedChipPreferences>) {
@@ -87,7 +90,7 @@ class RecipesBottomSheetFragment : BottomSheetDialogFragment() {
             selectedMealType = chip.text.toString().lowercase()
         }
 
-       chipGroupDietType.setOnCheckedStateChangeListener { group, checkedIds ->
+        chipGroupDietType.setOnCheckedStateChangeListener { group, checkedIds ->
             selectedDietId = checkedIds.first()
             val chip = group.findViewById<Chip>(selectedDietId)
             selectedDietType = chip.text.toString().lowercase()
@@ -99,6 +102,12 @@ class RecipesBottomSheetFragment : BottomSheetDialogFragment() {
                 selectedMealId,
                 selectedDietType,
                 selectedDietId
+            ) {
+                recipeViewModel.fetchRecipes(true)
+            }
+
+            findNavController().navigate(RecipesBottomSheetFragmentDirections
+                .actionRecipesBottomSheetFragmentToRecipesFragment(true)
             )
         }
     }
