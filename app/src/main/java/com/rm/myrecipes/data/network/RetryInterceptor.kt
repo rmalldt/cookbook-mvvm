@@ -31,7 +31,7 @@ class RetryInterceptor : Interceptor {
         response: Response,
         attempt: Int,
     ): Response {
-        Timber.tag("Recipe").d("RETRY fetch attempt: $attempt")
+        Timber.d("Recipe: RETRY fetch attempt: $attempt")
         response.body()?.close()
         Thread.sleep(INTERVAL * attempt)
         return process(chain, attempt = attempt + 1)

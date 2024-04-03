@@ -6,12 +6,12 @@ import javax.inject.Inject
 class LocalDataSource @Inject constructor(private val recipesDao: RecipesDao) {
 
     fun loadRecipes(): List<RecipesEntity> {
-        Timber.tag("Recipe").d("LOADING FROM DATABASE...")
+        Timber.d("Recipe: LOADING FROM DATABASE...")
         return recipesDao.loadRecipes()
     }
 
     suspend fun insertRecipes(recipesEntity: RecipesEntity) {
-        Timber.tag("Recipe").d("INSERTING INTO DATABASE...")
+        Timber.d("Recipe: INSERTING INTO DATABASE...")
         recipesDao.insertRecipes(recipesEntity)
     }
 }

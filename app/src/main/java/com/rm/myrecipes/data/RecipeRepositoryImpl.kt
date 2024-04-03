@@ -2,7 +2,6 @@ package com.rm.myrecipes.data
 
 import com.rm.myrecipes.data.common.Constants
 import com.rm.myrecipes.data.common.Result
-import com.rm.myrecipes.data.di.IoDispatcher
 import com.rm.myrecipes.data.network.MockCall
 import com.rm.myrecipes.data.network.RemoteDataSource
 import com.rm.myrecipes.data.network.dto.RecipeResponseMapper
@@ -10,19 +9,12 @@ import com.rm.myrecipes.data.room.LocalDataSource
 import com.rm.myrecipes.data.room.RecipesEntity
 import com.rm.myrecipes.data.room.RecipesEntity.Companion.toRecipes
 import com.rm.myrecipes.data.room.RecipesEntity.Companion.toRecipesEntity
-import com.rm.myrecipes.domain.data.ExtendedIngredient
-import com.rm.myrecipes.domain.data.Recipe
 import com.rm.myrecipes.domain.data.RecipeRepository
 import com.rm.myrecipes.domain.data.Recipes
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
+import com.rm.myrecipes.ui.common.FetchState
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -35,29 +27,23 @@ class RecipeRepositoryImpl @Inject constructor(
     private val mapper: RecipeResponseMapper
 ) : RecipeRepository {
 
-    override fun getRecipes(applied: Boolean, isNetwork: Boolean): Flow<Recipes> = flow {
-        val localData = loadRecipesFromLocal()
-        val res = if (!isNetwork && localData.isNotEmpty()) {
-            localData.first()
-        } else {
-            when {
-                !applied && localData.isNotEmpty() -> localData.first()
-                else -> fetchAndSave()
-            }
+    override fun getRecipes(fetchState: FetchState): Flow<Recipes> = flow {
+        val res = when (fetchState) {
+            is FetchState.FetchLocal -> loadRecipesFromLocal().first()
+            is FetchState.FetchRemote -> fetchAndSave()
+            is FetchState.FetchSearch -> fetchSearch()
         }
         emit(res)
     }
+
+    private fun loadRecipesFromLocal(): List<Recipes> = localDataSource.loadRecipes()
+        .map { entity -> entity.toRecipes() }
 
     private suspend fun fetchAndSave(): Recipes {
         val remoteData = MockCall.fetchDummyRemote()
         insertRecipes(remoteData.toRecipesEntity())
         return remoteData
     }
-
-    private fun loadRecipesFromLocal(): List<Recipes> = localDataSource.loadRecipes()
-        .map { entity ->
-            entity.toRecipes()
-        }
 
     private suspend fun fetchRecipesFromRemote(): Recipes {
         val localePreferences = dataStoreRepository.data.first()
@@ -69,8 +55,11 @@ class RecipeRepositoryImpl @Inject constructor(
         }
     }
 
-    private suspend fun insertRecipes(recipesEntity: RecipesEntity) =
-        localDataSource.insertRecipes(recipesEntity)
+    private fun fetchSearch(): Recipes {
+        TODO("Not yet implemented")
+    }
+
+    private suspend fun insertRecipes(recipesEntity: RecipesEntity) = localDataSource.insertRecipes(recipesEntity)
 
     private fun applyQueries(mealType: String, dietType: String): HashMap<String, String> {
         val query: HashMap<String, String> = hashMapOf()
@@ -83,4 +72,3 @@ class RecipeRepositoryImpl @Inject constructor(
         return query
     }
 }
-

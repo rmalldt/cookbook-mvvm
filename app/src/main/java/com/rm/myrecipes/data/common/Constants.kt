@@ -20,6 +20,5 @@ class Constants {
         const val DEFAULT_QUERY_NUMBER = "20"
         const val TRUE = "true"
         const val FALSE = "false"
-        const val APPLY_MEAL_DIET_TYPE = true
     }
 }

@@ -9,7 +9,7 @@ import javax.inject.Inject
 class RemoteDataSource @Inject constructor(private val recipesApi: RecipesApi) {
 
     suspend fun getRecipes(@QueryMap queries: Map<String, String>): Response<RecipesResponse> {
-        Timber.tag("Recipe").d("FETCHING FROM NETWORK...")
+        Timber.d("Recipe: FETCHING FROM NETWORK...")
         return recipesApi.getRecipes(queries)
     }
 }

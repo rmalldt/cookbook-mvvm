@@ -8,7 +8,7 @@ import timber.log.Timber
 
 object MockCall {
     suspend fun fetchDummyRemote(): Recipes {
-        Timber.tag("Recipe").d("FETCHING FROM NETWORK...")
+        Timber.d("Recipe: FETCHING FROM NETWORK...")
         delay(800)
         return Recipes(listOf(
             Recipe(

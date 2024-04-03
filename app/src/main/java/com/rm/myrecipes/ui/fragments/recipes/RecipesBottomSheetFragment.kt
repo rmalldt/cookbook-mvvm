@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Lifecycle.*
+import androidx.lifecycle.Lifecycle.State
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -13,10 +13,10 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.rm.myrecipes.data.SelectedChipPreferences
-import com.rm.myrecipes.data.common.Constants.Companion.APPLY_MEAL_DIET_TYPE
 import com.rm.myrecipes.data.common.Constants.Companion.DEFAULT_DIET_TYPE
 import com.rm.myrecipes.data.common.Constants.Companion.DEFAULT_MEAL_TYPE
 import com.rm.myrecipes.databinding.FragmentRecipesBottomSheetBinding
+import com.rm.myrecipes.ui.common.FetchState
 import com.rm.myrecipes.ui.common.UiState
 import com.rm.myrecipes.ui.viewmodels.RecipeViewModel
 import kotlinx.coroutines.launch
@@ -70,7 +70,7 @@ class RecipesBottomSheetFragment : BottomSheetDialogFragment() {
             try {
                 chipGroup.findViewById<Chip>(chipId).isChecked = true
             } catch (e: Exception) {
-                Timber.tag("RecipeChip").d("ChipGroup find view by id threw: ${e.message.toString()}")
+                Timber.d("Recipe: ChipGroup find view by id threw: ${e.message.toString()}")
             }
         }
     }
@@ -100,7 +100,7 @@ class RecipesBottomSheetFragment : BottomSheetDialogFragment() {
                 selectedDietType,
                 selectedDietId
             ) {
-                recipeViewModel.fetchRecipes(APPLY_MEAL_DIET_TYPE)
+                recipeViewModel.fetchSafe(FetchState.FetchRemote)
             }
 
             findNavController().navigate(RecipesBottomSheetFragmentDirections
