@@ -15,7 +15,7 @@ data class RecipeDefinition(
     @SerializedName("id") val id: Int,
     @SerializedName("image") val image: String,
     @SerializedName("readyInMinutes") val readyInMinutes: Int,
-    @SerializedName("sourceName") val sourceName: String,
+    @SerializedName("sourceName") val sourceName: String?,
     @SerializedName("sourceUrl") val sourceUrl: String,
     @SerializedName("summary") val summary: String,
     @SerializedName("title") val title: String,

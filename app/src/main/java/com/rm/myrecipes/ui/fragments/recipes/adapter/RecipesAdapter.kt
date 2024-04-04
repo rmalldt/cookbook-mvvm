@@ -1,20 +1,19 @@
 package com.rm.myrecipes.ui.fragments.recipes.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.rm.myrecipes.R
 import com.rm.myrecipes.databinding.RecipesRowItemLayoutBinding
 import com.rm.myrecipes.domain.data.Recipe
 import com.rm.myrecipes.ui.fragments.recipes.RecipesFragmentDirections
 import com.rm.myrecipes.ui.utils.AdapterDiffUtil
-import com.rm.myrecipes.ui.utils.loadImageWithGlide
+import com.rm.myrecipes.ui.utils.loadImage
+import com.rm.myrecipes.ui.utils.parseHtml
+import com.rm.myrecipes.ui.utils.resetImageViewAndTextViewColor
 
 class RecipesAdapter : RecyclerView.Adapter<RecipesAdapter.RecipeViewHolder>() {
 
@@ -51,34 +50,13 @@ class RecipesAdapter : RecyclerView.Adapter<RecipesAdapter.RecipeViewHolder>() {
 
         fun bind(recipe: Recipe) = with(binding) {
             tvRecipeTitle.text = recipe.title
-            tvRecipeDescription.text = recipe.summary
             tvNoOfLikes.text = recipe.aggregateLikes.toString()
             tvCookingDuration.text = recipe.readyInMinutes.toString()
-            setVeganImageViewAndTextColour(ivVeg, recipe.vegetarian)
-            setVeganImageViewAndTextColour(tvVeg, recipe.vegetarian)
-            loadImage(ivRecipe, recipe.image)
-        }
-
-        private fun loadImage(
-            imageView: ImageView,
-            imageUrl: String
-        ) = imageView.loadImageWithGlide(
-            imageUrl,
-            R.drawable.ic_loading_placeholder,
-            R.drawable.ic_loading_placeholder
-        )
-
-        private fun setVeganImageViewAndTextColour(view: View, vegan: Boolean ) {
-            if (vegan) {
-                when (view) {
-                    is TextView -> {
-                        view.setTextColor(ContextCompat.getColor(view.context, R.color.green))
-                    }
-                    is ImageView -> {
-                        view.setColorFilter(ContextCompat.getColor(view.context, R.color.green))
-                    }
-                }
+            ivRecipe.loadImage(recipe.image, R.drawable.ic_loading_placeholder, R.drawable.ic_loading_placeholder) {
+                DrawableTransitionOptions().crossFade(700)
             }
+            resetImageViewAndTextViewColor(recipe.vegetarian, ivVeg, tvVeg, R.color.green, R.color.green)
+            parseHtml(tvRecipeDescription, recipe.summary)
         }
     }
 }

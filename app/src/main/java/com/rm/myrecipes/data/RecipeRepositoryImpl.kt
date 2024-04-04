@@ -43,7 +43,7 @@ class RecipeRepositoryImpl @Inject constructor(
         .map { entity -> entity.toRecipes() }
 
     private suspend fun fetchAndSave(): Recipes {
-        val remoteData = MockCall.fetchDummyRemote()
+        val remoteData = fetchRecipesFromRemote()
         insertRecipes(remoteData.toRecipesEntity())
         return remoteData
     }
@@ -59,8 +59,11 @@ class RecipeRepositoryImpl @Inject constructor(
     }
 
     private suspend fun fetchSearchRecipesFromRemote(queryString: String): Recipes {
-        applySearchRecipeQuery(queryString)
-        return MockCall.fetchDummySearch()
+        val query = applySearchRecipeQuery(queryString)
+        return when (val result = call { remoteDataSource.getRecipes(query) }) {
+            is Result.NetworkError -> throw result.exception
+            is Result.OK -> mapper.mapToRecipes(result.data)
+        }
     }
 
     private suspend fun insertRecipes(recipesEntity: RecipesEntity) = localDataSource.insertRecipes(recipesEntity)

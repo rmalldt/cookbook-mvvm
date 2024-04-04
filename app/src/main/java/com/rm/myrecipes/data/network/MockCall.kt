@@ -13,7 +13,7 @@ object MockCall {
         return Recipes(listOf(
             Recipe(
                 100,
-                true,
+                false,
                 true,
                 listOf(
                     ExtendedIngredient(12.2, "SOL", null, "name", "original", "unit")
@@ -24,8 +24,20 @@ object MockCall {
                 20,
                 "sourceName",
                 "http://foodandspice.blogspot.com/2016/05/cannellini-bean-and-asparagus-salad.html",
-                "summary",
-                "title",
+                "Cannellini Bean and Asparagus Salad with Mushrooms requires approximately <b>45 minutes</b> " +
+                        "from start to finish. This main course has <b>482 calories</b>, <b>31g of protein</b>, and <b>6g of fat</b> per serving. " +
+                        "This gluten free, dairy free, lacto ovo vegetarian, and vegan recipe serves 6 and costs <b>$1.35 per serving</b>. " +
+                        "309 people were impressed by this recipe. Head to the store and pick up grain mustard, sea salt, lemon zest, and a few other things to make it today. " +
+                        "It is brought to you by foodandspice.blogspot.com. " +
+                        "Taking all factors into account, this recipe <b>earns a spoonacular score of 70%</b>, which is pretty good. " +
+                        "Similar recipes are <a href=\"https://spoonacular.com/recipes/cannellini-bean-salad-422994\">" +
+                        "Cannellini Bean Salad</a>, <a href=\"https://spoonacular.com/recipes/refreshing-cannellini-bean-salad-113127\">" +
+                        "Refreshing Cannellini Bean Salad</a>, and <a href=\"https://spoonacular.com/recipes/cannellini-and-green-bean-salad-33177\">" +
+                        "Cannellini-and-Green Bean Salad</a>." +
+                        "This gluten free, dairy free, lacto ovo vegetarian, and vegan recipe serves 6 and costs <b>$1.35 per serving</b>. " +
+                        "309 people were impressed by this recipe. Head to the store and pick up grain mustard, sea salt, lemon zest, and a few other things to make it today. " +
+                        "It is brought to you by foodandspice.blogspot.com.",
+                "Cannellini Bean and Asparagus Salad with Mushrooms",
                 true,
                 true,
                 true
@@ -35,7 +47,7 @@ object MockCall {
                 true,
                 true,
                 listOf(
-                    ExtendedIngredient(12.2, "SOL", null, "name", "original", "unit")
+                    ExtendedIngredient(12.2, "SOL", "apple", "name", "original", "unit")
                 ),
                 true,
                 1,

@@ -37,9 +37,9 @@
     </dialog>
     <fragment
         android:id="@+id/detailsFragment"
-        android:name="com.rm.myrecipes.ui.fragments.recipes.details.DetailsFragment"
+        android:name="com.rm.myrecipes.ui.fragments.recipes.details.DetailsContainerFragment"
         android:label="Details"
-        tools:layout="@layout/fragment_details" >
+        tools:layout="@layout/fragment_details_container" >
         <argument
             android:name="recipe"
             app:argType="com.rm.myrecipes.domain.data.Recipe" />

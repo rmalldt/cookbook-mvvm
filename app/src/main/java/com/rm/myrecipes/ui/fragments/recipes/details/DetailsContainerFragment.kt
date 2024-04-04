@@ -7,27 +7,27 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.tabs.TabLayoutMediator
-import com.rm.myrecipes.databinding.FragmentDetailsBinding
+import com.rm.myrecipes.databinding.FragmentDetailsContainerBinding
 import com.rm.myrecipes.ui.fragments.recipes.details.adapter.ViewPagerAdapter
 import com.rm.myrecipes.ui.fragments.recipes.details.ingredients.IngredientsFragment
 import com.rm.myrecipes.ui.fragments.recipes.details.instructions.InstructionsFragment
 import com.rm.myrecipes.ui.fragments.recipes.details.overview.OverviewFragment
 import timber.log.Timber
 
-class DetailsFragment : Fragment() {
+class DetailsContainerFragment : Fragment() {
 
-    private var _binding: FragmentDetailsBinding? = null
+    private var _binding: FragmentDetailsContainerBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var viewPagerAdapter: ViewPagerAdapter
 
-    private val recipeArg by navArgs<DetailsFragmentArgs>()
+    private val recipeArg by navArgs<DetailsContainerFragmentArgs>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentDetailsBinding.inflate(inflater, container, false)
+        _binding = FragmentDetailsContainerBinding.inflate(inflater, container, false)
         return binding.root
     }
 

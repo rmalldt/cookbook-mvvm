@@ -4,11 +4,14 @@ import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.rm.myrecipes.R
 
 fun Context?.toast(text: CharSequence, duration: Int = Toast.LENGTH_SHORT) =
@@ -26,23 +29,46 @@ fun View.setGone() {
     this.visibility = View.GONE
 }
 
-fun initItemDecorator(context: Context): DividerItemDecoration {
-    val itemDecorator = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
-    itemDecorator.setDrawable(ContextCompat.getDrawable(context, R.drawable.recyclerview_divider)!!)
+
+fun Context.initItemDecorator(): DividerItemDecoration {
+    val itemDecorator = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
+    itemDecorator.setDrawable(ContextCompat.getDrawable(this, R.drawable.recyclerview_divider)!!)
     return itemDecorator
 }
 
-fun ImageView.loadImageWithGlide(
+fun ImageView.loadImage(
     imageUrl: String?,
     @DrawableRes resourceIdForError: Int,
-    @DrawableRes resourceIdForPlaceHolder: Int
+    @DrawableRes resourceIdForPlaceHolder: Int,
+    transition: () -> DrawableTransitionOptions = { DrawableTransitionOptions.withCrossFade(0) }
 ) {
     Glide.with(context)
         .load(imageUrl)
         .error(resourceIdForError)
         .placeholder(resourceIdForPlaceHolder)
+        .transition(transition())
         .into(this)
 }
+
+fun resetImageViewAndTextViewColor(
+    reset: Boolean,
+    imageView: ImageView,
+    textView: TextView,
+    @ColorRes colorIdImageView: Int,
+    @ColorRes colorIdTextView: Int
+) {
+    if (reset) {
+        imageView.setImageViewColor(colorIdImageView)
+        textView.setTextViewColor(colorIdTextView)
+    }
+}
+
+fun ImageView.setImageViewColor(@ColorRes colorId: Int) =
+    setColorFilter(ContextCompat.getColor(context, colorId ))
+
+
+fun TextView.setTextViewColor(@ColorRes colorId: Int) =
+    setTextColor(ContextCompat.getColor(context, colorId ))
 
 /**
  * From kotlinextensions.com

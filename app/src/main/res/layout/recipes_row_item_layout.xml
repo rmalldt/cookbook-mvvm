@@ -44,7 +44,7 @@
                 android:layout_marginEnd="12dp"
                 android:fontFamily="@font/cousine"
                 android:maxLines="2"
-                android:text="Recipe Name"
+                android:text="@string/recipe_name_placeholder"
                 android:textColor="@color/darker"
                 android:textSize="20sp"
                 android:textStyle="bold"
