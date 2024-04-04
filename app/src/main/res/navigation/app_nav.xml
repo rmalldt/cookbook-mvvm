@@ -12,10 +12,9 @@
         <action
             android:id="@+id/action_recipesFragment_to_recipesBottomSheetFragment"
             app:destination="@id/recipesBottomSheetFragment" />
-        <argument
-            android:name="recipe_applied"
-            app:argType="boolean"
-            android:defaultValue="false" />
+        <action
+            android:id="@+id/action_recipesFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/favouriteRecipesFragment"
@@ -30,10 +29,19 @@
     <dialog
         android:id="@+id/recipesBottomSheetFragment"
         android:name="com.rm.myrecipes.ui.fragments.recipes.RecipesBottomSheetFragment"
-        android:label="fragment_recipes_bottom_sheet"
+        android:label="Meal Selections"
         tools:layout="@layout/fragment_recipes_bottom_sheet" >
         <action
             android:id="@+id/action_recipesBottomSheetFragment_to_recipesFragment"
             app:destination="@id/recipesFragment" />
     </dialog>
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.rm.myrecipes.ui.fragments.recipes.details.DetailsFragment"
+        android:label="Details"
+        tools:layout="@layout/fragment_details" >
+        <argument
+            android:name="recipe"
+            app:argType="com.rm.myrecipes.domain.data.Recipe" />
+    </fragment>
 </navigation>

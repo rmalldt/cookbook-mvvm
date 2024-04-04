@@ -21,6 +21,7 @@ import com.rm.myrecipes.databinding.FragmentRecipesBinding
 import com.rm.myrecipes.domain.data.Recipes
 import com.rm.myrecipes.ui.common.FetchState
 import com.rm.myrecipes.ui.common.UiState
+import com.rm.myrecipes.ui.fragments.recipes.adapter.RecipesAdapter
 import com.rm.myrecipes.ui.utils.setGone
 import com.rm.myrecipes.ui.utils.setVisible
 import com.rm.myrecipes.ui.utils.toast

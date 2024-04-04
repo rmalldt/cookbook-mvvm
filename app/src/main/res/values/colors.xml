@@ -24,4 +24,7 @@
     <color name="checkedChipTextColor">@color/colorPrimary</color>
     <color name="chipTextColor">@color/darkGray</color>
 
+    <!-- Actionbar Background Colours -->
+    <color name="actionBarBackgroundColor">@color/colorPrimary</color>
+
 </resources>

@@ -1,4 +1,4 @@
-package com.rm.myrecipes.ui.fragments.recipes
+package com.rm.myrecipes.ui.fragments.recipes.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,11 +6,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.rm.myrecipes.R
 import com.rm.myrecipes.databinding.RecipesRowItemLayoutBinding
 import com.rm.myrecipes.domain.data.Recipe
+import com.rm.myrecipes.ui.fragments.recipes.RecipesFragmentDirections
 import com.rm.myrecipes.ui.utils.AdapterDiffUtil
 import com.rm.myrecipes.ui.utils.loadImageWithGlide
 
@@ -34,8 +36,12 @@ class RecipesAdapter : RecyclerView.Adapter<RecipesAdapter.RecipeViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
-        val recipe = recipeList.get(position)
+        val recipe = recipeList[position]
         holder.bind(recipe)
+        holder.itemView.setOnClickListener {
+            it.findNavController()
+                .navigate(RecipesFragmentDirections.actionRecipesFragmentToDetailsFragment(recipe))
+        }
     }
 
     override fun getItemCount(): Int = recipeList.size
