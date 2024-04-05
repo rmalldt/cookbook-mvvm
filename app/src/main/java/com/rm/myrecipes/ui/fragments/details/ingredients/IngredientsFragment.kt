@@ -1,4 +1,4 @@
-package com.rm.myrecipes.ui.fragments.recipes.details.ingredients
+package com.rm.myrecipes.ui.fragments.details.ingredients
 
 import android.os.Build
 import android.os.Bundle
@@ -9,8 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rm.myrecipes.databinding.FragmentIngredientsBinding
 import com.rm.myrecipes.domain.data.Recipe
-import com.rm.myrecipes.ui.fragments.recipes.details.ingredients.adapter.IngredientsAdapter
-
+import com.rm.myrecipes.ui.fragments.details.ingredients.adapter.IngredientsAdapter
 
 class IngredientsFragment : Fragment() {
 
@@ -48,7 +47,7 @@ class IngredientsFragment : Fragment() {
         }
 
         recipe?.let {
-            ingredientsAdapter.ingredientList = it.extendedIngredient
+            ingredientsAdapter.ingredientList = it.extendedIngredients
         }
     }
 

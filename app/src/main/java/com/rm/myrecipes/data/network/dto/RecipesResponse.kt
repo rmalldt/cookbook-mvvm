@@ -12,7 +12,7 @@ data class RecipeDefinition(
     @SerializedName("dairyFree") val dairyFree: Boolean,
     @SerializedName("extendedIngredients") val extendedIngredientDefinitions: List<ExtendedIngredientDefinition>,
     @SerializedName("glutenFree") val glutenFree: Boolean,
-    @SerializedName("id") val id: Int,
+    @SerializedName("id") val recipeId: Int,
     @SerializedName("image") val image: String,
     @SerializedName("readyInMinutes") val readyInMinutes: Int,
     @SerializedName("sourceName") val sourceName: String?,

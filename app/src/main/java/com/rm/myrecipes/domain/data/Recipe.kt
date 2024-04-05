@@ -4,16 +4,16 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
-data class Recipes(val recipes: List<Recipe>)
+data class RecipeResult(val recipes: List<Recipe>)
 
 @Parcelize
 data class Recipe(
     val aggregateLikes: Int,
     val cheap: Boolean,
     val dairyFree: Boolean,
-    val extendedIngredient: @RawValue List<ExtendedIngredient>,
+    val extendedIngredients: @RawValue List<ExtendedIngredient>,
     val glutenFree: Boolean,
-    val id: Int,
+    val recipeId: Int,
     val image: String,
     val readyInMinutes: Int,
     val sourceName: String?,

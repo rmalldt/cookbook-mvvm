@@ -1,17 +1,40 @@
 package com.rm.myrecipes.data.room
 
+import com.rm.myrecipes.data.room.entity.RecipeEntity
+import com.rm.myrecipes.data.room.entity.RecipeResultEntity
+import kotlinx.coroutines.flow.Flow
 import timber.log.Timber
 import javax.inject.Inject
 
 class LocalDataSource @Inject constructor(private val recipesDao: RecipesDao) {
 
-    fun loadRecipes(): List<RecipesEntity> {
-        Timber.d("Recipe: LOADING FROM DATABASE...")
-        return recipesDao.loadRecipes()
+    suspend fun getRecipeResult(): List<RecipeResultEntity> {
+        Timber.d("RecipesResult: LOADING FROM DATABASE...")
+        return recipesDao.getRecipeResult()
     }
 
-    suspend fun insertRecipes(recipesEntity: RecipesEntity) {
+    suspend fun insertRecipeResult(recipeResultEntity: RecipeResultEntity) {
+        Timber.d("RecipesResult: INSERTING INTO DATABASE...")
+        recipesDao.insertRecipeResult(recipeResultEntity)
+    }
+
+    fun getRecipes(): Flow<List<RecipeEntity>> {
+        Timber.d("Recipes: GETTING FROM DATABASE...")
+        return recipesDao.getRecipes()
+    }
+
+    suspend fun insertRecipe(recipeEntity: RecipeEntity) {
         Timber.d("Recipe: INSERTING INTO DATABASE...")
-        recipesDao.insertRecipes(recipesEntity)
+        return recipesDao.insertRecipe(recipeEntity)
+    }
+
+    suspend fun deleteRecipe(recipeEntity: RecipeEntity) {
+        Timber.d("Recipe: DELETING FROM DATABASE...")
+        return recipesDao.deleteRecipe(recipeEntity)
+    }
+
+    suspend fun deleteAllRecipes() {
+        Timber.d("Recipe: DELETING ALL FROM DATABASE...")
+        return recipesDao.deleteAllRecipes()
     }
 }

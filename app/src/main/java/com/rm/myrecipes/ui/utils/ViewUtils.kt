@@ -1,6 +1,7 @@
 package com.rm.myrecipes.ui.utils
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
@@ -12,10 +13,22 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.google.android.material.snackbar.Snackbar
 import com.rm.myrecipes.R
 
 fun Context?.toast(text: CharSequence, duration: Int = Toast.LENGTH_SHORT) =
     this?.let { Toast.makeText(it, text, duration).show() }
+
+fun View.snackBar(
+    text: CharSequence,
+    duration: Int = Snackbar.LENGTH_SHORT,
+    actionText: CharSequence = "OK",
+    action: () -> Unit = {}
+) {
+    Snackbar.make(this, text, duration).setAction(actionText) {
+        action()
+    }.show()
+}
 
 fun View.setVisible() {
     this.visibility = View.VISIBLE
@@ -28,7 +41,6 @@ fun View.setInvisible() {
 fun View.setGone() {
     this.visibility = View.GONE
 }
-
 
 fun Context.initItemDecorator(): DividerItemDecoration {
     val itemDecorator = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
@@ -69,6 +81,9 @@ fun ImageView.setImageViewColor(@ColorRes colorId: Int) =
 
 fun TextView.setTextViewColor(@ColorRes colorId: Int) =
     setTextColor(ContextCompat.getColor(context, colorId ))
+
+fun Drawable?.setDrawableTint(context: Context, @ColorRes colorId: Int) =
+    this?.setTint(ContextCompat.getColor(context, colorId))
 
 /**
  * From kotlinextensions.com

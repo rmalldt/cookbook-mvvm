@@ -1,18 +1,18 @@
 package com.rm.myrecipes.data.network.dto
 
-import com.rm.myrecipes.data.room.RecipesEntity
+import com.rm.myrecipes.data.room.entity.RecipeResultEntity
 import com.rm.myrecipes.domain.data.ExtendedIngredient
 import com.rm.myrecipes.domain.data.Recipe
-import com.rm.myrecipes.domain.data.Recipes
+import com.rm.myrecipes.domain.data.RecipeResult
 import javax.inject.Inject
 
 class RecipeResponseMapper @Inject constructor() {
 
-    fun mapToRecipesEntity(recipesResponse: RecipesResponse) : RecipesEntity =
-        RecipesEntity(recipes = mapToRecipes(recipesResponse).recipes)
+    fun mapToRecipesResultEntity(recipesResponse: RecipesResponse) : RecipeResultEntity =
+        RecipeResultEntity(recipes = mapToRecipeResult(recipesResponse).recipes)
 
-    fun mapToRecipes(recipesResponse: RecipesResponse): Recipes {
-        return Recipes(recipesResponse.recipes.map { toRecipe(it) })
+    fun mapToRecipeResult(recipesResponse: RecipesResponse): RecipeResult {
+        return RecipeResult(recipesResponse.recipes.map { toRecipe(it) })
     }
 
     private fun toRecipe(recipeDefinition: RecipeDefinition): Recipe {
@@ -23,7 +23,7 @@ class RecipeResponseMapper @Inject constructor() {
                 dairyFree,
                 extendedIngredientDefinitions.map(::toExtendedIngredient),
                 glutenFree,
-                id,
+                recipeId,
                 image,
                 readyInMinutes,
                 sourceName,

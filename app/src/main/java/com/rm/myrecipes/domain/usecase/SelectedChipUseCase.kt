@@ -2,7 +2,6 @@ package com.rm.myrecipes.domain.usecase
 
 import com.rm.myrecipes.data.DataStoreRepository
 import com.rm.myrecipes.data.SelectedChipPreferences
-import com.rm.myrecipes.data.common.Constants
 import javax.inject.Inject
 
 class SelectedChipUseCase @Inject constructor(

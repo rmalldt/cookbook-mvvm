@@ -20,7 +20,11 @@
         android:id="@+id/favouriteRecipesFragment"
         android:name="com.rm.myrecipes.ui.fragments.favourites.FavouriteRecipesFragment"
         android:label="Favourite Recipes"
-        tools:layout="@layout/fragment_favourite_recipes" />
+        tools:layout="@layout/fragment_favourite_recipes" >
+        <action
+            android:id="@+id/action_favouriteRecipesFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/foodJokeFragment"
         android:name="com.rm.myrecipes.ui.fragments.foodjoke.FoodJokeFragment"
@@ -37,7 +41,7 @@
     </dialog>
     <fragment
         android:id="@+id/detailsFragment"
-        android:name="com.rm.myrecipes.ui.fragments.recipes.details.DetailsContainerFragment"
+        android:name="com.rm.myrecipes.ui.fragments.details.DetailsContainerFragment"
         android:label="Details"
         tools:layout="@layout/fragment_details_container" >
         <argument

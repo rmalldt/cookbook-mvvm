@@ -2,15 +2,15 @@ package com.rm.myrecipes.data.network
 
 import com.rm.myrecipes.domain.data.ExtendedIngredient
 import com.rm.myrecipes.domain.data.Recipe
-import com.rm.myrecipes.domain.data.Recipes
+import com.rm.myrecipes.domain.data.RecipeResult
 import kotlinx.coroutines.delay
 import timber.log.Timber
 
 object MockCall {
-    suspend fun fetchDummyRemote(): Recipes {
+    suspend fun fetchDummyRemote(): RecipeResult {
         Timber.d("Recipe: FETCHING FROM NETWORK...")
         delay(800)
-        return Recipes(listOf(
+        return RecipeResult(listOf(
             Recipe(
                 100,
                 false,
@@ -121,10 +121,10 @@ object MockCall {
         ))
     }
 
-    suspend fun fetchDummySearch(): Recipes {
+    suspend fun fetchDummySearch(): RecipeResult {
         Timber.d("Recipe: FETCHING FROM NETWORK...")
         delay(800)
-        return Recipes(listOf(
+        return RecipeResult(listOf(
             Recipe(
                 100,
                 true,

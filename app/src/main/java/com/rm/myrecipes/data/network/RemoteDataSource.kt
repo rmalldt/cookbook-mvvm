@@ -8,8 +8,8 @@ import javax.inject.Inject
 
 class RemoteDataSource @Inject constructor(private val recipesApi: RecipesApi) {
 
-    suspend fun getRecipes(@QueryMap queries: Map<String, String>): Response<RecipesResponse> {
-        Timber.d("Recipe: FETCHING FROM NETWORK...")
-        return recipesApi.getRecipes(queries)
+    suspend fun getRecipesRemote(@QueryMap queries: Map<String, String>): Response<RecipesResponse> {
+        Timber.d("RecipesResult: FETCHING FROM NETWORK...")
+        return recipesApi.getRecipesRemote(queries)
     }
 }

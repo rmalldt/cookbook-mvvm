@@ -45,5 +45,7 @@
     <string name="grams">Grams</string>
     <string name="consistency">Consistency</string>
     <string name="original">Original</string>
+    <string name="save_to_favourites">Save to Favourites</string>
+    <string name="no_favourite_recipes">No favourite recipes</string>
 
 </resources>

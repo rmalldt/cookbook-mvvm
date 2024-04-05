@@ -1,4 +1,4 @@
-package com.rm.myrecipes.ui.fragments.recipes.details.ingredients.adapter
+package com.rm.myrecipes.ui.fragments.details.ingredients.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

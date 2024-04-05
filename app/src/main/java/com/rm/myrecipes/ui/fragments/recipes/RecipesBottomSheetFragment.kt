@@ -18,7 +18,7 @@ import com.rm.myrecipes.data.common.Constants.Companion.DEFAULT_MEAL_TYPE
 import com.rm.myrecipes.databinding.FragmentRecipesBottomSheetBinding
 import com.rm.myrecipes.ui.common.FetchState
 import com.rm.myrecipes.ui.common.UiState
-import com.rm.myrecipes.ui.viewmodels.RecipeViewModel
+import com.rm.myrecipes.ui.fragments.recipes.viewmodels.RecipeViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 

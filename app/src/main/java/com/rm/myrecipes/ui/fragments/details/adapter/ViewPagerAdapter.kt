@@ -1,4 +1,4 @@
-package com.rm.myrecipes.ui.fragments.recipes.details.adapter
+package com.rm.myrecipes.ui.fragments.details.adapter
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

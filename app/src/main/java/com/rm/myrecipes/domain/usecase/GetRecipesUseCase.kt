@@ -1,16 +1,16 @@
 package com.rm.myrecipes.domain.usecase
 
-import com.rm.myrecipes.domain.data.RecipeRepository
-import com.rm.myrecipes.domain.data.Recipes
+import com.rm.myrecipes.domain.repository.RecipeResultRepository
+import com.rm.myrecipes.domain.data.RecipeResult
 import com.rm.myrecipes.ui.common.FetchState
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetRecipesUseCase @Inject constructor(
-    private val recipeRepository: RecipeRepository
+    private val recipeResultRepository: RecipeResultRepository
 ) {
 
-    fun invoke(fetchState: FetchState): Flow<Recipes> {
-        return recipeRepository.getRecipes(fetchState)
+    operator fun invoke(fetchState: FetchState): Flow<RecipeResult> {
+        return recipeResultRepository.getRecipeResult(fetchState)
     }
 }

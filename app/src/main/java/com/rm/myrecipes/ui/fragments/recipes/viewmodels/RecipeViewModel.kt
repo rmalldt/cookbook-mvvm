@@ -1,10 +1,10 @@
-package com.rm.myrecipes.ui.viewmodels
+package com.rm.myrecipes.ui.fragments.recipes.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rm.myrecipes.data.SelectedChipPreferences
 import com.rm.myrecipes.data.di.IoDispatcher
-import com.rm.myrecipes.domain.data.Recipes
+import com.rm.myrecipes.domain.data.RecipeResult
 import com.rm.myrecipes.domain.usecase.GetRecipesUseCase
 import com.rm.myrecipes.domain.usecase.SelectedChipUseCase
 import com.rm.myrecipes.ui.common.FetchState
@@ -32,8 +32,8 @@ class RecipeViewModel @Inject constructor(
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    private val _recipesState = MutableStateFlow<UiState<Recipes>>(UiState.Loading)
-    val recipesState: Flow<UiState<Recipes>> get() = _recipesState.stateIn(
+    private val _recipeResultState = MutableStateFlow<UiState<RecipeResult>>(UiState.Loading)
+    val recipeResultState: Flow<UiState<RecipeResult>> get() = _recipeResultState.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = UiState.Loading
@@ -43,21 +43,20 @@ class RecipeViewModel @Inject constructor(
 
     init { fetchSafe(FetchState.FetchLocal) }
 
-
     fun fetchSafe(fetchState: FetchState) {
         val isNetwork = networkChecker.hasInternetConnection()
         when {
-            isNetwork -> fetchRecipes(fetchState)
-            else -> fetchRecipes(FetchState.FetchLocal)
+            isNetwork -> fetchRecipeResult(fetchState)
+            else -> fetchRecipeResult(FetchState.FetchLocal)
         }
     }
 
-    private fun fetchRecipes(fetchState: FetchState) {
+    private fun fetchRecipeResult(fetchState: FetchState) {
         lastFetchJob?.cancel()
         lastFetchJob = viewModelScope.launch(dispatcher) {
-            getRecipesUseCase.invoke(fetchState)
+            getRecipesUseCase(fetchState)
                 .map { recipesList ->
-                    UiState.Success(recipesList) as UiState<Recipes>
+                    UiState.Success(recipesList) as UiState<RecipeResult>
                 }
                 .onCompletion {
                     Timber.d("Recipe: Flow has completed.")
@@ -67,7 +66,7 @@ class RecipeViewModel @Inject constructor(
                     emit(UiState.Error("Something went wrong"))
                 }
                 .collect { state ->
-                    _recipesState.value = state
+                    _recipeResultState.value = state
                 }
         }
     }

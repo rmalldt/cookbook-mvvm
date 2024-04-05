@@ -1,4 +1,4 @@
-package com.rm.myrecipes.ui.fragments.recipes.details.instructions
+package com.rm.myrecipes.ui.fragments.details.instructions
 
 import android.os.Build
 import android.os.Bundle

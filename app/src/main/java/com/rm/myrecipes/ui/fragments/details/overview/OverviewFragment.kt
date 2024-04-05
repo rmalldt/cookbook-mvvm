@@ -1,11 +1,16 @@
-package com.rm.myrecipes.ui.fragments.recipes.details.overview
+package com.rm.myrecipes.ui.fragments.details.overview
 
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import com.rm.myrecipes.R
 import com.rm.myrecipes.databinding.FragmentOverviewBinding
 import com.rm.myrecipes.domain.data.Recipe
@@ -57,7 +62,6 @@ class OverviewFragment : Fragment() {
                 resetImageViewAndTextViewColor(it.glutenFree, ivGlutenFree, tvGlutenFree, colorId, colorId)
                 resetImageViewAndTextViewColor(it.veryHealthy, ivHealthy, tvHealthy, colorId, colorId)
                 resetImageViewAndTextViewColor(it.cheap, ivCheap, tvCheap, colorId, colorId)
-
                 parseHtml(tvRecipeDescription, it.summary)
             }
         }

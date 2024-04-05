@@ -18,14 +18,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rm.myrecipes.R
 import com.rm.myrecipes.databinding.FragmentRecipesBinding
-import com.rm.myrecipes.domain.data.Recipes
+import com.rm.myrecipes.domain.data.RecipeResult
 import com.rm.myrecipes.ui.common.FetchState
 import com.rm.myrecipes.ui.common.UiState
 import com.rm.myrecipes.ui.fragments.recipes.adapter.RecipesAdapter
 import com.rm.myrecipes.ui.utils.setGone
 import com.rm.myrecipes.ui.utils.setVisible
 import com.rm.myrecipes.ui.utils.toast
-import com.rm.myrecipes.ui.viewmodels.RecipeViewModel
+import com.rm.myrecipes.ui.fragments.recipes.viewmodels.RecipeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -43,6 +43,7 @@ class RecipesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRecipesBinding.inflate(inflater, container, false)
+        recipeViewModel = ViewModelProvider(requireActivity())[RecipeViewModel::class.java]
         return binding.root
     }
 
@@ -52,10 +53,8 @@ class RecipesFragment : Fragment() {
         initRecyclerView()
         addMenu()
 
-        recipeViewModel = ViewModelProvider(requireActivity())[RecipeViewModel::class.java]
-
         lifecycleScope.launch {
-            recipeViewModel.recipesState
+            recipeViewModel.recipeResultState
                 .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
                 .collect { uiState ->
                     render(uiState)
@@ -69,7 +68,7 @@ class RecipesFragment : Fragment() {
         }
     }
 
-    private fun render(uiState: UiState<Recipes>) = with(binding) {
+    private fun render(uiState: UiState<RecipeResult>) = with(binding) {
         when (uiState) {
             is UiState.Loading -> {
                 ivNoConnection.setGone()
@@ -104,7 +103,7 @@ class RecipesFragment : Fragment() {
     private fun addMenu() {
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.actionbar_menu, menu)
+                menuInflater.inflate(R.menu.recipe_fragment_menu, menu)
                 val search = menu.findItem(R.id.menu_search)
                 val searchView = search.actionView as? SearchView
                 searchView?.isSubmitButtonEnabled = true
@@ -120,7 +119,7 @@ class RecipesFragment : Fragment() {
                     }
 
                     override fun onQueryTextChange(newText: String?): Boolean {
-                        return true
+                        return false
                     }
                 })
 

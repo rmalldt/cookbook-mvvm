@@ -5,23 +5,23 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.rm.myrecipes.data.DataStoreRepository
-import com.rm.myrecipes.data.RecipeRepositoryImpl
+import com.rm.myrecipes.data.repository.RecipeResultRepositoryImpl
 import com.rm.myrecipes.data.common.Constants
 import com.rm.myrecipes.data.network.RecipesApi
 import com.rm.myrecipes.data.network.RemoteDataSource
 import com.rm.myrecipes.data.network.RetryInterceptor
 import com.rm.myrecipes.data.network.dto.RecipeResponseMapper
+import com.rm.myrecipes.data.repository.FavouriteRecipeRepositoryImpl
 import com.rm.myrecipes.data.room.AppDatabase
 import com.rm.myrecipes.data.room.LocalDataSource
 import com.rm.myrecipes.data.room.RecipesDao
-import com.rm.myrecipes.domain.data.RecipeRepository
+import com.rm.myrecipes.domain.repository.FavouriteRecipeRepository
+import com.rm.myrecipes.domain.repository.RecipeResultRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -80,11 +80,15 @@ object DataModule {
         localDataSource: LocalDataSource,
         dataStoreRepository: DataStoreRepository,
         recipeResponseMapper: RecipeResponseMapper
-    ): RecipeRepository =
-        RecipeRepositoryImpl(
+    ): RecipeResultRepository = RecipeResultRepositoryImpl(
             remoteDataSource,
             localDataSource,
             dataStoreRepository,
             recipeResponseMapper
         )
+
+    @Singleton
+    @Provides
+    fun provideFavouriteRecipeRepository(localDataSource: LocalDataSource): FavouriteRecipeRepository =
+        FavouriteRecipeRepositoryImpl(localDataSource)
 }
