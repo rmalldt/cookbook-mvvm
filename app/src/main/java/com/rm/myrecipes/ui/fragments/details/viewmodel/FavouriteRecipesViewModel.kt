@@ -6,6 +6,7 @@ import com.rm.myrecipes.data.di.IoDispatcher
 import com.rm.myrecipes.domain.data.Recipe
 import com.rm.myrecipes.domain.usecase.FavouriteRecipeUseCase
 import com.rm.myrecipes.ui.common.UiState
+import com.rm.myrecipes.ui.utils.NetworkChecker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job
@@ -28,10 +29,11 @@ class FavouriteRecipesViewModel @Inject constructor(
 ) : ViewModel() {
 
     private var _favouriteRecipesState = MutableStateFlow<UiState<List<Recipe>>>(UiState.Loading)
-    val favouriteRecipesState: Flow<UiState<List<Recipe>>> get() = _favouriteRecipesState.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = UiState.Loading
+    val favouriteRecipesState: Flow<UiState<List<Recipe>>>
+        get() = _favouriteRecipesState.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = UiState.Loading
     )
 
     var recipeSaveState = RecipeSaveState()
@@ -41,6 +43,8 @@ class FavouriteRecipesViewModel @Inject constructor(
     init { fetchFavouriteRecipes() }
 
     private fun fetchFavouriteRecipes() {
+        lastFetchJob?.cancel()
+
         lastFetchJob = viewModelScope.launch(dispatcher) {
             favouriteRecipeUseCase()
                 .map {

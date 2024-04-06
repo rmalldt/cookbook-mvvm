@@ -8,7 +8,7 @@ import timber.log.Timber
  * Application scoped dagger components generated with the annotation.
  */
 @HiltAndroidApp
-class MyRecipesApplication : Application() {
+class RecipesApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()

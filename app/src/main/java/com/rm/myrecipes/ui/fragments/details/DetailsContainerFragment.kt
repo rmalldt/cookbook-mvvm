@@ -27,7 +27,6 @@ import com.rm.myrecipes.ui.utils.setDrawableTint
 import com.rm.myrecipes.ui.utils.snackBar
 import com.rm.myrecipes.ui.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
 class DetailsContainerFragment : Fragment() {
@@ -53,7 +52,7 @@ class DetailsContainerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setViewPagerTabLayout()
-        addMenu()
+        setMenu()
     }
 
     private fun setViewPagerTabLayout() {
@@ -76,7 +75,7 @@ class DetailsContainerFragment : Fragment() {
         }.attach()
     }
 
-    private fun addMenu() {
+    private fun setMenu() {
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.details_fragment_menu, menu)

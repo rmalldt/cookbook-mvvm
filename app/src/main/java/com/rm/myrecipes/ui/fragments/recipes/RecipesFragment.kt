@@ -49,7 +49,7 @@ class RecipesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initRecyclerView()
-        addMenu()
+        setMenu()
 
         safeCollect(viewModel.recipeResultState) {
             render(it)
@@ -94,7 +94,7 @@ class RecipesFragment : Fragment() {
         }
     }
 
-    private fun addMenu() {
+    private fun setMenu() {
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.recipe_fragment_menu, menu)

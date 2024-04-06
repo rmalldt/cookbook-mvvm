@@ -1,17 +1,18 @@
-package com.rm.myrecipes.data.network.dto
+package com.rm.myrecipes.data.network.mapper
 
-import com.rm.myrecipes.data.room.entity.RecipeResultEntity
+import com.rm.myrecipes.data.network.dto.ExtendedIngredientDefinition
+import com.rm.myrecipes.data.network.dto.FoodTriviaResponse
+import com.rm.myrecipes.data.network.dto.RecipeDefinition
+import com.rm.myrecipes.data.network.dto.RecipesResponse
 import com.rm.myrecipes.domain.data.ExtendedIngredient
+import com.rm.myrecipes.domain.data.FoodTrivia
 import com.rm.myrecipes.domain.data.Recipe
 import com.rm.myrecipes.domain.data.RecipeResult
 import javax.inject.Inject
 
-class RecipeResponseMapper @Inject constructor() {
+class ResponseMapper @Inject constructor() {
 
-    fun mapToRecipesResultEntity(recipesResponse: RecipesResponse) : RecipeResultEntity =
-        RecipeResultEntity(recipes = mapToRecipeResult(recipesResponse).recipes)
-
-    fun mapToRecipeResult(recipesResponse: RecipesResponse): RecipeResult {
+    fun toRecipeResult(recipesResponse: RecipesResponse): RecipeResult {
         return RecipeResult(recipesResponse.recipes.map { toRecipe(it) })
     }
 
@@ -47,6 +48,12 @@ class RecipeResponseMapper @Inject constructor() {
                 original,
                 unit
             )
+        }
+    }
+
+    fun toFoodTrivia(foodTriviaResponse: FoodTriviaResponse): FoodTrivia {
+        foodTriviaResponse.apply {
+            return FoodTrivia(trivia)
         }
     }
 }

@@ -8,7 +8,9 @@ import com.rm.myrecipes.domain.repository.FavouriteRecipeRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class FavouriteRecipeRepositoryImpl @Inject constructor(
     private val localDataSource: LocalDataSource
 ) : FavouriteRecipeRepository{

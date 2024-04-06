@@ -3,7 +3,7 @@ package com.rm.myrecipes.data.repository
 import com.rm.myrecipes.data.DataStoreRepository
 import com.rm.myrecipes.data.common.Constants
 import com.rm.myrecipes.data.network.RemoteDataSource
-import com.rm.myrecipes.data.network.dto.RecipeResponseMapper
+import com.rm.myrecipes.data.network.mapper.ResponseMapper
 import com.rm.myrecipes.data.room.LocalDataSource
 import com.rm.myrecipes.data.room.entity.RecipeResultEntity.Companion.toRecipeResult
 import com.rm.myrecipes.data.room.entity.RecipeResultEntity.Companion.toRecipeResultEntity
@@ -23,7 +23,7 @@ class RecipeResultRepositoryImpl @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource,
     private val dataStoreRepository: DataStoreRepository,
-    private val mapper: RecipeResponseMapper
+    private val mapper: ResponseMapper
 ) : RecipeResultRepository {
 
     override fun getRecipeResult(fetchState: FetchState): Flow<RecipeResult> = flow {
@@ -38,29 +38,29 @@ class RecipeResultRepositoryImpl @Inject constructor(
         emit(res)
     }
 
-    private suspend fun fetchRecipeResultFromLocal(): List<RecipeResult> = localDataSource.getRecipeResult()
-        .map { entity -> entity.toRecipeResult() }
-
     private suspend fun fetchAndSave(): RecipeResult {
         val remoteData = fetchRecipeResultFromRemote()
         insertRecipeResult(remoteData.toRecipeResultEntity())
         return remoteData
     }
 
+    private suspend fun fetchRecipeResultFromLocal(): List<RecipeResult> = localDataSource.getRecipeResult()
+        .map { entity -> entity.toRecipeResult() }
+
     private suspend fun fetchRecipeResultFromRemote(): RecipeResult {
         val localePreferences = dataStoreRepository.data.first()
         val query = applyRecipeQuery(localePreferences.selectedMealType, localePreferences.selectedDietType)
-        return when (val result =  call { remoteDataSource.getRecipesRemote(query) }) {
+        return when (val result =  call { remoteDataSource.getRecipesResponse(query) }) {
             is Result.NetworkError -> throw result.exception
-            is Result.OK -> mapper.mapToRecipeResult(result.data)
+            is Result.OK -> mapper.toRecipeResult(result.data)
         }
     }
 
     private suspend fun fetchSearchRecipesFromRemote(queryString: String): RecipeResult {
         val query = applySearchRecipeQuery(queryString)
-        return when (val result = call { remoteDataSource.getRecipesRemote(query) }) {
+        return when (val result = call { remoteDataSource.getRecipesResponse(query) }) {
             is Result.NetworkError -> throw result.exception
-            is Result.OK -> mapper.mapToRecipeResult(result.data)
+            is Result.OK -> mapper.toRecipeResult(result.data)
         }
     }
 
