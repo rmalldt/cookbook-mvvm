@@ -136,4 +136,16 @@
 
     </com.google.android.material.card.MaterialCardView>
 
+    <View
+        android:id="@+id/ivGradientOverlay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:elevation="1dp"
+        android:background="@drawable/gradient_overlay_primary"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/recipesRowCardView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/recipesRowCardView" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

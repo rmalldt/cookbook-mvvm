@@ -47,5 +47,6 @@
     <string name="original">Original</string>
     <string name="save_to_favourites">Save to Favourites</string>
     <string name="no_favourite_recipes">No favourite recipes</string>
+    <string name="delete_favourite_recipe">Delete Favourite Recipe</string>
 
 </resources>

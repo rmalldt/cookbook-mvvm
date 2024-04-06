@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    <!-- Base App Colours -->
+    <!-- Base App Colors -->
     <color name="colorPrimary">#6200EA</color>
     <color name="colorPrimaryDark">#5502C8</color>
     <color name="colorAccent">#9D46FF</color>
 
+    <!-- Common Colors -->
     <color name="white">#FFFFFF</color>
     <color name="lightGray">#F9F9F9</color>
     <color name="mediumGray">#D1D1D1</color>
@@ -18,13 +19,22 @@
     <color name="yellow">#FFC114</color>
     <color name="green">#00C980</color>
     
-    <!-- Custom Chip Colours -->
+    <!-- Custom Chip Colors -->
     <color name="checkedChipBackgroundColor">#206200EA</color>
     <color name="chipBackgroundColor">@color/lightGray</color>
     <color name="checkedChipTextColor">@color/colorPrimary</color>
     <color name="chipTextColor">@color/darkGray</color>
 
-    <!-- Actionbar Background Colours -->
+    <!-- Status and Action Bar Colors -->
+    <color name="statusBarColor">@color/colorPrimaryDark</color>
     <color name="actionBarBackgroundColor">@color/colorPrimary</color>
+    <color name="contextualActionBarColor">@color/dark</color>
+    <color name="contextualStatusBarColor">@color/darker</color>
+
+    <!-- Contextual Mode Colors -->
+    <color name="strokeColor">@color/lightMediumGray</color>
+    <color name="cardBackgroundColor">@color/white</color>
+    <color name="cardBackgroundLightColor">#506200EA</color>
+    <color name="titleColor">@color/darker</color>
 
 </resources>

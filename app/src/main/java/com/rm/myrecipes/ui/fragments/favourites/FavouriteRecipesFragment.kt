@@ -15,11 +15,14 @@ import com.rm.myrecipes.domain.data.Recipe
 import com.rm.myrecipes.ui.common.UiState
 import com.rm.myrecipes.ui.fragments.details.viewmodel.FavouriteRecipesViewModel
 import com.rm.myrecipes.ui.fragments.favourites.adapter.FavouriteRecipesAdapter
+import com.rm.myrecipes.ui.utils.safeCollect
 import com.rm.myrecipes.ui.utils.setVisible
+import com.rm.myrecipes.ui.utils.snackBar
 import com.rm.myrecipes.ui.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class FavouriteRecipesFragment : Fragment() {
@@ -27,9 +30,9 @@ class FavouriteRecipesFragment : Fragment() {
     private var _binding: FragmentFavouriteRecipesBinding? = null
     private val binding get() = _binding!!
 
-    private val favouriteRecipesAdapter by lazy { FavouriteRecipesAdapter() }
-
     private lateinit var viewModel: FavouriteRecipesViewModel
+
+    private lateinit var favouriteRecipesAdapter: FavouriteRecipesAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,14 +45,16 @@ class FavouriteRecipesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        favouriteRecipesAdapter = FavouriteRecipesAdapter(requireActivity(),
+            { recipe -> viewModel.deleteFavouriteRecipe(recipe) },
+            { size -> binding.root.snackBar("$size Recipe(s) removed") }
+        )
+
         initRecyclerView()
 
-        lifecycleScope.launch {
-            viewModel.favouriteRecipesState
-                .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
-                .collect {
-                    render(it)
-                }
+        safeCollect(viewModel.favouriteRecipesState) {
+            render(it)
         }
     }
 
@@ -61,9 +66,8 @@ class FavouriteRecipesFragment : Fragment() {
                 if (uiState.data.isEmpty()) {
                     binding.ivNoFavoriteRecipes.setVisible()
                     binding.tvNoFavoriteRecipes.setVisible()
-                } else {
-                    favouriteRecipesAdapter.recipeList = uiState.data
                 }
+                favouriteRecipesAdapter.recipeList = uiState.data
             }
 
             is UiState.Error -> {
@@ -83,6 +87,7 @@ class FavouriteRecipesFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
+        favouriteRecipesAdapter.clearContextualActionMode()
         _binding = null
     }
 }

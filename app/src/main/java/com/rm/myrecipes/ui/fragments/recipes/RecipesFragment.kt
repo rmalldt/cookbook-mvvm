@@ -12,8 +12,6 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rm.myrecipes.R
@@ -26,8 +24,8 @@ import com.rm.myrecipes.ui.utils.setGone
 import com.rm.myrecipes.ui.utils.setVisible
 import com.rm.myrecipes.ui.utils.toast
 import com.rm.myrecipes.ui.fragments.recipes.viewmodels.RecipeViewModel
+import com.rm.myrecipes.ui.utils.safeCollect
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class RecipesFragment : Fragment() {
@@ -35,7 +33,7 @@ class RecipesFragment : Fragment() {
     private var _binding: FragmentRecipesBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var recipeViewModel: RecipeViewModel
+    private lateinit var viewModel: RecipeViewModel
     private val recipeAdapter by lazy { RecipesAdapter() }
 
     override fun onCreateView(
@@ -43,7 +41,7 @@ class RecipesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRecipesBinding.inflate(inflater, container, false)
-        recipeViewModel = ViewModelProvider(requireActivity())[RecipeViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[RecipeViewModel::class.java]
         return binding.root
     }
 
@@ -53,12 +51,8 @@ class RecipesFragment : Fragment() {
         initRecyclerView()
         addMenu()
 
-        lifecycleScope.launch {
-            recipeViewModel.recipeResultState
-                .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
-                .collect { uiState ->
-                    render(uiState)
-                }
+        safeCollect(viewModel.recipeResultState) {
+            render(it)
         }
 
         binding.fabRecipes.setOnClickListener {
@@ -80,13 +74,13 @@ class RecipesFragment : Fragment() {
                 if (uiState.data.recipes.isNotEmpty()) {
                     recipeAdapter.recipeList = uiState.data.recipes
                 } else {
-                    recipeViewModel.fetchSafe(FetchState.FetchRemote)
+                    viewModel.fetchSafe(FetchState.FetchRemote)
                 }
 
             }
             is UiState.Error -> {
                 requireContext().toast(uiState.message)
-                recipeViewModel.fetchSafe(FetchState.FetchLocal)
+                viewModel.fetchSafe(FetchState.FetchLocal)
                 ivNoConnection.setVisible()
                 txtNoConnection.setVisible()
             }
@@ -104,16 +98,16 @@ class RecipesFragment : Fragment() {
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.recipe_fragment_menu, menu)
-                val search = menu.findItem(R.id.menu_search)
+                val search = menu.findItem(R.id.menu_item_search)
                 val searchView = search.actionView as? SearchView
                 searchView?.isSubmitButtonEnabled = true
 
-                searchView?.setOnQueryTextListener(object :SearchView.OnQueryTextListener {
+                searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                     override fun onQueryTextSubmit(query: String?): Boolean {
                         if (query != null) {
                             val fetchState = FetchState.FetchSearch
                             fetchState.data = query
-                            recipeViewModel.fetchSafe(fetchState)
+                            viewModel.fetchSafe(fetchState)
                         }
                         return true
                     }
@@ -124,7 +118,7 @@ class RecipesFragment : Fragment() {
                 })
 
                 searchView?.setOnCloseListener {
-                    recipeViewModel.fetchSafe(FetchState.FetchLocal)
+                    viewModel.fetchSafe(FetchState.FetchLocal)
                     true
                 }
             }

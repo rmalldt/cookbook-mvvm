@@ -2,6 +2,7 @@ package com.rm.myrecipes.ui.utils
 
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.text.Layout
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
@@ -10,11 +11,18 @@ import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.snackbar.Snackbar
 import com.rm.myrecipes.R
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 fun Context?.toast(text: CharSequence, duration: Int = Toast.LENGTH_SHORT) =
     this?.let { Toast.makeText(it, text, duration).show() }
@@ -75,6 +83,10 @@ fun resetImageViewAndTextViewColor(
     }
 }
 
+fun View.setBackgroundColor(@ColorRes colorId: Int) =
+    setBackgroundColor(ContextCompat.getColor(context, colorId ))
+
+
 fun ImageView.setImageViewColor(@ColorRes colorId: Int) =
     setColorFilter(ContextCompat.getColor(context, colorId ))
 
@@ -97,3 +109,12 @@ fun View.hideKeyboard(): Boolean {
     } catch (ignored: RuntimeException) {}
     return false
 }
+
+fun <T> Fragment.safeCollect(
+    flow: Flow<T>,
+    activeState: Lifecycle.State = Lifecycle.State.STARTED,
+    collector: (T) -> Unit
+) = viewLifecycleOwner.lifecycleScope.launch {
+    flow.flowWithLifecycle(viewLifecycleOwner.lifecycle, activeState).collectLatest(collector)
+}
+

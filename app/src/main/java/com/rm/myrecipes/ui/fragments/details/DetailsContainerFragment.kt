@@ -11,8 +11,6 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.tabs.TabLayoutMediator
 import com.rm.myrecipes.R
@@ -24,11 +22,11 @@ import com.rm.myrecipes.ui.fragments.details.ingredients.IngredientsFragment
 import com.rm.myrecipes.ui.fragments.details.instructions.InstructionsFragment
 import com.rm.myrecipes.ui.fragments.details.overview.OverviewFragment
 import com.rm.myrecipes.ui.fragments.details.viewmodel.FavouriteRecipesViewModel
+import com.rm.myrecipes.ui.utils.safeCollect
 import com.rm.myrecipes.ui.utils.setDrawableTint
 import com.rm.myrecipes.ui.utils.snackBar
 import com.rm.myrecipes.ui.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -56,10 +54,6 @@ class DetailsContainerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setViewPagerTabLayout()
         addMenu()
-
-        // DEBUG
-        Timber.d("RecipeViewModelState: ${viewModel.recipeSaveState.savedId}, ${viewModel.recipeSaveState.isSaved} ")
-        Timber.d("RecipeArg: ${arg.recipe.recipeId} ")
     }
 
     private fun setViewPagerTabLayout() {
@@ -86,12 +80,14 @@ class DetailsContainerFragment : Fragment() {
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.details_fragment_menu, menu)
-                val menuItem = menu.findItem(R.id.menu_save_to_favourites)
-                collectFavouriteRecipes(menuItem)
+                val menuItem = menu.findItem(R.id.menu_item_save_to_favourites)
+                safeCollect(viewModel.favouriteRecipesState) {
+                    render(it, menuItem)
+                }
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                val itemId = R.id.menu_save_to_favourites
+                val itemId = R.id.menu_item_save_to_favourites
                 return if (menuItem.itemId == itemId && viewModel.recipeSaveState.isSaved) {
                     removeFromFavourites(menuItem)
                     true
@@ -105,23 +101,12 @@ class DetailsContainerFragment : Fragment() {
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
-    private fun collectFavouriteRecipes(menuItem: MenuItem) {
-        lifecycleScope.launch {
-            viewModel.favouriteRecipesState
-                .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
-                .collect {
-                    render(it, menuItem)
-                }
-        }
-    }
-
     private fun render(uiState: UiState<List<Recipe>>, menuItem: MenuItem) {
         when (uiState) {
             is UiState.Loading -> {}
-            is UiState.Success -> {
-                Timber.d("RecipeFavourites: ${uiState.data}")
-                checkSavedRecipes(uiState, menuItem)
-            }
+
+            is UiState.Success -> checkSavedRecipes(uiState, menuItem)
+
             is UiState.Error -> requireContext().toast(uiState.message)
         }
     }

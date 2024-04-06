@@ -19,6 +19,7 @@ import com.rm.myrecipes.databinding.FragmentRecipesBottomSheetBinding
 import com.rm.myrecipes.ui.common.FetchState
 import com.rm.myrecipes.ui.common.UiState
 import com.rm.myrecipes.ui.fragments.recipes.viewmodels.RecipeViewModel
+import com.rm.myrecipes.ui.utils.safeCollect
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -27,7 +28,7 @@ class RecipesBottomSheetFragment : BottomSheetDialogFragment() {
     private var _binding: FragmentRecipesBottomSheetBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var recipeViewModel: RecipeViewModel
+    private lateinit var viewModel: RecipeViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,14 +41,9 @@ class RecipesBottomSheetFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recipeViewModel = ViewModelProvider(requireActivity())[RecipeViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[RecipeViewModel::class.java]
 
-        lifecycleScope.launch {
-            recipeViewModel.selectedChipState.flowWithLifecycle(lifecycle, State.STARTED)
-                .collect { uiState ->
-                    render(uiState)
-                }
-        }
+        safeCollect(viewModel.selectedChipState) { render(it) }
 
         applyChipState()
     }
@@ -94,13 +90,13 @@ class RecipesBottomSheetFragment : BottomSheetDialogFragment() {
         }
 
         btnApply.setOnClickListener {
-            recipeViewModel.applyMealDietType(
+            viewModel.applyMealDietType(
                 selectedMealType,
                 selectedMealId,
                 selectedDietType,
                 selectedDietId
             ) {
-                recipeViewModel.fetchSafe(FetchState.FetchRemote)
+                viewModel.fetchSafe(FetchState.FetchRemote)
             }
 
             findNavController().navigate(RecipesBottomSheetFragmentDirections
