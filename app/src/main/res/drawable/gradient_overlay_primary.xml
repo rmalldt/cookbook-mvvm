@@ -3,7 +3,7 @@
 
     <gradient
         android:angle="10"
-        android:startColor="@color/cardBackgroundLightColor"
+        android:startColor="@color/colorCardBackgroundActionMode"
 
         android:endColor="@android:color/transparent" />
 

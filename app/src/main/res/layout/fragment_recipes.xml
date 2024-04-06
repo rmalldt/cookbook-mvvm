@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/lightGray"
+    style="@style/BaseAppTheme"
     tools:context=".ui.fragments.recipes.RecipesFragment">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -31,7 +31,7 @@
         android:contentDescription="@string/floating_icon_button_for_restaurant"
         android:src="@drawable/ic_restaurant_24"
         app:tint="@color/white"
-        app:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -42,6 +42,7 @@
         android:alpha="0.5"
         android:contentDescription="@string/image_view_no_internet_connection"
         android:visibility="gone"
+        app:tint="@color/dark"
         android:src="@drawable/ic_dissatisfied_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -57,6 +58,7 @@
         android:alpha="0.5"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:textColor="@color/dark"
         android:visibility="gone"
         android:text="@string/no_internet_connection"
         app:layout_constraintEnd_toEndOf="@+id/ivNoConnection"

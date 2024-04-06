@@ -7,6 +7,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -14,6 +15,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.rm.myrecipes.R
 import com.rm.myrecipes.databinding.FragmentRecipesBinding
 import com.rm.myrecipes.domain.data.RecipeResult
@@ -48,6 +50,7 @@ class RecipesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        showStatusActionBarAndNavigationView()
         initRecyclerView()
         setMenu()
 
@@ -85,6 +88,12 @@ class RecipesFragment : Fragment() {
                 txtNoConnection.setVisible()
             }
         }
+    }
+
+    private fun showStatusActionBarAndNavigationView() {
+        requireActivity().window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
+        (requireActivity() as AppCompatActivity).supportActionBar?.show()
+        (requireActivity() as AppCompatActivity).findViewById<BottomNavigationView>(R.id.bottomNavigationView).setVisible()
     }
 
     private fun initRecyclerView() {

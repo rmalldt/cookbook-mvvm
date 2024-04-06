@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/lightGray"
+    style="@style/BaseAppTheme"
     tools:context=".ui.fragments.favourites.FavouriteRecipesFragment">
 
     <androidx.recyclerview.widget.RecyclerView

@@ -109,7 +109,7 @@ class FavouriteRecipesAdapter(
     override fun onCreateActionMode(actionMode: ActionMode?, menu: Menu?): Boolean {
         actionMode?.menuInflater?.inflate(R.menu.favourites_fragment_menu, menu)
         mActionMode = actionMode
-        setStatusBarColor(R.color.contextualStatusBarColor)
+        setStatusBarColor(R.color.colorStatusBarActionMode)
         return true
     }
 
@@ -134,7 +134,7 @@ class FavouriteRecipesAdapter(
         viewHolders.forEach {  viewHolder ->
             changeViewHolderOnSelection(viewHolder, false)
         }
-        setStatusBarColor(R.color.statusBarColor)
+        setStatusBarColor(R.color.colorStatusBar)
     }
 
     private fun applySelection(holder: FavouriteRecipesViewHolder, currentRecipe: Recipe) {
@@ -154,7 +154,7 @@ class FavouriteRecipesAdapter(
             holder.binding.recipesRowCardView.strokeColor = ContextCompat.getColor(requireActivity, R.color.colorPrimary)
         } else {
             holder.binding.ivGradientOverlay.setGone()
-            holder.binding.recipesRowCardView.strokeColor = ContextCompat.getColor(requireActivity, R.color.strokeColor)
+            holder.binding.recipesRowCardView.strokeColor = ContextCompat.getColor(requireActivity, R.color.colorStroke)
         }
     }
 

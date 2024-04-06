@@ -49,5 +49,6 @@
     <string name="no_favourite_recipes">No favourite recipes</string>
     <string name="delete_favourite_recipe">Delete Favourite Recipe</string>
     <string name="share_food_trivia">Share Food Trivia</string>
+    <string name="my_recipes">My Recipes</string>
 
 </resources>

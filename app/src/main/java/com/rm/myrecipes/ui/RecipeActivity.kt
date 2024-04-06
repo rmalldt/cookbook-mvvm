@@ -7,8 +7,10 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.rm.myrecipes.R
 import com.rm.myrecipes.databinding.ActivityMainBinding
+import com.rm.myrecipes.ui.utils.setGone
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ic_splash_background"
+    android:background="@drawable/background_trivia"
     tools:context=".ui.fragments.foodtrivia.FoodTriviaFragment">
 
     <com.google.android.material.card.MaterialCardView
@@ -15,7 +15,7 @@
         android:layout_marginEnd="24dp"
         android:visibility="visible"
         app:cardCornerRadius="1dp"
-        app:strokeColor="@color/strokeColor"
+        app:strokeColor="@color/colorStroke"
         app:strokeWidth="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,7 +24,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            style="@style/BaseAppTheme">
 
             <TextView
                 android:id="@+id/tvFoodTrivia"
@@ -38,7 +39,6 @@
                 android:fontFamily="@font/cousine"
                 android:gravity="center"
                 android:text="@string/lorem_ipsum"
-                android:textColor="@color/darkGray"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"

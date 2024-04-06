@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/recipesRowLayout"
+    style="@style/BaseAppTheme"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="4dp"
@@ -14,7 +15,6 @@
         android:layout_height="wrap_content"
         app:cardCornerRadius="10dp"
         app:strokeWidth="1dp"
-        app:strokeColor="@color/lightMediumGray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,13 +22,12 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white">
+            android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/ivRecipe"
-                android:layout_width="200dp"
-                android:layout_height="0dp"
+                android:layout_width="180dp"
+                android:layout_height="180dp"
                 android:scaleType="centerCrop"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -40,12 +39,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
-                android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
                 android:fontFamily="@font/cousine"
                 android:maxLines="2"
                 android:text="@string/recipe_name_placeholder"
-                android:textColor="@color/darker"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -61,7 +58,6 @@
                 android:ellipsize="end"
                 android:maxLines="3"
                 android:text="@string/lorem_ipsum"
-                android:textColor="@color/darkGray"
                 app:layout_constraintEnd_toEndOf="@+id/tvRecipeTitle"
                 app:layout_constraintStart_toStartOf="@+id/tvRecipeTitle"
                 app:layout_constraintTop_toBottomOf="@+id/tvRecipeTitle" />
@@ -71,7 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:layout_marginBottom="36dp"
+                android:layout_marginBottom="24dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/tvNoOfLikes"
                 app:layout_constraintStart_toStartOf="@+id/tvNoOfLikes"
@@ -93,11 +89,11 @@
                 android:id="@+id/ivCookingDuration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:tint="@color/yellow"
                 app:layout_constraintEnd_toEndOf="@+id/tvCookingDuration"
                 app:layout_constraintStart_toStartOf="@+id/tvCookingDuration"
                 app:layout_constraintTop_toTopOf="@+id/ivLikes"
-                app:srcCompat="@drawable/ic_time_24" />
+                app:srcCompat="@drawable/ic_time_24"
+                app:tint="@color/yellow" />
 
             <TextView
                 android:id="@+id/tvCookingDuration"
@@ -118,7 +114,7 @@
                 app:layout_constraintStart_toStartOf="@+id/tvVeg"
                 app:layout_constraintTop_toTopOf="@+id/ivCookingDuration"
                 app:srcCompat="@drawable/ic_eco_24px"
-                app:tint="@color/mediumGray" />
+                app:tint="@color/darkGray" />
 
             <TextView
                 android:id="@+id/tvVeg"
@@ -127,7 +123,7 @@
                 android:layout_marginStart="24dp"
                 android:text="@string/vegan"
                 android:textAlignment="center"
-                android:textColor="@color/mediumGray"
+                android:textColor="@color/darkGray"
                 app:layout_constraintStart_toEndOf="@+id/tvCookingDuration"
                 app:layout_constraintTop_toBottomOf="@+id/ivVeg" />
 

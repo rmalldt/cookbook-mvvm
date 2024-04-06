@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import com.rm.myrecipes.R
 import com.rm.myrecipes.databinding.FragmentFoodTriviaBinding
 import com.rm.myrecipes.domain.data.FoodTrivia
@@ -100,7 +101,7 @@ class FoodTriviaFragment : Fragment() {
                 }
                 return true
             }
-        })
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     override fun onDestroy() {
