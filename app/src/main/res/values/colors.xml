@@ -2,9 +2,9 @@
 
 <resources>
     <!-- LIGHT THEME -->
-    <color name="colorPrimary">#00695C</color>
-    <color name="colorPrimaryDark">#004D40</color>
-    <color name="colorAccent">#00796B</color>
+    <color name="colorPrimary">#252F6C</color>
+    <color name="colorPrimaryDark">#1B2250</color>
+    <color name="colorAccent">#3949AB</color>
 
     <!-- CUSTOM CHIP COLORS -->
     <color name="checkedChipBackgroundColor">#2000695C</color>
@@ -18,7 +18,7 @@
     <color name="darkColorAccent">@color/green</color>
 
     <!-- CUSTOM DARK CHIP COLORS -->
-    <color name="darkCheckedChipBackgroundColor">#2000695C</color>
+    <color name="darkCheckedChipBackgroundColor">#20252F6C</color>
     <color name="darkChipBackgroundColor">@color/lightGray</color>
     <color name="darkCheckedChipTextColor">@color/green</color>
     <color name="darkChipTextColor">@color/black</color>
@@ -34,7 +34,7 @@
     <!-- ACTION MODE COLORS -->
     <color name="colorStatusBarActionMode">@color/darker</color>
     <color name="colorActionBarActionMode">@color/dark</color>
-    <color name="colorCardBackgroundActionMode">#5000695C</color>
+    <color name="colorCardBackgroundActionMode">#50252F6C</color>
     <color name="colorStrokeActionMode">@color/lightMediumGray</color>
 
     <!-- MAIN COLORS -->
@@ -49,5 +49,7 @@
     <color name="red">#FF4646</color>
     <color name="yellow">#FFC114</color>
     <color name="green">#00C980</color>
+    <color name="lightPrimary">#20252F6C</color>
+    <color name="lightPrimaryDark">#50252F6C</color>
 
 </resources>
