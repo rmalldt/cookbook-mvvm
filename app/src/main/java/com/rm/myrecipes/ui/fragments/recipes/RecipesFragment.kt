@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.rm.myrecipes.R
@@ -28,6 +29,7 @@ import com.rm.myrecipes.ui.utils.toast
 import com.rm.myrecipes.ui.fragments.recipes.viewmodels.RecipeViewModel
 import com.rm.myrecipes.ui.utils.safeCollect
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class RecipesFragment : Fragment() {
@@ -38,17 +40,24 @@ class RecipesFragment : Fragment() {
     private lateinit var viewModel: RecipeViewModel
     private val recipeAdapter by lazy { RecipesAdapter() }
 
+    private val args by navArgs<RecipesFragmentArgs>()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRecipesBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(requireActivity())[RecipeViewModel::class.java]
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel = ViewModelProvider(requireActivity())[RecipeViewModel::class.java]
+
+        if (savedInstanceState == null && !args.applyChips) {
+            viewModel.fetchSafe()
+        }
 
         showStatusActionBarAndNavigationView()
         initRecyclerView()

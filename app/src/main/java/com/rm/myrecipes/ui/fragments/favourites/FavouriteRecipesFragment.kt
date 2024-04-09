@@ -34,17 +34,25 @@ class FavouriteRecipesFragment : Fragment() {
 
     private lateinit var favouriteRecipesAdapter: FavouriteRecipesAdapter
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentFavouriteRecipesBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(requireActivity())[FavouriteRecipesViewModel::class.java]
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel = ViewModelProvider(requireActivity())[FavouriteRecipesViewModel::class.java]
+        if (savedInstanceState == null) {
+            viewModel.fetchFavouriteRecipes()
+        }
 
         favouriteRecipesAdapter = FavouriteRecipesAdapter(requireActivity(),
             { recipe -> viewModel.deleteFavouriteRecipe(recipe) },

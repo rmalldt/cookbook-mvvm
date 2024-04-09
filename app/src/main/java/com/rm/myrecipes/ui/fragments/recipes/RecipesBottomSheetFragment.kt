@@ -100,7 +100,7 @@ class RecipesBottomSheetFragment : BottomSheetDialogFragment() {
             }
 
             findNavController().navigate(RecipesBottomSheetFragmentDirections
-                .actionRecipesBottomSheetFragmentToRecipesFragment()
+                .actionRecipesBottomSheetFragmentToRecipesFragment(true)
             )
         }
     }

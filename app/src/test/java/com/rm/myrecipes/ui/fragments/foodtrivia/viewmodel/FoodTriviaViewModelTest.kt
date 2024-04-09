@@ -38,18 +38,33 @@ class FoodTriviaViewModelTest {
     }
 
     @Test
+    fun `getFoodTriviaState initial UiState is set to Loading`() = runTest {
+        // Given
+        val item = FoodTrivia("FoodTrivia")
+        every { mockNetworkChecker.hasInternetConnection() } returns true
+        every { mockUseCase.invoke() } returns flow { emit(item) }
+
+        // Act & Assert
+        viewModel.foodTriviaState.test {
+            val state = awaitItem()
+            state shouldBe UiState.Loading
+        }
+    }
+
+    @Test
     fun `getFoodTriviaState is set to Success when network is connected`() = runTest {
         // Given
         val item = FoodTrivia("FoodTrivia")
         every { mockNetworkChecker.hasInternetConnection() } returns true
         every { mockUseCase.invoke() } returns flow { emit(item) }
 
-
         // Act & Assert
         viewModel.safeCall()
         viewModel.foodTriviaState.test {
             val state = awaitItem()
             state shouldBe UiState.Success(item)
+
+            cancelAndConsumeRemainingEvents()
         }
 
         verifyOrder {

@@ -40,9 +40,8 @@ class RecipeViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-
     @Test
-    fun `getRecipeResultState is set to Success when network is connected and fetch is successful`() = runTest {
+    fun `recipeResultState initial UiState is set to Loading`() = runTest {
         val item = RecipeResult(listOf(provideRecipe()))
         val fetchState = FetchState.FetchLocal
 
@@ -57,6 +56,29 @@ class RecipeViewModelTest {
             mainDispatcherRule.testDispatcher,
         )
 
+        viewModel.recipeResultState.test {
+            val state = awaitItem()
+            state shouldBe UiState.Loading
+        }
+    }
+
+    @Test
+    fun `fetchSafe always first fetches from local`() = runTest {
+        val item = RecipeResult(listOf(provideRecipe()))
+        val fetchState = FetchState.FetchLocal
+
+        every { mockNetworkChecker.hasInternetConnection() } returns true
+        every { mockUseCase.invoke(fetchState) } returns flow { emit(item) }
+        every { mockSelectedChipUseCase.invoke() } returns flow { SelectedChipPreferences(selectedDietId = 100) }
+
+        viewModel = RecipeViewModel(
+            mockUseCase,
+            mockSelectedChipUseCase,
+            mockNetworkChecker,
+            mainDispatcherRule.testDispatcher,
+        )
+
+        viewModel.fetchSafe()
         viewModel.recipeResultState.test {
             val state = awaitItem()
             state shouldBe UiState.Success(item)
@@ -80,9 +102,10 @@ class RecipeViewModelTest {
             mockUseCase,
             mockSelectedChipUseCase,
             mockNetworkChecker,
-            mainDispatcherRule.testDispatcher
+            mainDispatcherRule.testDispatcher,
         )
 
+        viewModel.fetchSafe()
         viewModel.recipeResultState.test {
             val state = awaitItem()
             state shouldBe UiState.Success(item)
@@ -102,15 +125,14 @@ class RecipeViewModelTest {
         val fetchState = FetchState.FetchRemote
 
         every { mockNetworkChecker.hasInternetConnection() } returns true
-        every { mockUseCase.invoke(FetchState.FetchLocal) } returns flow { emit(item) }
-        every { mockUseCase.invoke(FetchState.FetchRemote) } returns flow { emit(item) }
+        every { mockUseCase.invoke(fetchState) } returns flow { emit(item) }
         every { mockSelectedChipUseCase.invoke() } returns flow { SelectedChipPreferences(selectedDietId = 100) }
 
         viewModel = RecipeViewModel(
             mockUseCase,
             mockSelectedChipUseCase,
             mockNetworkChecker,
-            mainDispatcherRule.testDispatcher
+            mainDispatcherRule.testDispatcher,
         )
 
         viewModel.fetchSafe(fetchState)
@@ -123,7 +145,6 @@ class RecipeViewModelTest {
 
         verifyOrder {
             mockNetworkChecker.hasInternetConnection()
-            mockUseCase.invoke(FetchState.FetchLocal)
             mockUseCase.invoke(fetchState)
         }
     }

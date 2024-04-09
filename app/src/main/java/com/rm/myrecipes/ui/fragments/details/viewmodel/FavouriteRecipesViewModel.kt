@@ -40,9 +40,7 @@ class FavouriteRecipesViewModel @Inject constructor(
 
     private var lastFetchJob: Job? = null
 
-    init { fetchFavouriteRecipes() }
-
-    private fun fetchFavouriteRecipes() {
+    fun fetchFavouriteRecipes() {
         lastFetchJob?.cancel()
 
         lastFetchJob = viewModelScope.launch(dispatcher) {
