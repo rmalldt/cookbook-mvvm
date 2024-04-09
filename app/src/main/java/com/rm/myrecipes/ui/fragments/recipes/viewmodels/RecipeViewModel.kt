@@ -19,6 +19,8 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -33,17 +35,13 @@ class RecipeViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _recipeResultState = MutableStateFlow<UiState<RecipeResult>>(UiState.Loading)
-    val recipeResultState: Flow<UiState<RecipeResult>> get() = _recipeResultState.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = UiState.Loading
-    )
+    val recipeResultState: Flow<UiState<RecipeResult>> get() = _recipeResultState
 
     private var lastFetchJob: Job? = null
 
-    init { fetchSafe(FetchState.FetchLocal) }
+    init { fetchSafe() }
 
-    fun fetchSafe(fetchState: FetchState) {
+    fun fetchSafe(fetchState: FetchState = FetchState.FetchLocal) {
         val isNetwork = networkChecker.hasInternetConnection()
         when {
             isNetwork -> fetchRecipeResult(fetchState)
@@ -54,7 +52,7 @@ class RecipeViewModel @Inject constructor(
     private fun fetchRecipeResult(fetchState: FetchState) {
         lastFetchJob?.cancel()
         lastFetchJob = viewModelScope.launch(dispatcher) {
-            getRecipesUseCase(fetchState)
+            getRecipesUseCase.invoke(fetchState)
                 .map { recipesList ->
                     UiState.Success(recipesList) as UiState<RecipeResult>
                 }

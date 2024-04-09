@@ -15,6 +15,7 @@ import com.rm.myrecipes.ui.common.FetchState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
+import java.lang.RuntimeException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -38,19 +39,19 @@ class RecipeResultRepositoryImpl @Inject constructor(
         emit(res)
     }
 
+    private suspend fun fetchRecipeResultFromLocal(): List<RecipeResult> = localDataSource.getRecipeResult()
+        .map { entity -> entity.toRecipeResult() }
+
     private suspend fun fetchAndSave(): RecipeResult {
         val remoteData = fetchRecipeResultFromRemote()
         insertRecipeResult(remoteData.toRecipeResultEntity())
         return remoteData
     }
 
-    private suspend fun fetchRecipeResultFromLocal(): List<RecipeResult> = localDataSource.getRecipeResult()
-        .map { entity -> entity.toRecipeResult() }
-
     private suspend fun fetchRecipeResultFromRemote(): RecipeResult {
         val localePreferences = dataStoreRepository.data.first()
         val query = applyRecipeQuery(localePreferences.selectedMealType, localePreferences.selectedDietType)
-        return when (val result =  call { remoteDataSource.getRecipesResponse(query) }) {
+        return when (val result = call { remoteDataSource.getRecipesResponse(query) }) {
             is Result.NetworkError -> throw result.exception
             is Result.OK -> mapper.toRecipeResult(result.data)
         }

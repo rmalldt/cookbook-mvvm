@@ -4,6 +4,7 @@ import com.rm.myrecipes.domain.repository.RecipeResultRepository
 import com.rm.myrecipes.domain.data.RecipeResult
 import com.rm.myrecipes.ui.common.FetchState
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class GetRecipesUseCase @Inject constructor(

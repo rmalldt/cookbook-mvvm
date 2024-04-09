@@ -30,11 +30,7 @@ class FoodTriviaViewModel @Inject constructor(
 
     private var _foodTriviaState = MutableStateFlow<UiState<FoodTrivia>>(UiState.Loading)
     val foodTriviaState: Flow<UiState<FoodTrivia>>
-        get() = _foodTriviaState.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = UiState.Loading
-        )
+        get() = _foodTriviaState
 
     private var lastFetchJob: Job? = null
 

@@ -14,6 +14,7 @@ class RemoteDataSource @Inject constructor(private val recipesApi: RecipesApi) {
     }
 
     suspend fun getFoodTrivia(apiKey: String): Response<FoodTriviaResponse> {
+        Timber.d("RecipeTrivia: FETCHING FROM NETWORK...")
         return recipesApi.getFoodTrivia(apiKey)
     }
 }

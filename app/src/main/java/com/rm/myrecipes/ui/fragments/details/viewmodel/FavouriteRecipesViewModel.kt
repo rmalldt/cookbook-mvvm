@@ -13,9 +13,13 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -29,12 +33,8 @@ class FavouriteRecipesViewModel @Inject constructor(
 ) : ViewModel() {
 
     private var _favouriteRecipesState = MutableStateFlow<UiState<List<Recipe>>>(UiState.Loading)
-    val favouriteRecipesState: Flow<UiState<List<Recipe>>>
-        get() = _favouriteRecipesState.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = UiState.Loading
-    )
+
+    val favouriteRecipesState: StateFlow<UiState<List<Recipe>>> = _favouriteRecipesState.asStateFlow()
 
     var recipeSaveState = RecipeSaveState()
 
@@ -46,7 +46,7 @@ class FavouriteRecipesViewModel @Inject constructor(
         lastFetchJob?.cancel()
 
         lastFetchJob = viewModelScope.launch(dispatcher) {
-            favouriteRecipeUseCase()
+            favouriteRecipeUseCase.invoke()
                 .map {
                     UiState.Success(it) as UiState<List<Recipe>>
                 }
