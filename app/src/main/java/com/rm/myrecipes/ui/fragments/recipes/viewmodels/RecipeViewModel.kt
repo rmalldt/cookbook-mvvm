@@ -15,13 +15,9 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -80,14 +76,14 @@ class RecipeViewModel @Inject constructor(
         mealId: Int,
         dietType: String,
         dietId: Int,
-        call: () -> Unit
+        block: () -> Unit
     ) {
         viewModelScope.launch(dispatcher) {
             launch {
                 selectedChipUseCase.saveSelectedChipTypes(mealType, mealId, dietType, dietId)
             }.join()
 
-            call()
+            block()
         }
     }
 }

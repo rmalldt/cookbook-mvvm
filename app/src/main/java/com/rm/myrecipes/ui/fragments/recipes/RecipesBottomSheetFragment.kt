@@ -4,10 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Lifecycle.State
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.chip.Chip
@@ -20,7 +17,6 @@ import com.rm.myrecipes.ui.common.FetchState
 import com.rm.myrecipes.ui.common.UiState
 import com.rm.myrecipes.ui.fragments.recipes.viewmodels.RecipeViewModel
 import com.rm.myrecipes.ui.utils.safeCollect
-import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class RecipesBottomSheetFragment : BottomSheetDialogFragment() {

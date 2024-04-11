@@ -2,7 +2,6 @@ package com.rm.myrecipes.ui.utils
 
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.text.Layout
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
@@ -82,10 +81,6 @@ fun resetImageViewAndTextViewColor(
         textView.setTextViewColor(colorIdTextView)
     }
 }
-
-fun View.setBackgroundColor(@ColorRes colorId: Int) =
-    setBackgroundColor(ContextCompat.getColor(context, colorId ))
-
 
 fun ImageView.setImageViewColor(@ColorRes colorId: Int) =
     setColorFilter(ContextCompat.getColor(context, colorId ))

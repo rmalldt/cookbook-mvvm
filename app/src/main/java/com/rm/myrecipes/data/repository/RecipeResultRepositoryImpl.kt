@@ -2,20 +2,19 @@ package com.rm.myrecipes.data.repository
 
 import com.rm.myrecipes.data.DataStoreRepository
 import com.rm.myrecipes.data.common.Constants
+import com.rm.myrecipes.data.common.Result
 import com.rm.myrecipes.data.network.RemoteDataSource
 import com.rm.myrecipes.data.network.mapper.ResponseMapper
 import com.rm.myrecipes.data.room.LocalDataSource
+import com.rm.myrecipes.data.room.entity.RecipeResultEntity
 import com.rm.myrecipes.data.room.entity.RecipeResultEntity.Companion.toRecipeResult
 import com.rm.myrecipes.data.room.entity.RecipeResultEntity.Companion.toRecipeResultEntity
-import com.rm.myrecipes.domain.repository.RecipeResultRepository
 import com.rm.myrecipes.domain.data.RecipeResult
-import com.rm.myrecipes.data.common.Result
-import com.rm.myrecipes.data.room.entity.RecipeResultEntity
+import com.rm.myrecipes.domain.repository.RecipeResultRepository
 import com.rm.myrecipes.ui.common.FetchState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
-import java.lang.RuntimeException
 import javax.inject.Inject
 import javax.inject.Singleton
 

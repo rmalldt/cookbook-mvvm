@@ -10,10 +10,7 @@ class RemoteDataSource @Inject constructor(private val recipesApi: RecipesApi) {
 
     suspend fun getRecipesResponse(queries: Map<String, String>): Response<RecipesResponse> {
         Timber.d("RecipesResult: FETCHING FROM NETWORK...")
-
-        val res = recipesApi.getRecipesResponse(queries)
-        Timber.d("RecipesResult: ${res.body()}")
-        return res
+        return recipesApi.getRecipesResponse(queries)
     }
 
     suspend fun getFoodTrivia(apiKey: String): Response<FoodTriviaResponse> {
