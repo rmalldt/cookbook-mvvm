@@ -32,7 +32,7 @@ class FavouriteRecipesViewModel @Inject constructor(
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    private var _favouriteRecipesState = MutableStateFlow<UiState<List<Recipe>>>(UiState.Loading)
+    private val _favouriteRecipesState = MutableStateFlow<UiState<List<Recipe>>>(UiState.Loading)
 
     val favouriteRecipesState: StateFlow<UiState<List<Recipe>>> = _favouriteRecipesState.asStateFlow()
 

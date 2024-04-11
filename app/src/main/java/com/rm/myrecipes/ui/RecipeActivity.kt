@@ -1,16 +1,14 @@
 package com.rm.myrecipes.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.rm.myrecipes.R
 import com.rm.myrecipes.databinding.ActivityMainBinding
-import com.rm.myrecipes.ui.utils.setGone
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

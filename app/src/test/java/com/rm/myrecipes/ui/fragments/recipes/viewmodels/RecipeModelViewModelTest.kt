@@ -12,17 +12,14 @@ import com.rm.myrecipes.ui.utils.NetworkChecker
 import com.rm.myrecipes.utils.MainDispatcherRule
 import com.rm.myrecipes.utils.provideRecipe
 import io.kotest.matchers.shouldBe
-import io.mockk.confirmVerified
+import io.mockk.Ordering
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
-import io.mockk.just
 import io.mockk.mockk
-import io.mockk.runs
 import io.mockk.verify
-import io.mockk.verifyOrder
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
-
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
@@ -42,11 +39,7 @@ class RecipeViewModelTest {
 
     @Test
     fun `recipeResultState initial UiState is set to Loading`() = runTest {
-        val item = RecipeResult(listOf(provideRecipe()))
-        val fetchState = FetchState.FetchLocal
-
-        every { mockNetworkChecker.hasInternetConnection() } returns true
-        every { mockUseCase.invoke(fetchState) } returns flow { emit(item) }
+        // Given
         every { mockSelectedChipUseCase.invoke() } returns flow { SelectedChipPreferences(selectedDietId = 100) }
 
         viewModel = RecipeViewModel(
@@ -56,6 +49,7 @@ class RecipeViewModelTest {
             mainDispatcherRule.testDispatcher,
         )
 
+        // Act & Assert
         viewModel.recipeResultState.test {
             val state = awaitItem()
             state shouldBe UiState.Loading
@@ -68,7 +62,7 @@ class RecipeViewModelTest {
         val fetchState = FetchState.FetchLocal
 
         every { mockNetworkChecker.hasInternetConnection() } returns true
-        every { mockUseCase.invoke(fetchState) } returns flow { emit(item) }
+        coEvery { mockUseCase.invoke(fetchState) } returns flow { emit(item) }
         every { mockSelectedChipUseCase.invoke() } returns flow { SelectedChipPreferences(selectedDietId = 100) }
 
         viewModel = RecipeViewModel(
@@ -86,7 +80,7 @@ class RecipeViewModelTest {
             cancelAndConsumeRemainingEvents()
         }
 
-        verify(exactly = 1) { mockUseCase.invoke(fetchState) }
+        coVerify(exactly = 1) { mockUseCase.invoke(fetchState) }
     }
 
     @Test
@@ -95,7 +89,7 @@ class RecipeViewModelTest {
         val fetchState = FetchState.FetchLocal
 
         every { mockNetworkChecker.hasInternetConnection() } returns false
-        every { mockUseCase.invoke(fetchState) } returns flow { emit(item) }
+        coEvery { mockUseCase.invoke(fetchState) } returns flow { emit(item) }
         every { mockSelectedChipUseCase.invoke() } returns flow { SelectedChipPreferences(selectedDietId = 100) }
 
         viewModel = RecipeViewModel(
@@ -113,7 +107,7 @@ class RecipeViewModelTest {
             cancelAndConsumeRemainingEvents()
         }
 
-        verifyOrder {
+        coVerify(Ordering.SEQUENCE) {
             mockNetworkChecker.hasInternetConnection()
             mockUseCase.invoke(fetchState)
         }
@@ -125,7 +119,7 @@ class RecipeViewModelTest {
         val fetchState = FetchState.FetchRemote
 
         every { mockNetworkChecker.hasInternetConnection() } returns true
-        every { mockUseCase.invoke(fetchState) } returns flow { emit(item) }
+        coEvery { mockUseCase.invoke(fetchState) } returns flow { emit(item) }
         every { mockSelectedChipUseCase.invoke() } returns flow { SelectedChipPreferences(selectedDietId = 100) }
 
         viewModel = RecipeViewModel(
@@ -143,7 +137,7 @@ class RecipeViewModelTest {
             cancelAndConsumeRemainingEvents()
         }
 
-        verifyOrder {
+        coVerify(Ordering.SEQUENCE) {
             mockNetworkChecker.hasInternetConnection()
             mockUseCase.invoke(fetchState)
         }
@@ -155,7 +149,7 @@ class RecipeViewModelTest {
         val preferencesItem = SelectedChipPreferences(selectedDietId = 100)
 
         every { mockNetworkChecker.hasInternetConnection() } returns true
-        every { mockUseCase.invoke(FetchState.FetchLocal) } returns flow { emit(item) }
+        coEvery { mockUseCase.invoke(FetchState.FetchLocal) } returns flow { emit(item) }
         every { mockSelectedChipUseCase.invoke() } returns flow { emit(preferencesItem) }
 
         viewModel = RecipeViewModel(

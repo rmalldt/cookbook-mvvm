@@ -8,5 +8,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface RecipeResultRepository : BaseRepository {
 
-    fun getRecipeResult(fetchState: FetchState): Flow<RecipeResult>
+    fun getRecipeResult(fetchState: FetchState, query: Map<String,String> = emptyMap()): Flow<RecipeResult>
 }

@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
-import com.rm.myrecipes.data.DataStoreRepository
 import com.rm.myrecipes.data.common.Constants
 import com.rm.myrecipes.data.network.RecipesApi
 import com.rm.myrecipes.data.network.RemoteDataSource
@@ -80,12 +79,10 @@ object DataModule {
     fun provideRecipeRepository(
         remoteDataSource: RemoteDataSource,
         localDataSource: LocalDataSource,
-        dataStoreRepository: DataStoreRepository,
         responseMapper: ResponseMapper
     ): RecipeResultRepository = RecipeResultRepositoryImpl(
             remoteDataSource,
             localDataSource,
-            dataStoreRepository,
             responseMapper
         )
 

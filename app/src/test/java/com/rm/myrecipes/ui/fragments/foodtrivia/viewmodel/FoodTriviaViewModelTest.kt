@@ -11,7 +11,6 @@ import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import io.mockk.verifyAll
 import io.mockk.verifyOrder
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest

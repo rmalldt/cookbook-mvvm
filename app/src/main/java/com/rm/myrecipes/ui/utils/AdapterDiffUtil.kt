@@ -1,7 +1,6 @@
 package com.rm.myrecipes.ui.utils
 
 import androidx.recyclerview.widget.DiffUtil
-import com.rm.myrecipes.domain.data.Recipe
 
 class AdapterDiffUtil<T>(
     private val oldList: List<T>,
