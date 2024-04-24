@@ -22,8 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class FoodTriviaViewModel @Inject constructor(
     private val foodTriviaUseCase: FoodTriviaUseCase,
-    private val networkChecker: NetworkChecker,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher
+    private val networkChecker: NetworkChecker
 ) : ViewModel() {
 
     private val _foodTriviaState = MutableStateFlow<UiState<FoodTrivia>>(UiState.Loading)
@@ -42,7 +41,7 @@ class FoodTriviaViewModel @Inject constructor(
 
     private fun fetchFoodTrivia() {
         lastFetchJob?.cancel()
-        lastFetchJob = viewModelScope.launch(dispatcher) {
+        lastFetchJob = viewModelScope.launch {
             foodTriviaUseCase()
                 .map {
                     UiState.Success(it) as UiState<FoodTrivia>

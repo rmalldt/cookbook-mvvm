@@ -3,7 +3,6 @@ package com.rm.myrecipes.ui.fragments.recipes.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rm.myrecipes.data.SelectedChipPreferences
-import com.rm.myrecipes.data.di.IoDispatcher
 import com.rm.myrecipes.domain.data.RecipeResult
 import com.rm.myrecipes.domain.usecase.GetRecipesUseCase
 import com.rm.myrecipes.domain.usecase.SelectedChipUseCase
@@ -11,7 +10,6 @@ import com.rm.myrecipes.ui.common.FetchState
 import com.rm.myrecipes.ui.common.UiState
 import com.rm.myrecipes.ui.utils.NetworkChecker
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,8 +24,7 @@ import javax.inject.Inject
 class RecipeViewModel @Inject constructor(
     private val getRecipesUseCase: GetRecipesUseCase,
     private val selectedChipUseCase: SelectedChipUseCase,
-    private val networkChecker: NetworkChecker,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher
+    private val networkChecker: NetworkChecker
 ) : ViewModel() {
 
     private val _recipeResultState = MutableStateFlow<UiState<RecipeResult>>(UiState.Loading)
@@ -36,16 +33,15 @@ class RecipeViewModel @Inject constructor(
     private var lastFetchJob: Job? = null
 
     fun fetchSafe(fetchState: FetchState = FetchState.FetchLocal) {
-        val isNetwork = networkChecker.hasInternetConnection()
         when {
-            isNetwork -> fetchRecipeResult(fetchState)
+            networkChecker.hasInternetConnection() -> fetchRecipeResult(fetchState)
             else -> fetchRecipeResult(FetchState.FetchLocal)
         }
     }
 
     private fun fetchRecipeResult(fetchState: FetchState) {
         lastFetchJob?.cancel()
-        lastFetchJob = viewModelScope.launch(dispatcher) {
+        lastFetchJob = viewModelScope.launch {
             getRecipesUseCase.invoke(fetchState)
                 .map { recipesList ->
                     UiState.Success(recipesList) as UiState<RecipeResult>
@@ -78,7 +74,7 @@ class RecipeViewModel @Inject constructor(
         dietId: Int,
         block: () -> Unit
     ) {
-        viewModelScope.launch(dispatcher) {
+        viewModelScope.launch {
             launch {
                 selectedChipUseCase.saveSelectedChipTypes(mealType, mealId, dietType, dietId)
             }.join()

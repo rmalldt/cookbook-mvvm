@@ -34,17 +34,18 @@ class RecipeResultRepositoryImplTest {
     private lateinit var recipeResultRepositoryImpl: RecipeResultRepositoryImpl
 
     @get:Rule
-    val instantTaskExecutorRule: TestRule = InstantTaskExecutorRule()
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @get:Rule
-    val mainDispatcherRule: TestRule = MainDispatcherRule()
+    val mainDispatcherRule = MainDispatcherRule()
 
     @Before
     fun setUp() {
         recipeResultRepositoryImpl = RecipeResultRepositoryImpl(
             remoteDataSource,
             localDataSource,
-            mapper
+            mapper,
+            mainDispatcherRule.testDispatcher
         )
     }
 

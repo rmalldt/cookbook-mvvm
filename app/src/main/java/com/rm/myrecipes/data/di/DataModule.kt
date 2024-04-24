@@ -23,6 +23,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -68,7 +69,7 @@ object DataModule {
 
     @Singleton
     @Provides
-    fun providesAppDatabase(@ApplicationContext context: Context) : AppDatabase = AppDatabase.getInstance(context)
+    fun providesAppDatabase(@ApplicationContext context: Context): AppDatabase = AppDatabase.getInstance(context)
 
     @Singleton
     @Provides
@@ -79,20 +80,26 @@ object DataModule {
     fun provideRecipeRepository(
         remoteDataSource: RemoteDataSource,
         localDataSource: LocalDataSource,
-        responseMapper: ResponseMapper
+        responseMapper: ResponseMapper,
+        @IoDispatcher dispatcher: CoroutineDispatcher
     ): RecipeResultRepository = RecipeResultRepositoryImpl(
-            remoteDataSource,
-            localDataSource,
-            responseMapper
-        )
+        remoteDataSource,
+        localDataSource,
+        responseMapper,
+        dispatcher
+    )
 
     @Singleton
     @Provides
-    fun provideFavouriteRecipeRepository(localDataSource: LocalDataSource): FavouriteRecipeRepository =
-        FavouriteRecipeRepositoryImpl(localDataSource)
+    fun provideFavouriteRecipeRepository(
+        localDataSource: LocalDataSource
+    ): FavouriteRecipeRepository = FavouriteRecipeRepositoryImpl(localDataSource)
 
     @Singleton
     @Provides
-    fun provideFoodTriviaRepository(remoteDataSource: RemoteDataSource, mapper: ResponseMapper): FoodTriviaRepository =
-        FoodTriviaRepositoryImpl(remoteDataSource, mapper)
+    fun provideFoodTriviaRepository(
+        remoteDataSource: RemoteDataSource,
+        mapper: ResponseMapper,
+        @IoDispatcher dispatcher: CoroutineDispatcher
+    ): FoodTriviaRepository = FoodTriviaRepositoryImpl(remoteDataSource, mapper, dispatcher)
 }

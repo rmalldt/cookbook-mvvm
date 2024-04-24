@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.rm.myrecipes.databinding.FragmentFavouriteRecipesBinding
 import com.rm.myrecipes.domain.data.Recipe
 import com.rm.myrecipes.ui.common.UiState
-import com.rm.myrecipes.ui.fragments.details.viewmodel.FavouriteRecipesViewModel
+import com.rm.myrecipes.ui.fragments.favourites.viewmodel.FavouriteRecipesViewModel
 import com.rm.myrecipes.ui.fragments.favourites.adapter.FavouriteRecipesAdapter
 import com.rm.myrecipes.ui.utils.safeCollect
 import com.rm.myrecipes.ui.utils.setVisible
@@ -34,6 +34,14 @@ class FavouriteRecipesFragment : Fragment() {
 
     private lateinit var favouriteRecipesAdapter: FavouriteRecipesAdapter
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProvider(requireActivity())[FavouriteRecipesViewModel::class.java]
+        if (savedInstanceState == null) {
+            viewModel.fetchFavouriteRecipes()
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,11 +52,6 @@ class FavouriteRecipesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel = ViewModelProvider(requireActivity())[FavouriteRecipesViewModel::class.java]
-        if (savedInstanceState == null) {
-            viewModel.fetchFavouriteRecipes()
-        }
 
         favouriteRecipesAdapter = FavouriteRecipesAdapter(requireActivity(),
             { recipe -> viewModel.deleteFavouriteRecipe(recipe) },

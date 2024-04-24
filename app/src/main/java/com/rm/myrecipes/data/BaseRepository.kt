@@ -1,26 +1,31 @@
 package com.rm.myrecipes.data
 
 import com.rm.myrecipes.data.common.Result
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import retrofit2.Response
 import java.io.IOException
 import java.lang.RuntimeException
 
 interface BaseRepository {
 
-    suspend fun <T> call(call: suspend () -> Response<T>): Result<T> {
+    suspend fun <T> apiCall(
+        dispatcher: CoroutineDispatcher,
+        call: suspend () -> Response<T>
+    ): Result<T> = withContext(dispatcher) {
         try {
             val response = call()
-            return if (!response.isSuccessful) {
+            if (!response.isSuccessful) {
                 error(response.code(), response.message())
             } else {
-                return if (response.body() == null) {
+                if (response.body() == null) {
                     error(response.code(), response.message())
                 } else {
                     Result.OK<T>(response.body()!!)
                 }
             }
         } catch (e: Exception) {
-            return Result.NetworkError(e)
+            Result.NetworkError(e)
         }
     }
 

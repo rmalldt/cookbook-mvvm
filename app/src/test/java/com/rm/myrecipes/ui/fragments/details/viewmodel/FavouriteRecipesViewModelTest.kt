@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import app.cash.turbine.test
 import com.rm.myrecipes.domain.usecase.FavouriteRecipeUseCase
 import com.rm.myrecipes.ui.common.UiState
+import com.rm.myrecipes.ui.fragments.favourites.viewmodel.FavouriteRecipesViewModel
 import com.rm.myrecipes.utils.MainDispatcherRule
 import com.rm.myrecipes.utils.provideRecipe
 import io.kotest.matchers.shouldBe
@@ -31,7 +32,7 @@ class FavouriteRecipesViewModelTest {
 
     @Before
     fun setUp() {
-        viewModel = FavouriteRecipesViewModel(mockUseCase, mainDispatcherRule.testDispatcher)
+        viewModel = FavouriteRecipesViewModel(mockUseCase)
     }
 
     @Test

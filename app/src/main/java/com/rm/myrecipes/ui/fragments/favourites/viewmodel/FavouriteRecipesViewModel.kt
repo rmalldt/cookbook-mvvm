@@ -1,4 +1,4 @@
-package com.rm.myrecipes.ui.fragments.details.viewmodel
+package com.rm.myrecipes.ui.fragments.favourites.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -28,8 +28,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FavouriteRecipesViewModel @Inject constructor(
-    private val favouriteRecipeUseCase: FavouriteRecipeUseCase,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher
+    private val favouriteRecipeUseCase: FavouriteRecipeUseCase
 ) : ViewModel() {
 
     private val _favouriteRecipesState = MutableStateFlow<UiState<List<Recipe>>>(UiState.Loading)
@@ -43,7 +42,7 @@ class FavouriteRecipesViewModel @Inject constructor(
     fun fetchFavouriteRecipes() {
         lastFetchJob?.cancel()
 
-        lastFetchJob = viewModelScope.launch(dispatcher) {
+        lastFetchJob = viewModelScope.launch {
             favouriteRecipeUseCase.invoke()
                 .map {
                     UiState.Success(it) as UiState<List<Recipe>>
@@ -62,7 +61,7 @@ class FavouriteRecipesViewModel @Inject constructor(
     }
 
     fun saveFavouriteRecipe(recipe: Recipe) {
-        viewModelScope.launch(dispatcher) {
+        viewModelScope.launch {
             try {
                 favouriteRecipeUseCase.insertFavouriteRecipe(recipe)
             } catch (e: Exception) {
@@ -72,7 +71,7 @@ class FavouriteRecipesViewModel @Inject constructor(
     }
 
     fun deleteFavouriteRecipe(recipe: Recipe) {
-        viewModelScope.launch(dispatcher) {
+        viewModelScope.launch {
             try {
                 favouriteRecipeUseCase.deleteRecipe(recipe)
             } catch (e: Exception) {
@@ -82,7 +81,7 @@ class FavouriteRecipesViewModel @Inject constructor(
     }
 
     fun deleteAllFavouriteRecipe() {
-        viewModelScope.launch(dispatcher) {
+        viewModelScope.launch {
             try {
                 favouriteRecipeUseCase.deleteAlRecipes()
             } catch (e: Exception) {

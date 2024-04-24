@@ -21,7 +21,7 @@ import com.rm.myrecipes.ui.fragments.details.adapter.ViewPagerAdapter
 import com.rm.myrecipes.ui.fragments.details.ingredients.IngredientsFragment
 import com.rm.myrecipes.ui.fragments.details.instructions.InstructionsFragment
 import com.rm.myrecipes.ui.fragments.details.overview.OverviewFragment
-import com.rm.myrecipes.ui.fragments.details.viewmodel.FavouriteRecipesViewModel
+import com.rm.myrecipes.ui.fragments.favourites.viewmodel.FavouriteRecipesViewModel
 import com.rm.myrecipes.ui.utils.safeCollect
 import com.rm.myrecipes.ui.utils.setDrawableTint
 import com.rm.myrecipes.ui.utils.snackBar

@@ -42,6 +42,14 @@ class RecipesFragment : Fragment() {
 
     private val args by navArgs<RecipesFragmentArgs>()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProvider(requireActivity())[RecipeViewModel::class.java]
+        if (savedInstanceState == null && !args.applyChips) {
+            viewModel.fetchSafe()
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -52,12 +60,6 @@ class RecipesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel = ViewModelProvider(requireActivity())[RecipeViewModel::class.java]
-
-        if (savedInstanceState == null && !args.applyChips) {
-            viewModel.fetchSafe()
-        }
 
         showStatusActionBarAndNavigationView()
         initRecyclerView()

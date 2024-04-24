@@ -33,7 +33,7 @@ class FoodTriviaViewModelTest {
 
     @Before
     fun setUp() {
-        viewModel = FoodTriviaViewModel(mockUseCase, mockNetworkChecker, mainDispatcherRule.testDispatcher)
+        viewModel = FoodTriviaViewModel(mockUseCase, mockNetworkChecker)
     }
 
     @Test

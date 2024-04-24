@@ -26,14 +26,18 @@ class FoodTriviaRepositoryImplTest {
     private lateinit var repository: FoodTriviaRepositoryImpl
 
     @get:Rule
-    val instantTaskExecutorRule: TestRule = InstantTaskExecutorRule()
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @get:Rule
-    val mainDispatcherRule: TestRule = MainDispatcherRule()
+    val mainDispatcherRule = MainDispatcherRule()
 
     @Before
     fun setUp() {
-        repository = FoodTriviaRepositoryImpl(remoteDataSource, mapper )
+        repository = FoodTriviaRepositoryImpl(
+            remoteDataSource,
+            mapper,
+            mainDispatcherRule.testDispatcher
+        )
     }
 
     @Test
