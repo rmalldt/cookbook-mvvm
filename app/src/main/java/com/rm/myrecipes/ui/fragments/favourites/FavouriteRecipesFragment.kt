@@ -11,6 +11,7 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rm.myrecipes.databinding.FragmentFavouriteRecipesBinding
+import com.rm.myrecipes.domain.data.ExtendedIngredient
 import com.rm.myrecipes.domain.data.Recipe
 import com.rm.myrecipes.ui.common.UiState
 import com.rm.myrecipes.ui.fragments.favourites.viewmodel.FavouriteRecipesViewModel

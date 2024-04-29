@@ -28,7 +28,7 @@ class RecipeActivity : AppCompatActivity() {
         navController = navHostFragment.navController
 
         val appBarConfiguration = AppBarConfiguration(
-            setOf( // top-level fragments
+            topLevelDestinationIds =  setOf(
                 R.id.recipesFragment,
                 R.id.favouriteRecipesFragment,
                 R.id.foodJokeFragment
