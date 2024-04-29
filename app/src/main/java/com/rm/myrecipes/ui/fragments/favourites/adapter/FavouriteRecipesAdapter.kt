@@ -1,10 +1,11 @@
 package com.rm.myrecipes.ui.fragments.favourites.adapter
 
-import android.view.ActionMode
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.ActionMode
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.findNavController
@@ -90,7 +91,7 @@ class FavouriteRecipesAdapter(
         holder.itemView.setOnLongClickListener {
             if (!multiSelection) {
                 multiSelection = true
-                requireActivity.startActionMode(this)
+                (requireActivity as AppCompatActivity).startSupportActionMode(this)
                 applySelection(holder, recipe)
                 true
             } else {

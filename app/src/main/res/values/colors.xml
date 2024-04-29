@@ -30,6 +30,7 @@
     <color name="colorCardBackground">@color/white</color>
     <color name="colorTitle">@color/darker</color>
     <color name="colorStroke">@color/lightMediumGray</color>
+    <color name="transparent">#00000000</color>
 
     <!-- ACTION MODE COLORS -->
     <color name="colorStatusBarActionMode">@color/darker</color>

@@ -120,6 +120,7 @@ class RecipesFragment : Fragment() {
                 menuInflater.inflate(R.menu.recipe_fragment_menu, menu)
                 val search = menu.findItem(R.id.menu_item_search)
                 val searchView = search.actionView as? SearchView
+                searchView?.maxWidth = Int.MAX_VALUE
                 searchView?.isSubmitButtonEnabled = true
 
                 searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -139,11 +140,13 @@ class RecipesFragment : Fragment() {
 
                 searchView?.setOnCloseListener {
                     viewModel.fetchSafe(FetchState.FetchLocal)
+                    searchView.onActionViewCollapsed()
                     true
                 }
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                (requireActivity() as AppCompatActivity).supportActionBar?.hide()
                 return true
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)

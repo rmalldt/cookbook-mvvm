@@ -7,7 +7,7 @@
     <item android:id="@+id/menu_item_save_to_favourites"
         android:title="@string/save_to_favourites"
         android:icon="@drawable/ic_star_24"
-        app:iconTint="@color/white"
+        app:iconTint="@color/darkGray"
         app:showAsAction="ifRoom" />
 
 </menu>

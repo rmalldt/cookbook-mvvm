@@ -136,7 +136,7 @@ class DetailsContainerFragment : Fragment() {
             recipeSaveState.savedId = null
             recipeSaveState.isSaved = false
         }
-        menuItem.icon.setDrawableTint(requireContext(), R.color.white)
+        menuItem.icon.setDrawableTint(requireContext(), R.color.darkGray)
         binding.root.snackBar("Recipe removed from favourites.")
     }
 
