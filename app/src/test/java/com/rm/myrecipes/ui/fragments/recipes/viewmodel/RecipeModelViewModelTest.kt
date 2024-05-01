@@ -1,9 +1,8 @@
-package com.rm.myrecipes.ui.fragments.recipes.viewmodels
+package com.rm.myrecipes.ui.fragments.recipes.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import app.cash.turbine.test
 import com.rm.myrecipes.data.SelectedChipPreferences
-import com.rm.myrecipes.data.repository.FoodTriviaRepositoryImpl
 import com.rm.myrecipes.domain.data.RecipeResult
 import com.rm.myrecipes.domain.usecase.GetRecipesUseCase
 import com.rm.myrecipes.domain.usecase.SelectedChipUseCase
@@ -21,7 +20,6 @@ import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 

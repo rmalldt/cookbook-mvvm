@@ -2,6 +2,7 @@ package com.rm.myrecipes.ui.fragments.recipes.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -37,6 +38,10 @@ class RecipesAdapter : RecyclerView.Adapter<RecipesAdapter.RecipeViewHolder>() {
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
         val recipe = recipeList[position]
         holder.bind(recipe)
+
+        holder.binding.recipesRowCardView
+            .startAnimation(AnimationUtils.loadAnimation(holder.itemView.context, R.anim.rv_anim))
+
         holder.itemView.setOnClickListener {
             it.findNavController()
                 .navigate(RecipesFragmentDirections.actionRecipesFragmentToDetailsFragment(recipe))
@@ -45,7 +50,7 @@ class RecipesAdapter : RecyclerView.Adapter<RecipesAdapter.RecipeViewHolder>() {
 
     override fun getItemCount(): Int = recipeList.size
 
-    class RecipeViewHolder(private val binding: RecipesRowItemLayoutBinding) :
+    class RecipeViewHolder(val binding: RecipesRowItemLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(recipe: Recipe) = with(binding) {

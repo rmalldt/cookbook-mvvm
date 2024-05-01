@@ -8,10 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.rm.myrecipes.R
 import com.rm.myrecipes.databinding.FragmentSplashBinding
+import com.rm.myrecipes.ui.utils.hideSystemUi
 import com.rm.myrecipes.ui.utils.setGone
 
 
@@ -41,7 +45,7 @@ class SplashFragment : Fragment() {
     }
 
     private fun hideStatusActionBarAndNavigationView() {
-        requireActivity().window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+        requireActivity().hideSystemUi()
         (requireActivity() as AppCompatActivity).supportActionBar?.hide()
         (requireActivity() as AppCompatActivity).findViewById<BottomNavigationView>(R.id.bottomNavigationView).setGone()
     }

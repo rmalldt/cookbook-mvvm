@@ -1,5 +1,8 @@
-package com.rm.myrecipes.ui.fragments.recipes.viewmodels
+package com.rm.myrecipes.ui.fragments.recipes.viewmodel
 
+import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rm.myrecipes.data.SelectedChipPreferences
@@ -10,7 +13,10 @@ import com.rm.myrecipes.ui.common.FetchState
 import com.rm.myrecipes.ui.common.UiState
 import com.rm.myrecipes.ui.utils.NetworkChecker
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch

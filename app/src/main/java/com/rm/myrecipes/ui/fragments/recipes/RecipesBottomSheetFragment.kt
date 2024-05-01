@@ -15,7 +15,7 @@ import com.rm.myrecipes.data.common.Constants.Companion.DEFAULT_MEAL_TYPE
 import com.rm.myrecipes.databinding.FragmentRecipesBottomSheetBinding
 import com.rm.myrecipes.ui.common.FetchState
 import com.rm.myrecipes.ui.common.UiState
-import com.rm.myrecipes.ui.fragments.recipes.viewmodels.RecipeViewModel
+import com.rm.myrecipes.ui.fragments.recipes.viewmodel.RecipeViewModel
 import com.rm.myrecipes.ui.utils.safeCollect
 import timber.log.Timber
 
