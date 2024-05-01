@@ -101,12 +101,6 @@ class RecipesFragment : Fragment() {
         }
     }
 
-    private fun showStatusActionBarAndNavigationView() {
-        requireActivity().window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
-        (requireActivity() as AppCompatActivity).supportActionBar?.show()
-        (requireActivity() as AppCompatActivity).findViewById<BottomNavigationView>(R.id.bottomNavigationView).setVisible()
-    }
-
     private fun initRecyclerView() {
         binding.recyclerView.apply {
             adapter = recipeAdapter
@@ -150,6 +144,12 @@ class RecipesFragment : Fragment() {
                 return true
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
+    private fun showStatusActionBarAndNavigationView() {
+        requireActivity().window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
+        (requireActivity() as AppCompatActivity).supportActionBar?.show()
+        (requireActivity() as AppCompatActivity).findViewById<BottomNavigationView>(R.id.bottomNavigationView).setVisible()
     }
 
     override fun onDestroy() {
