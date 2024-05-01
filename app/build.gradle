@@ -91,10 +91,6 @@ dependencies {
     androidTestImplementation  'com.google.dagger:hilt-android-testing:2.51'
     kaptAndroidTest 'com.google.dagger:hilt-compiler:2.51'
 
-    // For local unit tests
-    testImplementation 'com.google.dagger:hilt-android-testing:2.51'
-    kaptTest 'com.google.dagger:hilt-compiler:2.51'
-
     // Jsoup
     implementation 'org.jsoup:jsoup:1.13.1'
 
@@ -114,6 +110,8 @@ dependencies {
     testImplementation group: 'pl.pragmatists', name: 'JUnitParams', version: '1.0.4'
     testImplementation "app.cash.turbine:turbine:1.0.0"
     testImplementation("io.kotest:kotest-assertions-core:5.8.1")
+    testImplementation 'com.google.dagger:hilt-android-testing:2.51'
+    kaptTest 'com.google.dagger:hilt-compiler:2.51'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
