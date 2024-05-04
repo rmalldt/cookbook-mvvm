@@ -39,9 +39,6 @@ class RecipesAdapter : RecyclerView.Adapter<RecipesAdapter.RecipeViewHolder>() {
         val recipe = recipeList[position]
         holder.bind(recipe)
 
-        holder.binding.recipesRowCardView
-            .startAnimation(AnimationUtils.loadAnimation(holder.itemView.context, R.anim.rv_anim))
-
         holder.itemView.setOnClickListener {
             it.findNavController()
                 .navigate(RecipesFragmentDirections.actionRecipesFragmentToDetailsFragment(recipe))

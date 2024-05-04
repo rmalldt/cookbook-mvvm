@@ -48,7 +48,9 @@ class RecipeResultRepositoryImpl @Inject constructor(
             is Result.NetworkError -> throw result.exception
             is Result.OK -> mapper.toRecipeResult(result.data)
         }
-        insertRecipeResult(remoteData.toRecipeResultEntity())
+        if (remoteData.recipes.isNotEmpty()) {
+            insertRecipeResult(remoteData.toRecipeResultEntity())
+        }
         return remoteData
     }
 

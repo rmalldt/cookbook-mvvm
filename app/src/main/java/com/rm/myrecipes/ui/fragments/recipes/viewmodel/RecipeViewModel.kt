@@ -81,10 +81,7 @@ class RecipeViewModel @Inject constructor(
         block: () -> Unit
     ) {
         viewModelScope.launch {
-            launch {
-                selectedChipUseCase.saveSelectedChipTypes(mealType, mealId, dietType, dietId)
-            }.join()
-
+            selectedChipUseCase.saveSelectedChipTypes(mealType, mealId, dietType, dietId)
             block()
         }
     }
