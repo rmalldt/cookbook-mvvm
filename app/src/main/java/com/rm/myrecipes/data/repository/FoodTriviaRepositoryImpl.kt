@@ -1,6 +1,7 @@
 package com.rm.myrecipes.data.repository
 
 import com.rm.myrecipes.data.common.Result
+import com.rm.myrecipes.data.common.makeApiCall
 import com.rm.myrecipes.data.di.IoDispatcher
 import com.rm.myrecipes.data.network.RemoteDataSource
 import com.rm.myrecipes.data.network.mapper.ResponseMapper
@@ -24,7 +25,7 @@ class FoodTriviaRepositoryImpl @Inject constructor(
     }
 
     private suspend fun getFoodTriviaRemote(apiKey: String): FoodTrivia {
-        val result = apiCall(dispatcher) {
+        val result = makeApiCall(dispatcher) {
             remoteDataSource.getFoodTrivia(apiKey)
         }
         return when (result) {

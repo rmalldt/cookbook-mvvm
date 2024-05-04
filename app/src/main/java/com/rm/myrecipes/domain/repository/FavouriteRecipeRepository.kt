@@ -1,11 +1,10 @@
 package com.rm.myrecipes.domain.repository
 
-import com.rm.myrecipes.data.BaseRepository
 import com.rm.myrecipes.data.room.entity.RecipeEntity
 import com.rm.myrecipes.domain.data.Recipe
 import kotlinx.coroutines.flow.Flow
 
-interface FavouriteRecipeRepository : BaseRepository {
+interface FavouriteRecipeRepository {
 
     fun getFavouriteRecipes(): Flow<List<Recipe>>
 

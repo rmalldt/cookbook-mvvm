@@ -23,7 +23,7 @@ class GetRecipesUseCase @Inject constructor(
     private val dataStoreRepository: DataStoreRepository
 ) {
 
-    suspend operator fun invoke(fetchState: FetchState): Flow<RecipeResult> {
+    suspend operator fun invoke(fetchState: FetchState): RecipeResult {
         return when (fetchState) {
             is FetchState.FetchLocal -> recipeResultRepository.getRecipeResult(fetchState)
 
