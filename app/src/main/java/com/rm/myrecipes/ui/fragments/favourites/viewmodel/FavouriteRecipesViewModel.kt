@@ -52,7 +52,7 @@ class FavouriteRecipesViewModel @Inject constructor(
                 }
                 .catch {throwable ->
                     Timber.d("RecipeFavourites: Caught: $throwable")
-                    emit(UiState.Error("Something went wrong"))
+                    emit(UiState.Error("Something went wrong, please try again later."))
                 }
                 .collect {
                     _favouriteRecipesState.value = it
@@ -91,7 +91,6 @@ class FavouriteRecipesViewModel @Inject constructor(
     }
 
     fun invalidateRecipeSaveState() {
-        Timber.d("Invalidate recipe saved state")
         recipeSaveState.savedId = null
         recipeSaveState.isSaved = false
     }

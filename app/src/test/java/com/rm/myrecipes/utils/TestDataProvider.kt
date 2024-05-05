@@ -61,7 +61,6 @@ fun provideExtendedIngredientDefinition(): ExtendedIngredientDefinition = Extend
     )
 
 // Domain Models
-
 fun provideRecipeResult(): RecipeResult = RecipeResult(listOf(provideRecipe()))
 
 fun provideRecipe(): Recipe = Recipe(

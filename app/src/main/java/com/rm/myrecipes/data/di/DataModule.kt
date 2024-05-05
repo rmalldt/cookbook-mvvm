@@ -92,8 +92,9 @@ object DataModule {
     @Singleton
     @Provides
     fun provideFavouriteRecipeRepository(
-        localDataSource: LocalDataSource
-    ): FavouriteRecipeRepository = FavouriteRecipeRepositoryImpl(localDataSource)
+        localDataSource: LocalDataSource,
+        @IoDispatcher dispatcher: CoroutineDispatcher
+    ): FavouriteRecipeRepository = FavouriteRecipeRepositoryImpl(localDataSource, dispatcher)
 
     @Singleton
     @Provides

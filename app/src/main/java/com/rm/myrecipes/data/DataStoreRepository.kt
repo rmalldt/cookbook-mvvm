@@ -56,7 +56,7 @@ data class SelectedChipPreferences(
     val selectedMealType: String = Constants.DEFAULT_MEAL_TYPE,
     val selectedMealId: Int = 0,
     val selectedDietType: String = Constants.DEFAULT_DIET_TYPE,
-    val selectedDietId: Int,
+    val selectedDietId: Int = 0,
 )
 
 

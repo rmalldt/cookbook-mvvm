@@ -35,7 +35,7 @@ class FoodTriviaViewModel @Inject constructor(
         if (networkChecker.hasInternetConnection()) {
             fetchFoodTrivia()
         } else {
-            _foodTriviaState.value = UiState.Error("No network connection")
+            _foodTriviaState.value = UiState.Error("No network connection.")
         }
     }
 
@@ -43,18 +43,11 @@ class FoodTriviaViewModel @Inject constructor(
         lastFetchJob?.cancel()
         lastFetchJob = viewModelScope.launch {
             foodTriviaUseCase()
-                .map {
-                    UiState.Success(it) as UiState<FoodTrivia>
+                .onSuccess {
+                    _foodTriviaState.value = UiState.Success(it)
                 }
-                .onCompletion {
-                    Timber.d("RecipeTrivia: Flow has completed.")
-                }
-                .catch {throwable ->
-                    Timber.d("RecipeTrivia: Caught : $throwable")
-                    emit(UiState.Error("Something went wrong"))
-                }
-                .collect { uiState ->
-                    _foodTriviaState.value = uiState
+                .onFailure {
+                    _foodTriviaState.value = UiState.Error("Something went wrong, please try again.")
                 }
         }
     }

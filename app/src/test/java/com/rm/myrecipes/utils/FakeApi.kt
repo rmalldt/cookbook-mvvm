@@ -8,7 +8,7 @@ import retrofit2.Response
 class FakeApi : RecipesApi {
 
     // Default behaviour is to return empty list
-    var recipeResponseMock: suspend (query: Map<String, String>) -> Response<RecipesResponse> = {
+    var recipeResponseMock: suspend (query: Map<String, String>) -> Response<RecipesResponse> = { _ ->
         val recipesResponse = RecipesResponse(emptyList())
         Response.success(recipesResponse)
     }

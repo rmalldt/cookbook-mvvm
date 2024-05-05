@@ -8,15 +8,16 @@ import com.rm.myrecipes.ui.common.UiState
 import com.rm.myrecipes.ui.utils.NetworkChecker
 import com.rm.myrecipes.utils.MainDispatcherRule
 import io.kotest.matchers.shouldBe
+import io.mockk.coEvery
+import io.mockk.coVerifyOrder
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import io.mockk.verifyOrder
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import java.lang.Exception
 
 class FoodTriviaViewModelTest {
 
@@ -41,7 +42,7 @@ class FoodTriviaViewModelTest {
         // Given
         val item = FoodTrivia("FoodTrivia")
         every { mockNetworkChecker.hasInternetConnection() } returns true
-        every { mockUseCase.invoke() } returns flow { emit(item) }
+        coEvery { mockUseCase.invoke() } returns Result.success(item)
 
         // Act & Assert
         viewModel.foodTriviaState.test {
@@ -55,7 +56,7 @@ class FoodTriviaViewModelTest {
         // Given
         val item = FoodTrivia("FoodTrivia")
         every { mockNetworkChecker.hasInternetConnection() } returns true
-        every { mockUseCase.invoke() } returns flow { emit(item) }
+        coEvery { mockUseCase.invoke() } returns Result.success(item)
 
         // Act & Assert
         viewModel.safeCall()
@@ -66,24 +67,22 @@ class FoodTriviaViewModelTest {
             cancelAndConsumeRemainingEvents()
         }
 
-        verifyOrder {
+        coVerifyOrder {
             mockNetworkChecker.hasInternetConnection()
             mockUseCase.invoke()
         }
     }
 
     @Test
-    fun `getFoodTriviaState is set to Success when network is not connected`() = runTest {
+    fun `getFoodTriviaState is set to Error when network is not connected`() = runTest {
         // Given
-        val item = FoodTrivia("FoodTrivia")
         every { mockNetworkChecker.hasInternetConnection() } returns false
-        every { mockUseCase.invoke() } returns flow { emit(item) }
 
         // Act & Assert
         viewModel.safeCall()
         viewModel.foodTriviaState.test {
             val state = awaitItem()
-            state shouldBe UiState.Error("No network connection")
+            state shouldBe UiState.Error(ERROR_MSG)
         }
 
         verify(exactly = 1) { mockNetworkChecker.hasInternetConnection() }
@@ -93,21 +92,22 @@ class FoodTriviaViewModelTest {
     fun `getFoodTriviaState is set to Error when fetch fails`() = runTest {
         // Given
         every { mockNetworkChecker.hasInternetConnection() } returns true
-        every { mockUseCase.invoke() } returns flow {
-            error("Something went wrong")
-        }
+        coEvery { mockUseCase.invoke() } returns Result.failure(Exception())
 
         // Act & Assert
         viewModel.safeCall()
         viewModel.foodTriviaState.test {
             val state = awaitItem()
-            state shouldBe UiState.Error("Something went wrong")
+            state shouldBe UiState.Error(ERROR_MSG)
         }
 
-        verifyOrder {
+        coVerifyOrder {
             mockNetworkChecker.hasInternetConnection()
             mockUseCase.invoke()
         }
     }
 
+    companion object {
+        const val ERROR_MSG = "Something went wrong, please try again."
+    }
 }

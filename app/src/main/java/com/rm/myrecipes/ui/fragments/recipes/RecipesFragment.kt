@@ -21,7 +21,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.rm.myrecipes.R
 import com.rm.myrecipes.databinding.FragmentRecipesBinding
 import com.rm.myrecipes.domain.data.RecipeResult
-import com.rm.myrecipes.ui.common.FetchState
+import com.rm.myrecipes.ui.common.FetchType
 import com.rm.myrecipes.ui.common.UiState
 import com.rm.myrecipes.ui.fragments.recipes.adapter.RecipesAdapter
 import com.rm.myrecipes.ui.fragments.recipes.observer.DebouncingQueryTextListener
@@ -44,13 +44,11 @@ class RecipesFragment : Fragment(), MenuProvider {
 
     private val recipeAdapter by lazy { RecipesAdapter() }
 
-    private val args by navArgs<RecipesFragmentArgs>()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(requireActivity())[RecipeViewModel::class.java]
-        if (savedInstanceState == null && !args.applyChips) {
-            viewModel.fetchSafe()
+        if (savedInstanceState == null) {
+            viewModel.fetchSafe(FetchType.Local)
         }
     }
 
@@ -87,24 +85,23 @@ class RecipesFragment : Fragment(), MenuProvider {
     private fun render(uiState: UiState<RecipeResult>) = with(binding) {
         when (uiState) {
             is UiState.Loading -> {
+                progressBarRecipeFragment.setVisible()
                 ivNoConnection.setGone()
                 txtNoConnection.setGone()
             }
             is UiState.Success -> {
+                progressBarRecipeFragment.setGone()
                 ivNoConnection.setGone()
                 txtNoConnection.setGone()
-                if (uiState.data.recipes.isNotEmpty()) {
-                    recipeAdapter.recipeList = uiState.data.recipes
-                } else {
-                    viewModel.fetchSafe(FetchState.FetchRemote)
-                }
+                recipeAdapter.recipeList = uiState.data.recipes
 
             }
             is UiState.Error -> {
-                requireContext().toast(uiState.message)
-                viewModel.fetchSafe(FetchState.FetchLocal)
+                progressBarRecipeFragment.setGone()
                 ivNoConnection.setVisible()
                 txtNoConnection.setVisible()
+                viewModel.fetchSafe(FetchType.Remote)
+                requireContext().toast(uiState.message)
             }
         }
     }
@@ -151,11 +148,11 @@ class RecipesFragment : Fragment(), MenuProvider {
         debouncingQueryTextListener = DebouncingQueryTextListener { newText ->
             newText?.let {
                 if (it.isEmpty()) {
-                    viewModel.fetchSafe(FetchState.FetchLocal)
+                    viewModel.fetchSafe(FetchType.Local)
                 } else {
-                    val fetchState = FetchState.FetchSearch
-                    fetchState.data = it
-                    viewModel.fetchSafe(fetchState)
+                    val fetchType = FetchType.Search
+                    fetchType.data = it
+                    viewModel.fetchSafe(fetchType)
                 }
             }
         }

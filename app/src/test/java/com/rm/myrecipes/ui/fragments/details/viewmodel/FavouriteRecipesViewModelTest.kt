@@ -8,6 +8,8 @@ import com.rm.myrecipes.ui.fragments.favourites.viewmodel.FavouriteRecipesViewMo
 import com.rm.myrecipes.utils.MainDispatcherRule
 import com.rm.myrecipes.utils.provideRecipe
 import io.kotest.matchers.shouldBe
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -16,6 +18,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import java.lang.Exception
 
 class FavouriteRecipesViewModelTest {
 
@@ -38,7 +41,7 @@ class FavouriteRecipesViewModelTest {
     @Test
     fun `favouriteRecipesState initial UiState is set to Loading`() = runTest {
         // Given
-        every { mockUseCase.invoke() } returns flow {
+        coEvery { mockUseCase.invoke() } returns flow {
             emit(listOf(provideRecipe()))
         }
 
@@ -52,7 +55,7 @@ class FavouriteRecipesViewModelTest {
     @Test
     fun `fetchFavouriteRecipes sets UiState to Success when the local fetch is successful `() = runTest {
         // Given
-        every { mockUseCase.invoke() } returns flow {
+        coEvery { mockUseCase.invoke() } returns flow {
             emit(listOf(provideRecipe()))
         }
 
@@ -65,25 +68,29 @@ class FavouriteRecipesViewModelTest {
             cancelAndIgnoreRemainingEvents()
         }
 
-        verify(exactly = 1) { mockUseCase.invoke() }
+        coVerify(exactly = 1) { mockUseCase.invoke() }
     }
 
     @Test
-    fun `fetchFavouriteRecipes sets UiState to Error when the local fetch fails `() = runTest {
+    fun `fetchFavouriteRecipes sets UiState to Error when the local fetch fails`() = runTest {
         //Given
-        every { mockUseCase.invoke() } returns flow {
-            error("Something went wrong")
+        coEvery { mockUseCase.invoke() } returns flow {
+            throw Exception(ERROR_MSG)
         }
 
         // Act & Assert
         viewModel.fetchFavouriteRecipes()
         viewModel.favouriteRecipesState.test {
             val state = awaitItem()
-            state shouldBe UiState.Error<String>("Something went wrong")
+            state shouldBe UiState.Error<String>(ERROR_MSG)
 
             cancelAndIgnoreRemainingEvents()
         }
 
-        verify(exactly = 1) { mockUseCase.invoke() }
+        coVerify(exactly = 1) { mockUseCase.invoke() }
+    }
+
+    companion object {
+        const val ERROR_MSG = "Something went wrong, please try again later."
     }
 }

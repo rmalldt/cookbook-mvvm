@@ -1,8 +1,10 @@
-package com.rm.myrecipes.data.repository
+package com.rm.myrecipes.domain.usecase
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import app.cash.turbine.test
+import com.rm.myrecipes.data.repository.FavouriteRecipeRepositoryImpl
 import com.rm.myrecipes.data.room.LocalDataSource
+import com.rm.myrecipes.domain.repository.FavouriteRecipeRepository
 import com.rm.myrecipes.utils.FakeDatabase
 import com.rm.myrecipes.utils.MainDispatcherRule
 import com.rm.myrecipes.utils.provideRecipe
@@ -14,13 +16,13 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
 
-class FavouriteRecipeRepositoryImplTest {
+class FavouriteRecipeUseCaseTest {
 
     // Instantiate fakes
     private val fakeDatabase = FakeDatabase()
     private val localDataSource = LocalDataSource(fakeDatabase)
-
-    private lateinit var repository: FavouriteRecipeRepositoryImpl
+    private lateinit var repository: FavouriteRecipeRepository
+    private lateinit var usecase: FavouriteRecipeUseCase
 
     @get:Rule
     val instantTaskExecutorRule: TestRule = InstantTaskExecutorRule()
@@ -30,21 +32,19 @@ class FavouriteRecipeRepositoryImplTest {
 
     @Before
     fun setUp() {
-        repository = FavouriteRecipeRepositoryImpl(
-            localDataSource,
-            mainDispatcherRule.testDispatcher
-        )
+        repository = FavouriteRecipeRepositoryImpl(localDataSource, mainDispatcherRule.testDispatcher)
+        usecase = FavouriteRecipeUseCase(repository)
     }
 
     @Test
-    fun `getFavouriteRecipes returns list of recipes fetched from local`() = runTest {
+    fun `invoke returns flow of recipe list`() = runTest {
         // Given
         fakeDatabase.recipeResultEntityMock = {
             listOf(provideRecipeResultEntity())
         }
 
         // Act & Assert
-        repository.getFavouriteRecipes().test {
+         usecase.invoke().test {
             val localData = awaitItem()
             localData.size shouldBe 1
             localData[0].recipeId shouldBe 1
@@ -56,7 +56,7 @@ class FavouriteRecipeRepositoryImplTest {
     @Test
     fun `insertFavouriteRecipes inserts into local`() = runTest {
         // Act & Assert
-        repository.insertFavouriteRecipe(provideRecipe())
+        usecase.insertFavouriteRecipe(provideRecipe())
 
         fakeDatabase.insertedRecipeEntity shouldBe true
     }
@@ -64,7 +64,7 @@ class FavouriteRecipeRepositoryImplTest {
     @Test
     fun `deleteFavouriteRecipes deletes from loccal`() = runTest {
         // Act & Assert
-        repository.deleteFavouriteRecipe(provideRecipe())
+        usecase.deleteRecipe(provideRecipe())
 
         fakeDatabase.deletedRecipeEntity shouldBe true
     }
@@ -72,8 +72,10 @@ class FavouriteRecipeRepositoryImplTest {
     @Test
     fun `deleteAllFavouriteRecipes deletes from local`() = runTest {
         // Act & Assert
-        repository.deleteAllFavouriteRecipes()
+        usecase.deleteAlRecipes()
 
         fakeDatabase.deletedAll shouldBe true
     }
+
+
 }

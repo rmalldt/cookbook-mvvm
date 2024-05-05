@@ -11,11 +11,12 @@ import com.rm.myrecipes.data.common.Constants.Companion.QUERY_FILL_INGREDIENTS
 import com.rm.myrecipes.data.common.Constants.Companion.QUERY_NUMBER
 import com.rm.myrecipes.data.common.Constants.Companion.QUERY_TYPE
 import com.rm.myrecipes.data.common.Constants.Companion.TRUE
+import com.rm.myrecipes.data.room.entity.RecipeResultEntity.Companion.toRecipeResultEntity
 import com.rm.myrecipes.domain.data.RecipeResult
 import com.rm.myrecipes.domain.repository.RecipeResultRepository
-import com.rm.myrecipes.ui.common.FetchState
-import kotlinx.coroutines.flow.Flow
+import com.rm.myrecipes.ui.common.FetchType
 import kotlinx.coroutines.flow.first
+import timber.log.Timber
 import javax.inject.Inject
 
 class GetRecipesUseCase @Inject constructor(
@@ -23,21 +24,35 @@ class GetRecipesUseCase @Inject constructor(
     private val dataStoreRepository: DataStoreRepository
 ) {
 
-    suspend operator fun invoke(fetchState: FetchState): RecipeResult {
-        return when (fetchState) {
-            is FetchState.FetchLocal -> recipeResultRepository.getRecipeResult(fetchState)
-
-            is FetchState.FetchRemote -> {
-                val preference = dataStoreRepository.data.first()
-                val query = applyRecipeQuery(preference.selectedMealType, preference.selectedDietType)
-                recipeResultRepository.getRecipeResult(fetchState, query)
+    suspend operator fun invoke(fetchType: FetchType): Result<RecipeResult> {
+        return when (fetchType) {
+            is FetchType.Local -> {
+                val localResult = recipeResultRepository.loadRecipeResultLocal()
+                if (localResult.isNotEmpty()) {
+                    Result.success(localResult.first())
+                } else {
+                    fetchAndSaveRemoteResult()
+                }
             }
 
-            is FetchState.FetchSearch -> {
-                val query = applySearchRecipeQuery(fetchState.data)
-                recipeResultRepository.getRecipeResult(fetchState, query)
-            }
+            is FetchType.Remote -> fetchAndSaveRemoteResult()
+
+            is FetchType.Search -> fetchSearchedSearchRecipeRemote(fetchType.data)
         }
+    }
+
+    private suspend fun fetchAndSaveRemoteResult(): Result<RecipeResult> {
+        val preference = dataStoreRepository.data.first()
+        val query = applyRecipeQuery(preference.selectedMealType, preference.selectedDietType)
+        return recipeResultRepository.fetchRecipeResultRemote(query)
+            .onSuccess {
+                recipeResultRepository.insertRecipeResult(it.toRecipeResultEntity())
+            }
+    }
+
+    private suspend fun fetchSearchedSearchRecipeRemote(searchString: String): Result<RecipeResult> {
+        val query = applySearchRecipeQuery(searchString)
+        return recipeResultRepository.fetchSearchedRecipesResult(query)
     }
 
     private fun applyRecipeQuery(mealType: String, dietType: String): HashMap<String, String> {
