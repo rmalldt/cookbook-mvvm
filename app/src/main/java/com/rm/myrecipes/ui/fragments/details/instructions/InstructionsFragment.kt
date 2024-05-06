@@ -10,7 +10,7 @@ import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
 import com.rm.myrecipes.databinding.FragmentInstructionsBinding
 import com.rm.myrecipes.domain.data.Recipe
-import com.rm.myrecipes.ui.utils.toast
+import com.rm.myrecipes.ui.utils.extension.toast
 
 class InstructionsFragment : Fragment() {
 

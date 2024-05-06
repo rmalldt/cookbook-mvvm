@@ -6,11 +6,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.rm.myrecipes.R
-import com.rm.myrecipes.data.common.Constants
+import com.rm.myrecipes.data.common.ApiConstants
 import com.rm.myrecipes.databinding.IngredientsRowItemLayoutBinding
 import com.rm.myrecipes.domain.data.ExtendedIngredient
-import com.rm.myrecipes.ui.utils.AdapterDiffUtil
-import com.rm.myrecipes.ui.utils.loadImage
+import com.rm.myrecipes.ui.utils.common.AdapterDiffUtil
+import com.rm.myrecipes.ui.utils.extension.loadImage
 
 class IngredientsAdapter : RecyclerView.Adapter<IngredientsAdapter.IngredientsViewHolder>() {
 
@@ -51,7 +51,7 @@ class IngredientsAdapter : RecyclerView.Adapter<IngredientsAdapter.IngredientsVi
                 tvConsistency.text = ingredient.consistency
                 tvOriginal.text = ingredient.original
                 imageView.loadImage(
-                    "${Constants.INGREDIENT_IMAGE_URL}${ingredient.image}",
+                    "${ApiConstants.INGREDIENT_IMAGE_URL}${ingredient.image}",
                     R.drawable.ic_loading_placeholder,
                     R.drawable.ic_loading_placeholder
                 ) {

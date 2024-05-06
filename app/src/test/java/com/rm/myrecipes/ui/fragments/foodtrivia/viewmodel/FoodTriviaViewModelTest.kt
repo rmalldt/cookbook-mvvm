@@ -5,7 +5,7 @@ import app.cash.turbine.test
 import com.rm.myrecipes.domain.data.FoodTrivia
 import com.rm.myrecipes.domain.usecase.FoodTriviaUseCase
 import com.rm.myrecipes.ui.common.UiState
-import com.rm.myrecipes.ui.utils.NetworkChecker
+import com.rm.myrecipes.ui.utils.network.NetworkChecker
 import com.rm.myrecipes.utils.MainDispatcherRule
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery

@@ -13,7 +13,7 @@ import javax.inject.Inject
 class ResponseMapper @Inject constructor() {
 
     fun toRecipeResult(recipesResponse: RecipesResponse): RecipeResult {
-        return RecipeResult(recipesResponse.recipes.map { toRecipe(it) })
+        return RecipeResult(recipes = recipesResponse.recipes.map { toRecipe(it) })
     }
 
     private fun toRecipe(recipeDefinition: RecipeDefinition): Recipe {

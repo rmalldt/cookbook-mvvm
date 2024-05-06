@@ -1,6 +1,6 @@
 package com.rm.myrecipes.ui.common
 
-import com.rm.myrecipes.ui.utils.EMPTY_STRING
+import com.rm.myrecipes.ui.utils.common.EMPTY_STRING
 
 sealed class FetchType {
     data object Local : FetchType()

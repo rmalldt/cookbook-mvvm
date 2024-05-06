@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
-import com.rm.myrecipes.data.common.Constants
+import com.rm.myrecipes.data.common.ApiConstants
 import com.rm.myrecipes.data.network.RecipesApi
 import com.rm.myrecipes.data.network.RemoteDataSource
 import com.rm.myrecipes.data.network.RetryInterceptor
@@ -34,49 +34,56 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object DataModule {
 
-    private val Context.dataStore by preferencesDataStore("recipe_datastore")
-
-    @Singleton
     @Provides
-    fun provideDataStore(@ApplicationContext context: Context): DataStore<Preferences> = context.dataStore
-
     @Singleton
-    @Provides
-    fun provideOkhttpClient(): OkHttpClient = OkHttpClient.Builder()
-            .addInterceptor(RetryInterceptor())
+    fun provideOkhttpClient(retryInterceptor: RetryInterceptor): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addInterceptor(retryInterceptor)
             .readTimeout(10, TimeUnit.SECONDS)
             .connectTimeout(10, TimeUnit.SECONDS )
             .build()
+    }
 
-    @Singleton
+
     @Provides
+    @Singleton
     fun provideGsonConverterFactory(): GsonConverterFactory = GsonConverterFactory.create()
 
-    @Singleton
     @Provides
+    @Singleton
     fun provideRetrofitInstance(
         okHttpClient: OkHttpClient,
-        gsonConverterFactory: GsonConverterFactory
+        gsonConverterFactory: GsonConverterFactory,
+        url: String
     ): Retrofit = Retrofit.Builder()
-            .baseUrl(Constants.BASE_URL)
+            .baseUrl(url)
             .client(okHttpClient)
             .addConverterFactory(gsonConverterFactory)
             .build()
 
-    @Singleton
     @Provides
+    @Singleton
     fun provideRecipesApi(retrofit: Retrofit): RecipesApi = retrofit.create(RecipesApi::class.java)
 
-    @Singleton
     @Provides
+    @Singleton
     fun providesAppDatabase(@ApplicationContext context: Context): AppDatabase = AppDatabase.getInstance(context)
 
-    @Singleton
     @Provides
+    @Singleton
     fun providesRecipesDao(database: AppDatabase): RecipesDao = database.recipesDao()
 
-    @Singleton
+
+    private val Context.dataStore by preferencesDataStore("recipe_datastore")
+
     @Provides
+    @Singleton
+    fun provideDataStore(@ApplicationContext context: Context): DataStore<Preferences> = context.dataStore
+
+
+
+    @Provides
+    @Singleton
     fun provideRecipeRepository(
         remoteDataSource: RemoteDataSource,
         localDataSource: LocalDataSource,
@@ -89,15 +96,15 @@ object DataModule {
         dispatcher
     )
 
-    @Singleton
     @Provides
+    @Singleton
     fun provideFavouriteRecipeRepository(
         localDataSource: LocalDataSource,
         @IoDispatcher dispatcher: CoroutineDispatcher
     ): FavouriteRecipeRepository = FavouriteRecipeRepositoryImpl(localDataSource, dispatcher)
 
-    @Singleton
     @Provides
+    @Singleton
     fun provideFoodTriviaRepository(
         remoteDataSource: RemoteDataSource,
         mapper: ResponseMapper,

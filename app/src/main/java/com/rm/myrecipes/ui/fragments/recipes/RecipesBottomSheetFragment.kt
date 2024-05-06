@@ -5,19 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.rm.myrecipes.data.SelectedChipPreferences
-import com.rm.myrecipes.data.common.Constants.Companion.DEFAULT_DIET_TYPE
-import com.rm.myrecipes.data.common.Constants.Companion.DEFAULT_MEAL_TYPE
+import com.rm.myrecipes.data.common.ApiConstants.Companion.DEFAULT_DIET_TYPE
+import com.rm.myrecipes.data.common.ApiConstants.Companion.DEFAULT_MEAL_TYPE
 import com.rm.myrecipes.databinding.FragmentRecipesBottomSheetBinding
 import com.rm.myrecipes.ui.common.FetchType
 import com.rm.myrecipes.ui.common.UiState
 import com.rm.myrecipes.ui.fragments.recipes.viewmodel.RecipeViewModel
-import com.rm.myrecipes.ui.utils.safeCollect
+import com.rm.myrecipes.ui.utils.extension.safeCollect
 import timber.log.Timber
 
 class RecipesBottomSheetFragment(

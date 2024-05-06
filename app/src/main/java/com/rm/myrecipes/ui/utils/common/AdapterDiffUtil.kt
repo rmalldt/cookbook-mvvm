@@ -1,4 +1,4 @@
-package com.rm.myrecipes.ui.utils
+package com.rm.myrecipes.ui.utils.common
 
 import androidx.recyclerview.widget.DiffUtil
 

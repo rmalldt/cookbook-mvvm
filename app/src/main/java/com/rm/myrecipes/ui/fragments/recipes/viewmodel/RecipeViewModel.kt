@@ -8,7 +8,7 @@ import com.rm.myrecipes.domain.usecase.GetRecipesUseCase
 import com.rm.myrecipes.domain.usecase.SelectedChipUseCase
 import com.rm.myrecipes.ui.common.FetchType
 import com.rm.myrecipes.ui.common.UiState
-import com.rm.myrecipes.ui.utils.NetworkChecker
+import com.rm.myrecipes.ui.utils.network.NetworkChecker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
@@ -44,7 +44,9 @@ class RecipeViewModel @Inject constructor(
         viewModelScope.launch {
             getRecipesUseCase(fetchType)
                 .onSuccess {
-                    _recipeResultState.value = UiState.Success(it)
+                    _recipeResultState.value = UiState.Success(it.copy(recipes = it.recipes))
+
+
                 }
                 .onFailure {
                     Timber.d("Recipe: caught $it")

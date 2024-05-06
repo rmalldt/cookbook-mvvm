@@ -12,7 +12,7 @@ data class RecipeResultEntity(
 ) {
     companion object {
 
-        fun RecipeResultEntity.toRecipeResult(): RecipeResult = RecipeResult(recipes)
+        fun RecipeResultEntity.toRecipeResult(): RecipeResult = RecipeResult(recipes = recipes)
 
         fun RecipeResult.toRecipeResultEntity(): RecipeResultEntity = RecipeResultEntity(recipes = recipes)
     }

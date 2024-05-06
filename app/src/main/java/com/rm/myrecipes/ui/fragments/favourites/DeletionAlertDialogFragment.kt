@@ -11,7 +11,7 @@ import com.rm.myrecipes.R
 import com.rm.myrecipes.databinding.AlertDilalogLayoutBinding
 import com.rm.myrecipes.domain.data.Recipe
 import com.rm.myrecipes.ui.fragments.favourites.viewmodel.FavouriteRecipesViewModel
-import com.rm.myrecipes.ui.utils.snackBar
+import com.rm.myrecipes.ui.utils.extension.snackBar
 
 class DeletionAlertDialogFragment : DialogFragment() {
 

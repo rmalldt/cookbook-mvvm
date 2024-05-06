@@ -2,7 +2,6 @@ package com.rm.myrecipes.ui.fragments.recipes.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -11,10 +10,10 @@ import com.rm.myrecipes.R
 import com.rm.myrecipes.databinding.RecipesRowItemLayoutBinding
 import com.rm.myrecipes.domain.data.Recipe
 import com.rm.myrecipes.ui.fragments.recipes.RecipesFragmentDirections
-import com.rm.myrecipes.ui.utils.AdapterDiffUtil
-import com.rm.myrecipes.ui.utils.loadImage
-import com.rm.myrecipes.ui.utils.parseHtml
-import com.rm.myrecipes.ui.utils.resetImageViewAndTextViewColor
+import com.rm.myrecipes.ui.utils.common.AdapterDiffUtil
+import com.rm.myrecipes.ui.utils.extension.loadImage
+import com.rm.myrecipes.ui.utils.common.parseHtml
+import com.rm.myrecipes.ui.utils.extension.resetImageViewAndTextViewColor
 
 class RecipesAdapter : RecyclerView.Adapter<RecipesAdapter.RecipeViewHolder>() {
 

@@ -7,7 +7,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
@@ -15,7 +14,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.rm.myrecipes.R
 import com.rm.myrecipes.databinding.FragmentRecipesBinding
 import com.rm.myrecipes.domain.data.RecipeResult
@@ -24,12 +22,13 @@ import com.rm.myrecipes.ui.common.UiState
 import com.rm.myrecipes.ui.fragments.recipes.adapter.RecipesAdapter
 import com.rm.myrecipes.ui.fragments.recipes.observer.DebouncingQueryTextListener
 import com.rm.myrecipes.ui.fragments.recipes.viewmodel.RecipeViewModel
-import com.rm.myrecipes.ui.utils.safeCollect
-import com.rm.myrecipes.ui.utils.setGone
-import com.rm.myrecipes.ui.utils.setVisible
-import com.rm.myrecipes.ui.utils.showSystemUi
-import com.rm.myrecipes.ui.utils.toast
+import com.rm.myrecipes.ui.utils.extension.safeCollect
+import com.rm.myrecipes.ui.utils.extension.setGone
+import com.rm.myrecipes.ui.utils.extension.setVisible
+import com.rm.myrecipes.ui.utils.extension.toast
+import com.rm.myrecipes.ui.utils.testing.TestIdlingResource
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class RecipesFragment : Fragment(), MenuProvider {
@@ -44,6 +43,7 @@ class RecipesFragment : Fragment(), MenuProvider {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
+            TestIdlingResource.increment()
             viewModel.fetchSafe(FetchType.Local)
         }
     }
@@ -58,8 +58,6 @@ class RecipesFragment : Fragment(), MenuProvider {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        showStatusActionBarAndNavigationView()
 
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
@@ -87,6 +85,7 @@ class RecipesFragment : Fragment(), MenuProvider {
             is UiState.Success -> {
                 progressBarRecipeFragment.setGone()
                 recipeAdapter.recipeList = uiState.data.recipes
+                TestIdlingResource.decrement()
             }
             is UiState.Error -> {
                 progressBarRecipeFragment.setGone()
@@ -101,12 +100,6 @@ class RecipesFragment : Fragment(), MenuProvider {
             adapter = recipeAdapter
             layoutManager = LinearLayoutManager(requireContext())
         }
-    }
-
-    private fun showStatusActionBarAndNavigationView() {
-        requireActivity().showSystemUi()
-        (requireActivity() as AppCompatActivity).supportActionBar?.show()
-        (requireActivity() as AppCompatActivity).findViewById<BottomNavigationView>(R.id.bottomNavigationView).setVisible()
     }
 
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {

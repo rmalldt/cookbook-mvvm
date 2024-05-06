@@ -1,4 +1,4 @@
-package com.rm.myrecipes.ui.utils
+package com.rm.myrecipes.ui.utils.common
 
 import android.text.Html
 import android.text.Spanned

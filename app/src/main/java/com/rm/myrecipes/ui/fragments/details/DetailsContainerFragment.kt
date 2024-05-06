@@ -22,10 +22,10 @@ import com.rm.myrecipes.ui.fragments.details.ingredients.IngredientsFragment
 import com.rm.myrecipes.ui.fragments.details.instructions.InstructionsFragment
 import com.rm.myrecipes.ui.fragments.details.overview.OverviewFragment
 import com.rm.myrecipes.ui.fragments.favourites.viewmodel.FavouriteRecipesViewModel
-import com.rm.myrecipes.ui.utils.safeCollect
-import com.rm.myrecipes.ui.utils.setDrawableTint
-import com.rm.myrecipes.ui.utils.snackBar
-import com.rm.myrecipes.ui.utils.toast
+import com.rm.myrecipes.ui.utils.extension.safeCollect
+import com.rm.myrecipes.ui.utils.extension.setDrawableTint
+import com.rm.myrecipes.ui.utils.extension.snackBar
+import com.rm.myrecipes.ui.utils.extension.toast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

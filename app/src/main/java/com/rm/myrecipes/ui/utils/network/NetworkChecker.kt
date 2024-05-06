@@ -1,4 +1,4 @@
-package com.rm.myrecipes.ui.utils
+package com.rm.myrecipes.ui.utils.network
 
 import android.content.Context
 import android.net.ConnectivityManager

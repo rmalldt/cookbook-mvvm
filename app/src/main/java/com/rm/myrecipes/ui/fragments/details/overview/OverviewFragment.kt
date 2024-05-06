@@ -3,20 +3,15 @@ package com.rm.myrecipes.ui.fragments.details.overview
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
 import com.rm.myrecipes.R
 import com.rm.myrecipes.databinding.FragmentOverviewBinding
 import com.rm.myrecipes.domain.data.Recipe
-import com.rm.myrecipes.ui.utils.loadImage
-import com.rm.myrecipes.ui.utils.parseHtml
-import com.rm.myrecipes.ui.utils.resetImageViewAndTextViewColor
+import com.rm.myrecipes.ui.utils.extension.loadImage
+import com.rm.myrecipes.ui.utils.common.parseHtml
+import com.rm.myrecipes.ui.utils.extension.resetImageViewAndTextViewColor
 
 class OverviewFragment : Fragment() {
 

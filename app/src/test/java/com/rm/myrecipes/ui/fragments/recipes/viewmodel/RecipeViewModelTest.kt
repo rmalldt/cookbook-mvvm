@@ -8,7 +8,7 @@ import com.rm.myrecipes.domain.usecase.GetRecipesUseCase
 import com.rm.myrecipes.domain.usecase.SelectedChipUseCase
 import com.rm.myrecipes.ui.common.FetchType
 import com.rm.myrecipes.ui.common.UiState
-import com.rm.myrecipes.ui.utils.NetworkChecker
+import com.rm.myrecipes.ui.utils.network.NetworkChecker
 import com.rm.myrecipes.utils.MainDispatcherRule
 import com.rm.myrecipes.utils.provideRecipe
 import com.rm.myrecipes.utils.provideRecipeResult

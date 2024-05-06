@@ -2,12 +2,13 @@ package com.rm.myrecipes.data.network
 
 
 import okhttp3.Interceptor
-
 import okhttp3.Response
 import timber.log.Timber
-import java.net.SocketTimeoutException
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class RetryInterceptor : Interceptor {
+@Singleton
+class RetryInterceptor @Inject constructor() : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         return process(chain, attempt = 1)
@@ -34,7 +35,7 @@ class RetryInterceptor : Interceptor {
         attempt: Int,
     ): Response {
         Timber.d("Recipe: RETRY fetch attempt: $attempt")
-        response.body()?.close()
+        response.body?.close()
         Thread.sleep(INTERVAL * attempt)
         return process(chain, attempt = attempt + 1)
     }

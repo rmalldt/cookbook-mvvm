@@ -1,11 +1,20 @@
 package com.rm.myrecipes.domain.data
 
 import android.os.Parcelable
-import com.rm.myrecipes.ui.utils.EMPTY_STRING
+import com.rm.myrecipes.ui.utils.common.EMPTY_STRING
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
+import java.util.UUID
 
-data class RecipeResult(val recipes: List<Recipe>)
+/**
+ * State emits only if it detects changes to the value, fetching recipe with same query values
+ * doesn't update the stateflow. So, uuid is used to distinguish the result even if the fetching
+ * with the same query values for recipe
+ */
+data class RecipeResult(
+    val uuid: String = UUID.randomUUID().toString(),
+    val recipes: List<Recipe>
+)
 
 @Parcelize
 data class Recipe(

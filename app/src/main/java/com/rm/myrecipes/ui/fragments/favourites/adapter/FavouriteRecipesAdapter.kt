@@ -16,12 +16,12 @@ import com.rm.myrecipes.R
 import com.rm.myrecipes.databinding.FavouritesRowItemLayoutBinding
 import com.rm.myrecipes.domain.data.Recipe
 import com.rm.myrecipes.ui.fragments.favourites.FavouriteRecipesFragmentDirections
-import com.rm.myrecipes.ui.utils.AdapterDiffUtil
-import com.rm.myrecipes.ui.utils.loadImage
-import com.rm.myrecipes.ui.utils.parseHtml
-import com.rm.myrecipes.ui.utils.resetImageViewAndTextViewColor
-import com.rm.myrecipes.ui.utils.setGone
-import com.rm.myrecipes.ui.utils.setVisible
+import com.rm.myrecipes.ui.utils.common.AdapterDiffUtil
+import com.rm.myrecipes.ui.utils.extension.loadImage
+import com.rm.myrecipes.ui.utils.common.parseHtml
+import com.rm.myrecipes.ui.utils.extension.resetImageViewAndTextViewColor
+import com.rm.myrecipes.ui.utils.extension.setGone
+import com.rm.myrecipes.ui.utils.extension.setVisible
 
 class FavouriteRecipesAdapter(
     private val requireActivity: FragmentActivity,

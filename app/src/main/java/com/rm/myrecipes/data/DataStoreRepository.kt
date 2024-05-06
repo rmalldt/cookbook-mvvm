@@ -6,7 +6,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.rm.myrecipes.data.common.Constants
+import com.rm.myrecipes.data.common.ApiConstants
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
@@ -33,9 +33,9 @@ class DataStoreRepository @Inject constructor(
         }
         .map { preferences ->
             SelectedChipPreferences(
-                preferences[mealTypeKey] ?: Constants.DEFAULT_MEAL_TYPE,
+                preferences[mealTypeKey] ?: ApiConstants.DEFAULT_MEAL_TYPE,
                 preferences[mealIdKey] ?: 0,
-                preferences[dietTypeKey] ?: Constants.DEFAULT_DIET_TYPE,
+                preferences[dietTypeKey] ?: ApiConstants.DEFAULT_DIET_TYPE,
                 preferences[dietIdKey] ?: 0
             )
         }
@@ -53,9 +53,9 @@ class DataStoreRepository @Inject constructor(
 }
 
 data class SelectedChipPreferences(
-    val selectedMealType: String = Constants.DEFAULT_MEAL_TYPE,
+    val selectedMealType: String = ApiConstants.DEFAULT_MEAL_TYPE,
     val selectedMealId: Int = 0,
-    val selectedDietType: String = Constants.DEFAULT_DIET_TYPE,
+    val selectedDietType: String = ApiConstants.DEFAULT_DIET_TYPE,
     val selectedDietId: Int = 0,
 )
 

@@ -17,10 +17,10 @@ import com.rm.myrecipes.databinding.FragmentFoodTriviaBinding
 import com.rm.myrecipes.domain.data.FoodTrivia
 import com.rm.myrecipes.ui.common.UiState
 import com.rm.myrecipes.ui.fragments.foodtrivia.viewmodel.FoodTriviaViewModel
-import com.rm.myrecipes.ui.utils.safeCollect
-import com.rm.myrecipes.ui.utils.setGone
-import com.rm.myrecipes.ui.utils.setVisible
-import com.rm.myrecipes.ui.utils.toast
+import com.rm.myrecipes.ui.utils.extension.safeCollect
+import com.rm.myrecipes.ui.utils.extension.setGone
+import com.rm.myrecipes.ui.utils.extension.setVisible
+import com.rm.myrecipes.ui.utils.extension.toast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

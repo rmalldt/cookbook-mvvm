@@ -1,4 +1,4 @@
-package com.rm.myrecipes.ui.utils
+package com.rm.myrecipes.ui.utils.extension
 
 import android.content.Context
 import android.graphics.drawable.Drawable
