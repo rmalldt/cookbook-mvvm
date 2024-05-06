@@ -59,8 +59,6 @@ class RecipesFragment : Fragment(), MenuProvider {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        showStatusActionBarAndNavigationView()
-
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
@@ -101,12 +99,6 @@ class RecipesFragment : Fragment(), MenuProvider {
             adapter = recipeAdapter
             layoutManager = LinearLayoutManager(requireContext())
         }
-    }
-
-    private fun showStatusActionBarAndNavigationView() {
-        requireActivity().showSystemUi()
-        (requireActivity() as AppCompatActivity).supportActionBar?.show()
-        (requireActivity() as AppCompatActivity).findViewById<BottomNavigationView>(R.id.bottomNavigationView).setVisible()
     }
 
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {

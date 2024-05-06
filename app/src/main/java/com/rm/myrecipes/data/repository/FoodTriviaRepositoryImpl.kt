@@ -18,9 +18,9 @@ class FoodTriviaRepositoryImpl @Inject constructor(
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : FoodTriviaRepository {
 
-    override suspend fun getFoodTrivia(apiKey: String): Result<FoodTrivia> = withContext(dispatcher) {
+    override suspend fun getFoodTrivia(): Result<FoodTrivia> = withContext(dispatcher) {
         handleResponse(
-            request = { remoteDataSource.getFoodTrivia(apiKey) },
+            request = { remoteDataSource.getFoodTrivia() },
             responseMapper = { mapper.toFoodTrivia(it) }
         )
     }

@@ -18,7 +18,6 @@ import com.rm.myrecipes.databinding.FragmentSplashBinding
 import com.rm.myrecipes.ui.utils.hideSystemUi
 import com.rm.myrecipes.ui.utils.setGone
 
-
 class SplashFragment : Fragment() {
 
     private var _binding: FragmentSplashBinding? = null
@@ -34,7 +33,6 @@ class SplashFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        hideStatusActionBarAndNavigationView()
         setSplashScreenDuration()
     }
 
@@ -42,11 +40,5 @@ class SplashFragment : Fragment() {
         Handler(Looper.getMainLooper()).postDelayed({
             findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToRecipesFragment())
         }, 2000)
-    }
-
-    private fun hideStatusActionBarAndNavigationView() {
-        requireActivity().hideSystemUi()
-        (requireActivity() as AppCompatActivity).supportActionBar?.hide()
-        (requireActivity() as AppCompatActivity).findViewById<BottomNavigationView>(R.id.bottomNavigationView).setGone()
     }
 }

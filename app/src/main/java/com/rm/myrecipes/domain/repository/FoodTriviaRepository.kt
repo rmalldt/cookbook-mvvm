@@ -5,5 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface FoodTriviaRepository {
 
-    suspend fun getFoodTrivia(apiKey: String): Result<FoodTrivia>
+    suspend fun getFoodTrivia(): Result<FoodTrivia>
 }

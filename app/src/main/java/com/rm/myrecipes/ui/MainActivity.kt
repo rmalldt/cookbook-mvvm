@@ -3,16 +3,21 @@ package com.rm.myrecipes.ui
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.rm.myrecipes.R
 import com.rm.myrecipes.databinding.ActivityMainBinding
+import com.rm.myrecipes.ui.utils.hideSystemUi
+import com.rm.myrecipes.ui.utils.setGone
+import com.rm.myrecipes.ui.utils.setVisible
+import com.rm.myrecipes.ui.utils.showSystemUi
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class RecipeActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
@@ -39,6 +44,25 @@ class RecipeActivity : AppCompatActivity() {
 
         binding.bottomNavigationView.setupWithNavController(navController)
         setupActionBarWithNavController(navController, appBarConfiguration)
+
+        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+            when (destination.id) {
+                R.id.splashFragment -> hideBottomNav()
+                R.id.recipesFragment -> showBottomNav()
+            }
+        }
+    }
+
+    private fun showBottomNav() {
+        showSystemUi()
+        supportActionBar?.show()
+        binding.bottomNavigationView.setVisible()
+    }
+
+    private fun hideBottomNav() {
+        hideSystemUi()
+        supportActionBar?.hide()
+        binding.bottomNavigationView.setGone()
     }
 
     override fun onSupportNavigateUp(): Boolean {

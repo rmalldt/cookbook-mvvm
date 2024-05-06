@@ -47,6 +47,11 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    configurations.all {
+        resolutionStrategy {
+            force "com.squareup.okhttp3:okhttp:4.9.0"
+        }
+    }
 }
 
 dependencies {
@@ -116,6 +121,7 @@ dependencies {
     testImplementation group: 'pl.pragmatists', name: 'JUnitParams', version: '1.0.4'
     testImplementation "app.cash.turbine:turbine:1.0.0"
     testImplementation("io.kotest:kotest-assertions-core:5.8.1")
+    testImplementation("com.squareup.okhttp3:okhttp:4.12.0")
 
     // Hilt
     testImplementation 'com.google.dagger:hilt-android-testing:2.51'
@@ -134,4 +140,8 @@ dependencies {
 
     // Navigation
     androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
+
+    // MockWebServer
+    androidTestImplementation 'com.squareup.okhttp3:mockwebserver:4.9.0'
+    androidTestImplementation 'com.jakewharton.espresso:okhttp3-idling-resource:1.0.0'
 }
