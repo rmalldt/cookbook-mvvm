@@ -5,25 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rm.myrecipes.databinding.FragmentFavouriteRecipesBinding
-import com.rm.myrecipes.domain.data.ExtendedIngredient
 import com.rm.myrecipes.domain.data.Recipe
 import com.rm.myrecipes.ui.common.UiState
-import com.rm.myrecipes.ui.fragments.favourites.viewmodel.FavouriteRecipesViewModel
 import com.rm.myrecipes.ui.fragments.favourites.adapter.FavouriteRecipesAdapter
+import com.rm.myrecipes.ui.fragments.favourites.viewmodel.FavouriteRecipesViewModel
 import com.rm.myrecipes.ui.utils.safeCollect
 import com.rm.myrecipes.ui.utils.setVisible
-import com.rm.myrecipes.ui.utils.snackBar
 import com.rm.myrecipes.ui.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @AndroidEntryPoint
 class FavouriteRecipesFragment : Fragment() {
@@ -31,13 +23,12 @@ class FavouriteRecipesFragment : Fragment() {
     private var _binding: FragmentFavouriteRecipesBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: FavouriteRecipesViewModel
+    private val viewModel: FavouriteRecipesViewModel by viewModels()
 
     private lateinit var favouriteRecipesAdapter: FavouriteRecipesAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(requireActivity())[FavouriteRecipesViewModel::class.java]
         if (savedInstanceState == null) {
             viewModel.fetchFavouriteRecipes()
         }
@@ -54,10 +45,9 @@ class FavouriteRecipesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        favouriteRecipesAdapter = FavouriteRecipesAdapter(requireActivity(),
-            { recipe -> viewModel.deleteFavouriteRecipe(recipe) },
-            { size -> binding.root.snackBar("$size Recipe(s) removed") }
-        )
+        favouriteRecipesAdapter = FavouriteRecipesAdapter(requireActivity()) { selectedRecipes ->
+            displayDialog(selectedRecipes)
+        }
 
         initRecyclerView()
 
@@ -86,10 +76,17 @@ class FavouriteRecipesFragment : Fragment() {
         }
     }
 
+    private fun displayDialog(recipes: List<Recipe>) {
+        val bundle = Bundle()
+        bundle.putParcelableArrayList("Dialog", ArrayList(recipes))
+        val dialog = DeletionAlertDialogFragment.newInstance(bundle)
+        dialog.show(childFragmentManager, "Dialog")
+    }
+
     private fun initRecyclerView() {
         binding.favoriteRecipesRecyclerView.apply {
-            adapter = favouriteRecipesAdapter
             layoutManager = LinearLayoutManager(requireContext())
+            adapter = favouriteRecipesAdapter
         }
     }
 

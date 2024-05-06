@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:elevation="10dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tvDialogTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/cousine"
+            android:text="@string/confirm_deletion"
+            android:textColor="@color/dark"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvDialogDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/are_you_sure_you_want_to_delete"
+            android:textColor="@color/dark"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@+id/tvDialogTitle"
+            app:layout_constraintStart_toStartOf="@+id/tvDialogTitle"
+            app:layout_constraintTop_toBottomOf="@+id/tvDialogTitle" />
+
+        <LinearLayout
+            android:id="@+id/layoutDialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="32dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/tvDialogDescription"
+            app:layout_constraintStart_toStartOf="@+id/tvDialogDescription"
+            app:layout_constraintTop_toBottomOf="@+id/tvDialogDescription">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDialogCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/white"
+                android:padding="12dp"
+                android:text="@string/cancel"
+                android:textColor="@color/colorPrimary"
+                android:textSize="12sp"
+                app:strokeWidth="2dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDialogDelete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/red"
+                android:padding="12dp"
+                android:text="@string/delete"
+                android:textColor="@color/colorPrimary"
+                android:textSize="12sp"
+                app:strokeColor="@color/lightGray"
+                app:strokeWidth="2dp" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

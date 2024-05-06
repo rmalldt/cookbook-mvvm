@@ -48,10 +48,10 @@ class FavouriteRecipesViewModel @Inject constructor(
                     UiState.Success(it) as UiState<List<Recipe>>
                 }
                 .onCompletion {
-                    Timber.d("RecipeFavourites: Flow has completed.")
+                    Timber.d("RecipeFavourites: flow has completed.")
                 }
-                .catch {throwable ->
-                    Timber.d("RecipeFavourites: Caught: $throwable")
+                .catch {
+                    Timber.d("RecipeFavourites: caught: $it")
                     emit(UiState.Error("Something went wrong, please try again later."))
                 }
                 .collect {
@@ -65,7 +65,7 @@ class FavouriteRecipesViewModel @Inject constructor(
             try {
                 favouriteRecipeUseCase.insertFavouriteRecipe(recipe)
             } catch (e: Exception) {
-                Timber.d("RecipeFavourite: ${e.message}")
+                Timber.d("RecipeFavourite: caught ${e.message}")
             }
         }
     }
@@ -75,7 +75,7 @@ class FavouriteRecipesViewModel @Inject constructor(
             try {
                 favouriteRecipeUseCase.deleteRecipe(recipe)
             } catch (e: Exception) {
-                Timber.d("RecipeFavourite: ${e.message}")
+                Timber.d("RecipeFavourite: caught ${e.message}")
             }
         }
     }
@@ -85,7 +85,7 @@ class FavouriteRecipesViewModel @Inject constructor(
             try {
                 favouriteRecipeUseCase.deleteAlRecipes()
             } catch (e: Exception) {
-                Timber.d("RecipeFavourite: ${e.message}")
+                Timber.d("RecipeFavourite: caught ${e.message}")
             }
         }
     }

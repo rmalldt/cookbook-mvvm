@@ -46,7 +46,9 @@ class GetRecipesUseCase @Inject constructor(
         val query = applyRecipeQuery(preference.selectedMealType, preference.selectedDietType)
         return recipeResultRepository.fetchRecipeResultRemote(query)
             .onSuccess {
-                recipeResultRepository.insertRecipeResult(it.toRecipeResultEntity())
+                if (it.recipes.isNotEmpty()) {
+                    recipeResultRepository.insertRecipeResult(it.toRecipeResultEntity())
+                }
             }
     }
 

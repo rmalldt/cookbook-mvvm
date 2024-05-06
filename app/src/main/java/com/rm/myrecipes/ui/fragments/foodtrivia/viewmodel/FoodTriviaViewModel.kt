@@ -47,6 +47,7 @@ class FoodTriviaViewModel @Inject constructor(
                     _foodTriviaState.value = UiState.Success(it)
                 }
                 .onFailure {
+                    Timber.d("RecipeTrivia: caught: $it")
                     _foodTriviaState.value = UiState.Error("Something went wrong, please try again.")
                 }
         }

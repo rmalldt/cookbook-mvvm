@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -19,12 +20,14 @@ import com.rm.myrecipes.ui.fragments.recipes.viewmodel.RecipeViewModel
 import com.rm.myrecipes.ui.utils.safeCollect
 import timber.log.Timber
 
-class RecipesBottomSheetFragment : BottomSheetDialogFragment() {
+class RecipesBottomSheetFragment(
+    val onApplyClicked: () -> Unit
+) : BottomSheetDialogFragment() {
 
     private var _binding: FragmentRecipesBottomSheetBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: RecipeViewModel
+    private val viewModel: RecipeViewModel by viewModels(ownerProducer = { requireParentFragment() })
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,8 +39,6 @@ class RecipesBottomSheetFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel = ViewModelProvider(requireActivity())[RecipeViewModel::class.java]
 
         safeCollect(viewModel.selectedChipState) { render(it) }
 
@@ -86,6 +87,7 @@ class RecipesBottomSheetFragment : BottomSheetDialogFragment() {
         }
 
         btnApply.setOnClickListener {
+            onApplyClicked()
             viewModel.applyMealDietType(
                 selectedMealType,
                 selectedMealId,
@@ -94,10 +96,7 @@ class RecipesBottomSheetFragment : BottomSheetDialogFragment() {
             ) {
                 viewModel.fetchSafe(FetchType.Remote)
             }
-
-            findNavController().navigate(RecipesBottomSheetFragmentDirections
-                .actionRecipesBottomSheetFragmentToRecipesFragment(true)
-            )
+            dismiss()
         }
     }
 

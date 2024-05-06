@@ -50,5 +50,10 @@
     <string name="delete_favourite_recipe">Delete Favourite Recipe</string>
     <string name="share_food_trivia">Share Food Trivia</string>
     <string name="my_recipes">My Recipes</string>
+    <string name="confirm_deletion">CONFIRM DELETION</string>
+    <string name="are_you_sure_you_want_to_delete">Are you sure you want to delete?</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+    <string name="no_recipes_found">No recipes found</string>
 
 </resources>

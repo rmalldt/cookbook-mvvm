@@ -12,10 +12,8 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.rm.myrecipes.R
@@ -39,14 +37,12 @@ class RecipesFragment : Fragment(), MenuProvider {
     private var _binding: FragmentRecipesBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: RecipeViewModel
-    private lateinit var debouncingQueryTextListener: DebouncingQueryTextListener
-
+    private val viewModel: RecipeViewModel by viewModels()
     private val recipeAdapter by lazy { RecipesAdapter() }
+    private lateinit var debouncingQueryTextListener: DebouncingQueryTextListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(requireActivity())[RecipeViewModel::class.java]
         if (savedInstanceState == null) {
             viewModel.fetchSafe(FetchType.Local)
         }
@@ -76,9 +72,10 @@ class RecipesFragment : Fragment(), MenuProvider {
         }
 
         binding.fabRecipes.setOnClickListener {
-            findNavController().navigate(
-                RecipesFragmentDirections.actionRecipesFragmentToRecipesBottomSheetFragment()
-            )
+            val recipesBottomSheetFragment = RecipesBottomSheetFragment {
+                onApplyButtonClicked()
+            }
+            recipesBottomSheetFragment.show(childFragmentManager, "bottom")
         }
     }
 
@@ -86,20 +83,13 @@ class RecipesFragment : Fragment(), MenuProvider {
         when (uiState) {
             is UiState.Loading -> {
                 progressBarRecipeFragment.setVisible()
-                ivNoConnection.setGone()
-                txtNoConnection.setGone()
             }
             is UiState.Success -> {
                 progressBarRecipeFragment.setGone()
-                ivNoConnection.setGone()
-                txtNoConnection.setGone()
                 recipeAdapter.recipeList = uiState.data.recipes
-
             }
             is UiState.Error -> {
                 progressBarRecipeFragment.setGone()
-                ivNoConnection.setVisible()
-                txtNoConnection.setVisible()
                 viewModel.fetchSafe(FetchType.Remote)
                 requireContext().toast(uiState.message)
             }
@@ -107,7 +97,7 @@ class RecipesFragment : Fragment(), MenuProvider {
     }
 
     private fun initRecyclerView() {
-        binding.recyclerView.apply {
+        binding.rvRecipeFragment.apply {
             adapter = recipeAdapter
             layoutManager = LinearLayoutManager(requireContext())
         }
@@ -161,6 +151,14 @@ class RecipesFragment : Fragment(), MenuProvider {
 
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         return false
+    }
+
+    private fun onApplyButtonClicked() {
+        binding.apply {
+            ivNoConnection.setGone()
+            txtNoConnection.setGone()
+            progressBarRecipeFragment.setVisible()
+        }
     }
 
     override fun onDestroy() {

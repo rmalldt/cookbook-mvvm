@@ -22,30 +22,26 @@ class RecipeResultRepositoryImpl @Inject constructor(
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : RecipeResultRepository {
 
-    override suspend fun loadRecipeResultLocal(): List<RecipeResult> =
-        withContext(dispatcher) {
-            localDataSource.getRecipeResult()
-                .map { entity -> entity.toRecipeResult() }
-        }
+    override suspend fun loadRecipeResultLocal(): List<RecipeResult> = withContext(dispatcher) {
+        localDataSource.getRecipeResult()
+            .map { entity -> entity.toRecipeResult() }
+    }
 
-    override suspend fun fetchRecipeResultRemote(query: Map<String, String>): Result<RecipeResult> =
-        withContext(dispatcher) {
-            handleResponse(
-                request = { remoteDataSource.getRecipesResponse(query) },
-                responseMapper = { mapper.toRecipeResult(it) }
-            )
-        }
+    override suspend fun fetchRecipeResultRemote(query: Map<String, String>): Result<RecipeResult> = withContext(dispatcher) {
+        handleResponse(
+            request = { remoteDataSource.getRecipesResponse(query) },
+            responseMapper = { mapper.toRecipeResult(it) }
+        )
+    }
 
-    override suspend fun fetchSearchedRecipesResult(query: Map<String, String>): Result<RecipeResult> =
-        withContext(dispatcher) {
-            handleResponse(
-                request = { remoteDataSource.getRecipesResponse(query) },
-                responseMapper = { mapper.toRecipeResult(it) }
-            )
-        }
+    override suspend fun fetchSearchedRecipesResult(query: Map<String, String>): Result<RecipeResult> = withContext(dispatcher) {
+        handleResponse(
+            request = { remoteDataSource.getRecipesResponse(query) },
+            responseMapper = { mapper.toRecipeResult(it) }
+        )
+    }
 
-    override suspend fun insertRecipeResult(recipeResultEntity: RecipeResultEntity) =
-        withContext(dispatcher) {
-            localDataSource.insertRecipeResult(recipeResultEntity)
-        }
+    override suspend fun insertRecipeResult(recipeResultEntity: RecipeResultEntity) = withContext(dispatcher) {
+        localDataSource.insertRecipeResult(recipeResultEntity)
+    }
 }

@@ -19,10 +19,16 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.rm.myrecipes.CustomTestRunner"
     }
 
     buildTypes {
+        debug {
+            minifyEnabled false
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-debug"
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -45,7 +51,7 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.core:core-ktx:1.13.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.11.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
@@ -64,7 +70,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.7.0"
 
     // DataStore
-    implementation "androidx.datastore:datastore-preferences:1.0.0"
+    implementation "androidx.datastore:datastore-preferences:1.1.0"
 
     // Work Manager
     def work_manager_version = "2.9.0"
@@ -80,7 +86,7 @@ dependencies {
 
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.google.code.gson:gson:2.10'
+    implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
     //Dagger - Hilt
@@ -104,15 +110,28 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'androidx.arch.core:core-testing:2.2.0'
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0"
     testImplementation 'com.squareup.retrofit2:retrofit-mock:2.7.1'
     testImplementation "io.mockk:mockk:1.13.10"
     testImplementation group: 'pl.pragmatists', name: 'JUnitParams', version: '1.0.4'
     testImplementation "app.cash.turbine:turbine:1.0.0"
     testImplementation("io.kotest:kotest-assertions-core:5.8.1")
+
+    // Hilt
     testImplementation 'com.google.dagger:hilt-android-testing:2.51'
     kaptTest 'com.google.dagger:hilt-compiler:2.51'
+    kapt'androidx.hilt:hilt-compiler:1.2.0'
+
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    // Hilt
+    androidTestImplementation 'com.google.dagger:hilt-android-testing:2.51'
+    kaptAndroidTest 'com.google.dagger:hilt-android-compiler:2.51'
+
+    // Testing Fragments
+    debugImplementation 'androidx.fragment:fragment-testing:1.7.0'
+
+    // Navigation
     androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
 }

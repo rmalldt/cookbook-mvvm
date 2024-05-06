@@ -10,22 +10,26 @@ suspend fun <T, R> handleResponse(
     request: suspend () -> Response<T>,
     responseMapper: (T) -> R
 ): Result<R> {
-    return request().let { response ->
-        val result = response.body()
-        if (response.isSuccessful && result != null) {
-            Result.success(responseMapper(result))
-        } else {
-            val errorResponse = response.errorBody()?.let { getErrorResponse(it.string()) }
-            Result.failure(createNetworkError(errorResponse))
+    return try {
+        request().let { response ->
+            val result = response.body()
+            if (response.isSuccessful && result != null) {
+                Result.success(responseMapper(result))
+            } else {
+                val errorResponse = response.errorBody()?.let { getErrorResponse(it.string()) }
+                Result.failure(createServerError(errorResponse))
+            }
         }
+    } catch (e: Exception) {
+        Result.failure(NetworkError("e: $e, cause: ${e.cause}"))
     }
 }
 
-private fun createNetworkError(errorResponse: ErrorResponse?): Exception {
+private fun createServerError(errorResponse: ErrorResponse? ): Exception {
     val status = errorResponse?.status
     val code = errorResponse?.code
     val message = errorResponse?.message
-    return NetworkException("status:$status, code:$code ,message:$message")
+    return NetworkError("status:$status, code:$code, message:$message")
 }
 
 private fun getErrorResponse(errorBody: String): ErrorResponse {
@@ -38,4 +42,4 @@ data class ErrorResponse(
     @SerializedName("message") val message: String?
 )
 
-class NetworkException(override val message: String) :IOException()
+class NetworkError(override val message: String) :IOException()

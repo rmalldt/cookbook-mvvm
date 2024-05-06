@@ -1,8 +1,7 @@
 package com.rm.myrecipes.data.repository
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import app.cash.turbine.test
-import com.rm.myrecipes.data.common.NetworkException
+import com.rm.myrecipes.data.common.NetworkError
 import com.rm.myrecipes.data.network.RemoteDataSource
 import com.rm.myrecipes.data.network.dto.FoodTriviaResponse
 import com.rm.myrecipes.data.network.mapper.ResponseMapper
@@ -15,7 +14,6 @@ import okhttp3.ResponseBody
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.rules.TestRule
 import retrofit2.Response
 
 class FoodTriviaRepositoryImplTest {
@@ -75,7 +73,7 @@ class FoodTriviaRepositoryImplTest {
         val result = repository.getFoodTrivia("123")
         result.isFailure shouldBe true
         result.onFailure {
-            it is NetworkException
+            it is NetworkError
         }
     }
 }

@@ -25,8 +25,7 @@ import com.rm.myrecipes.ui.utils.setVisible
 
 class FavouriteRecipesAdapter(
     private val requireActivity: FragmentActivity,
-    private val deleteAction: (recipe: Recipe) -> Unit,
-    private val snackMessage: (size: Int) -> Unit
+    private val onDeleteClicked: (recipes: List<Recipe>) -> Unit
 ) : RecyclerView.Adapter<FavouriteRecipesAdapter.FavouriteRecipesViewHolder>(),
     ActionMode.Callback {
 
@@ -120,8 +119,7 @@ class FavouriteRecipesAdapter(
 
     override fun onActionItemClicked(actionMode: ActionMode?, item: MenuItem?): Boolean {
         if (item?.itemId == R.id.menu_item_delete_favourite) {
-            selectedRecipes.forEach(deleteAction)
-            snackMessage(selectedRecipes.size)
+            onDeleteClicked(selectedRecipes)
             multiSelection = false
             selectedRecipes.clear()
             actionMode?.finish()

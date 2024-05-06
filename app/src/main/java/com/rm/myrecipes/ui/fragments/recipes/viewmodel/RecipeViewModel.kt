@@ -42,12 +42,12 @@ class RecipeViewModel @Inject constructor(
         lastFetchJob?.cancel()
 
         viewModelScope.launch {
-            getRecipesUseCase.invoke(fetchType)
+            getRecipesUseCase(fetchType)
                 .onSuccess {
                     _recipeResultState.value = UiState.Success(it)
                 }
                 .onFailure {
-                    Timber.d("Recipe: caught ${it.message}")
+                    Timber.d("Recipe: caught $it")
                     _recipeResultState.value = UiState.Error("Something went wrong, please try again.")
                 }
         }
@@ -57,8 +57,8 @@ class RecipeViewModel @Inject constructor(
         .map { preference ->
             UiState.Success(preference) as UiState<SelectedChipPreferences>
         }
-        .catch {throwable ->
-            Timber.d("Recipe: Caught: $throwable")
+        .catch {
+            Timber.d("Recipe: caught: $it")
         }
 
     fun applyMealDietType(
