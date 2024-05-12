@@ -1,14 +1,15 @@
 package com.rm.myrecipes.ui.fragments.splash
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.coroutineScope
 import androidx.navigation.fragment.findNavController
 import com.rm.myrecipes.databinding.FragmentSplashBinding
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class SplashFragment : Fragment() {
 
@@ -25,12 +26,13 @@ class SplashFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setSplashScreenDuration()
+        splashScreenDuration()
     }
 
-    private fun setSplashScreenDuration() {
-        Handler(Looper.getMainLooper()).postDelayed({
+    private fun splashScreenDuration() {
+        viewLifecycleOwner.lifecycle.coroutineScope.launch {
+            delay(2000)
             findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToRecipesFragment())
-        }, 2000)
+        }
     }
 }
