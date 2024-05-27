@@ -17,15 +17,15 @@ import com.rm.myrecipes.databinding.FavouritesRowItemLayoutBinding
 import com.rm.myrecipes.domain.data.Recipe
 import com.rm.myrecipes.ui.fragments.favourites.FavouriteRecipesFragmentDirections
 import com.rm.myrecipes.ui.utils.common.AdapterDiffUtil
-import com.rm.myrecipes.ui.utils.extension.loadImage
 import com.rm.myrecipes.ui.utils.common.parseHtml
+import com.rm.myrecipes.ui.utils.extension.loadImage
 import com.rm.myrecipes.ui.utils.extension.resetImageViewAndTextViewColor
 import com.rm.myrecipes.ui.utils.extension.setGone
 import com.rm.myrecipes.ui.utils.extension.setVisible
 
 class FavouriteRecipesAdapter(
     private val requireActivity: FragmentActivity,
-    private val onDeleteClicked: (recipes: List<Recipe>) -> Unit
+    private val onDeleteClicked: (List<Recipe>) -> Unit
 ) : RecyclerView.Adapter<FavouriteRecipesAdapter.FavouriteRecipesViewHolder>(),
     ActionMode.Callback {
 
@@ -37,9 +37,8 @@ class FavouriteRecipesAdapter(
             diffUtilResult.dispatchUpdatesTo(this)
         }
 
-    private var multiSelection = false
+    private var isMultiSelectionOn = false
     private var selectedRecipes = arrayListOf<Recipe>()
-    private var viewHolders = arrayListOf<FavouriteRecipesViewHolder>()
     private var mActionMode: ActionMode? = null
 
     class FavouriteRecipesViewHolder(val binding: FavouritesRowItemLayoutBinding) :
@@ -73,13 +72,11 @@ class FavouriteRecipesAdapter(
         holder: FavouriteRecipesViewHolder,
         position: Int
     ) {
-        viewHolders.add(holder)
-
         val recipe = recipeList[position]
         holder.bind(recipe)
 
         holder.itemView.setOnClickListener {
-            if (multiSelection) {
+            if (isMultiSelectionOn) {
                 applySelection(holder, recipe)
             } else {
                 it.findNavController()
@@ -88,8 +85,9 @@ class FavouriteRecipesAdapter(
         }
 
         holder.itemView.setOnLongClickListener {
-            if (!multiSelection) {
-                multiSelection = true
+            /* TODO retain recipe items selection on configuration change */
+            if (!isMultiSelectionOn) {
+                isMultiSelectionOn = true
                 (requireActivity as AppCompatActivity).startSupportActionMode(this)
                 applySelection(holder, recipe)
                 true
@@ -106,48 +104,18 @@ class FavouriteRecipesAdapter(
 
     override fun getItemCount(): Int = recipeList.size
 
-    override fun onCreateActionMode(actionMode: ActionMode?, menu: Menu?): Boolean {
-        actionMode?.menuInflater?.inflate(R.menu.favourites_fragment_menu, menu)
-        mActionMode = actionMode
-        setStatusBarColor(R.color.colorStatusBarActionMode)
-        return true
-    }
-
-    override fun onPrepareActionMode(actionMode: ActionMode?, menu: Menu?): Boolean {
-        return true
-    }
-
-    override fun onActionItemClicked(actionMode: ActionMode?, item: MenuItem?): Boolean {
-        if (item?.itemId == R.id.menu_item_delete_favourite) {
-            onDeleteClicked(selectedRecipes)
-            multiSelection = false
-            selectedRecipes.clear()
-            actionMode?.finish()
-        }
-        return true
-    }
-
-    override fun onDestroyActionMode(actionMode: ActionMode) {
-        multiSelection = false
-        selectedRecipes.clear()
-        viewHolders.forEach {  viewHolder ->
-            changeViewHolderOnSelection(viewHolder, false)
-        }
-        setStatusBarColor(R.color.colorStatusBar)
-    }
-
     private fun applySelection(holder: FavouriteRecipesViewHolder, currentRecipe: Recipe) {
         if (selectedRecipes.contains(currentRecipe)) {
             selectedRecipes.remove(currentRecipe)
-            changeViewHolderOnSelection(holder, false)
+            toggleSelection(holder, false)
         } else {
             selectedRecipes.add(currentRecipe)
-            changeViewHolderOnSelection(holder, true)
+            toggleSelection(holder, true)
         }
         setActionModeTitle()
     }
 
-    private fun changeViewHolderOnSelection(holder: FavouriteRecipesViewHolder, selected: Boolean) {
+    private fun toggleSelection(holder: FavouriteRecipesViewHolder, selected: Boolean) {
         if (selected) {
             holder.binding.ivGradientOverlay.setVisible()
             holder.binding.recipesRowCardView.strokeColor = ContextCompat.getColor(requireActivity, R.color.colorPrimary)
@@ -173,5 +141,32 @@ class FavouriteRecipesAdapter(
         if (mActionMode != null) {
             mActionMode?.finish()
         }
+    }
+
+    override fun onCreateActionMode(actionMode: ActionMode?, menu: Menu?): Boolean {
+        actionMode?.menuInflater?.inflate(R.menu.favourites_fragment_menu, menu)
+        mActionMode = actionMode
+        setStatusBarColor(R.color.colorStatusBarActionMode)
+        return true
+    }
+
+    override fun onPrepareActionMode(actionMode: ActionMode?, menu: Menu?): Boolean {
+        return true
+    }
+
+    override fun onActionItemClicked(actionMode: ActionMode?, menuItem: MenuItem?): Boolean {
+        if (menuItem?.itemId == R.id.menu_item_delete_favourite) {
+            onDeleteClicked(selectedRecipes)
+            isMultiSelectionOn = false
+            selectedRecipes.clear()
+            actionMode?.finish()
+        }
+        return true
+    }
+
+    override fun onDestroyActionMode(actionMode: ActionMode) {
+        isMultiSelectionOn = false
+        selectedRecipes.clear()
+        setStatusBarColor(R.color.colorStatusBar)
     }
 }

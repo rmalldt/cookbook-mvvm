@@ -2,7 +2,6 @@ package com.rm.myrecipes.data.repository
 
 import com.rm.myrecipes.data.di.IoDispatcher
 import com.rm.myrecipes.data.room.LocalDataSource
-import com.rm.myrecipes.data.room.entity.RecipeEntity
 import com.rm.myrecipes.data.room.entity.RecipeEntity.Companion.toRecipe
 import com.rm.myrecipes.data.room.entity.RecipeEntity.Companion.toRecipeEntity
 import com.rm.myrecipes.domain.data.Recipe
@@ -21,7 +20,7 @@ class FavouriteRecipeRepositoryImpl @Inject constructor(
 ) : FavouriteRecipeRepository{
 
     override suspend fun getFavouriteRecipes(): Flow<List<Recipe>> = withContext(dispatcher) {
-        localDataSource.getRecipes().map { recipeEntityList ->
+        localDataSource.getFavouriteRecipes().map { recipeEntityList ->
             recipeEntityList.map { entity ->
                 entity.toRecipe()
             }
@@ -29,14 +28,14 @@ class FavouriteRecipeRepositoryImpl @Inject constructor(
     }
 
     override suspend fun insertFavouriteRecipe(recipe: Recipe) = withContext(dispatcher) {
-        localDataSource.insertRecipe(recipe.toRecipeEntity())
+        localDataSource.insertFavouriteRecipe(recipe.toRecipeEntity())
     }
 
     override suspend fun deleteFavouriteRecipe(recipe: Recipe) = withContext(dispatcher) {
-        localDataSource.deleteRecipe(recipe.toRecipeEntity())
+        localDataSource.deleteFavouriteRecipe(recipe.toRecipeEntity())
     }
 
     override suspend fun deleteAllFavouriteRecipes() = withContext(dispatcher) {
-        localDataSource.deleteAllRecipes()
+        localDataSource.deleteAllFavouriteRecipes()
     }
 }

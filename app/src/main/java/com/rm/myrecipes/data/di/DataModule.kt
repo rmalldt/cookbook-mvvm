@@ -44,7 +44,6 @@ object DataModule {
             .build()
     }
 
-
     @Provides
     @Singleton
     fun provideGsonConverterFactory(): GsonConverterFactory = GsonConverterFactory.create()
@@ -73,14 +72,11 @@ object DataModule {
     @Singleton
     fun providesRecipesDao(database: AppDatabase): RecipesDao = database.recipesDao()
 
-
     private val Context.dataStore by preferencesDataStore("recipe_datastore")
 
     @Provides
     @Singleton
     fun provideDataStore(@ApplicationContext context: Context): DataStore<Preferences> = context.dataStore
-
-
 
     @Provides
     @Singleton

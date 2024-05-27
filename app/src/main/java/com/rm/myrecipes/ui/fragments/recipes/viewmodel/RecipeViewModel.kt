@@ -34,6 +34,7 @@ class RecipeViewModel @Inject constructor(
     fun fetchSafe(fetchType: FetchType) {
         when {
             networkChecker.hasInternetConnection() -> fetchRecipe(fetchType)
+
             else -> fetchRecipe(FetchType.Local)
         }
     }
@@ -41,16 +42,14 @@ class RecipeViewModel @Inject constructor(
     private fun fetchRecipe(fetchType: FetchType) {
         lastFetchJob?.cancel()
 
-        viewModelScope.launch {
+        lastFetchJob = viewModelScope.launch {
             getRecipesUseCase(fetchType)
                 .onSuccess {
                     _recipeResultState.value = UiState.Success(it.copy(recipes = it.recipes))
-
-
                 }
                 .onFailure {
                     Timber.d("Recipe: caught $it")
-                    _recipeResultState.value = UiState.Error("Something went wrong, please try again.")
+                    _recipeResultState.value = UiState.Error("Something went wrong. Please check your internet connection.")
                 }
         }
     }

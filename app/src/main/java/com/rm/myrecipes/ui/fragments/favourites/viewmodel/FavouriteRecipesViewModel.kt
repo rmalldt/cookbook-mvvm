@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,7 +23,6 @@ class FavouriteRecipesViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _favouriteRecipesState = MutableStateFlow<UiState<List<Recipe>>>(UiState.Loading)
-
     val favouriteRecipesState: StateFlow<UiState<List<Recipe>>> = _favouriteRecipesState.asStateFlow()
 
     var recipeSaveState = RecipeSaveState()

@@ -62,7 +62,7 @@ class FavouriteRecipeRepositoryImplTest {
     }
 
     @Test
-    fun `deleteFavouriteRecipes deletes from loccal`() = runTest {
+    fun `deleteFavouriteRecipes deletes from local`() = runTest {
         // Act & Assert
         repository.deleteFavouriteRecipe(provideRecipe())
 

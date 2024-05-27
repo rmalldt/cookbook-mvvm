@@ -82,7 +82,7 @@ class FoodTriviaViewModelTest {
         viewModel.safeCall()
         viewModel.foodTriviaState.test {
             val state = awaitItem()
-            state shouldBe UiState.Error(ERROR_MSG)
+            state shouldBe UiState.Error(ERR_NO_INTERNET)
         }
 
         verify(exactly = 1) { mockNetworkChecker.hasInternetConnection() }
@@ -98,7 +98,7 @@ class FoodTriviaViewModelTest {
         viewModel.safeCall()
         viewModel.foodTriviaState.test {
             val state = awaitItem()
-            state shouldBe UiState.Error(ERROR_MSG)
+            state shouldBe UiState.Error(ERR_MSG)
         }
 
         coVerifyOrder {
@@ -108,6 +108,7 @@ class FoodTriviaViewModelTest {
     }
 
     companion object {
-        const val ERROR_MSG = "Something went wrong, please try again."
+        const val ERR_NO_INTERNET = "No network connection."
+        const val ERR_MSG = "Something went wrong, please try again."
     }
 }

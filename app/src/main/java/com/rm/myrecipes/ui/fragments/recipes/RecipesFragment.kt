@@ -1,6 +1,5 @@
 package com.rm.myrecipes.ui.fragments.recipes
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -26,10 +25,9 @@ import com.rm.myrecipes.ui.fragments.recipes.viewmodel.RecipeViewModel
 import com.rm.myrecipes.ui.utils.extension.safeCollect
 import com.rm.myrecipes.ui.utils.extension.setGone
 import com.rm.myrecipes.ui.utils.extension.setVisible
-import com.rm.myrecipes.ui.utils.extension.toast
+import com.rm.myrecipes.ui.utils.extension.snackBar
 import com.rm.myrecipes.ui.utils.testing.TestIdlingResource
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
 class RecipesFragment : Fragment(), MenuProvider {
@@ -89,9 +87,11 @@ class RecipesFragment : Fragment(), MenuProvider {
                 TestIdlingResource.decrement()
             }
             is UiState.Error -> {
+                ivNoConnection.setVisible()
+                txtNoConnection.setVisible()
                 progressBarRecipeFragment.setGone()
                 viewModel.fetchSafe(FetchType.Remote)
-                requireContext().toast(uiState.message)
+                root.snackBar(uiState.message)
             }
         }
     }

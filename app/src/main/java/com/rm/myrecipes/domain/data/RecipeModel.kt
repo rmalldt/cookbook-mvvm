@@ -7,9 +7,9 @@ import kotlinx.parcelize.RawValue
 import java.util.UUID
 
 /**
- * State emits only if it detects changes to the value, fetching recipe with same query values
- * doesn't update the stateflow. So, uuid is used to distinguish the result even if the fetching
- * with the same query values for recipe
+ * State emits only if it detects change in the value, fetching recipe with same query values
+ * doesn't update the stateflow. So, UUID is used to distinguish the result even if the fetching
+ * with the same query values for recipe.
  */
 data class RecipeResult(
     val uuid: String = UUID.randomUUID().toString(),

@@ -89,7 +89,7 @@ class RecipeViewModelTest {
 
     @Test
     fun `fetchSafe fetches from remote if network is connected and the fetchState is FetchRemote`() = runTest {
-        val item = RecipeResult(listOf(provideRecipe()))
+        val item = RecipeResult("123", listOf(provideRecipe()))
         val fetchRemote = FetchType.Remote
 
         every { mockNetworkChecker.hasInternetConnection() } returns true
@@ -146,7 +146,7 @@ class RecipeViewModelTest {
 
     @Test
     fun getSelectedChipState() = runTest {
-        val item = RecipeResult(listOf(provideRecipe()))
+        val item = RecipeResult("123", listOf(provideRecipe()))
         val preferencesItem = SelectedChipPreferences(selectedDietId = 100)
 
         every { mockNetworkChecker.hasInternetConnection() } returns true
@@ -170,6 +170,6 @@ class RecipeViewModelTest {
     }
 
     companion object {
-        const val ERROR_MSG = "Something went wrong, please try again."
+        const val ERROR_MSG = "Something went wrong. Please check your internet connection."
     }
 }

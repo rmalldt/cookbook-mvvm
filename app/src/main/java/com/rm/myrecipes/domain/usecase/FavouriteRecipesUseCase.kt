@@ -8,7 +8,6 @@ import javax.inject.Inject
 class FavouriteRecipeUseCase @Inject constructor(
     private val favouriteRecipeRepository: FavouriteRecipeRepository
 ) {
-
     suspend operator fun invoke(): Flow<List<Recipe>> {
         return favouriteRecipeRepository.getFavouriteRecipes()
     }

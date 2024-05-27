@@ -3,6 +3,7 @@ package com.rm.myrecipes.ui.fragments.recipes
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
+import androidx.test.espresso.NoMatchingViewException
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import com.jakewharton.espresso.OkHttp3IdlingResource
@@ -53,8 +54,24 @@ class RecipesFragmentTest {
 
     }
 
-    @Test
-    fun fragmentTest() {
+    @Test(expected = NoMatchingViewException::class)
+    fun fragmentTestOnErrorNoElementsInRecyclerView() {
+        launchFragmentInHiltContainer<RecipesFragment>(themeResId = R.style.BaseAppTheme) {
+            this.lifecycle.currentState.isAtLeast(androidx.lifecycle.Lifecycle.State.STARTED)
+        }
+
+        onView(withId(R.id.fabRecipes)).perform(click())
+
+        onView(withId(R.id.btnApply)).perform(click())
+
+        onView(withId(R.id.rvRecipeFragment)).check { view, noViewException ->
+            if (noViewException != null) {
+                throw noViewException
+            }
+        }
+    }
+
+    fun fragmentTestRecyclerViewItems() {
         launchFragmentInHiltContainer<RecipesFragment>(themeResId = R.style.BaseAppTheme) {
             this.lifecycle.currentState.isAtLeast(androidx.lifecycle.Lifecycle.State.STARTED)
         }

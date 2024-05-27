@@ -31,7 +31,7 @@ class SplashFragment : Fragment() {
 
     private fun splashScreenDuration() {
         viewLifecycleOwner.lifecycle.coroutineScope.launch {
-            delay(2000)
+            delay(1500)
             findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToRecipesFragment())
         }
     }

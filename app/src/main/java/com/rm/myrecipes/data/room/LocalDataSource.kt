@@ -18,22 +18,22 @@ class LocalDataSource @Inject constructor(private val recipesDao: RecipesDao) {
         recipesDao.insertRecipeResult(recipeResultEntity)
     }
 
-    fun getRecipes(): Flow<List<RecipeEntity>> {
+    fun getFavouriteRecipes(): Flow<List<RecipeEntity>> {
         Timber.d("Recipes: GETTING FROM DATABASE...")
         return recipesDao.getRecipes()
     }
 
-    suspend fun insertRecipe(recipeEntity: RecipeEntity) {
+    suspend fun insertFavouriteRecipe(recipeEntity: RecipeEntity) {
         Timber.d("Recipe: INSERTING INTO DATABASE...")
         return recipesDao.insertRecipe(recipeEntity)
     }
 
-    suspend fun deleteRecipe(recipeEntity: RecipeEntity) {
+    suspend fun deleteFavouriteRecipe(recipeEntity: RecipeEntity) {
         Timber.d("Recipe: DELETING FROM DATABASE...")
         return recipesDao.deleteRecipe(recipeEntity)
     }
 
-    suspend fun deleteAllRecipes() {
+    suspend fun deleteAllFavouriteRecipes() {
         Timber.d("Recipe: DELETING ALL FROM DATABASE...")
         return recipesDao.deleteAllRecipes()
     }

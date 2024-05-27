@@ -10,6 +10,7 @@ import com.rm.myrecipes.utils.MainDispatcherRule
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.test.runTest
 import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.ResponseBody
 import org.junit.Before
 import org.junit.Rule
@@ -50,7 +51,7 @@ class FoodTriviaRepositoryImplTest {
         }
 
         // Act & Assert
-        repository.getFoodTrivia("123")
+        repository.getFoodTrivia()
             .onSuccess {
                 it.trivia shouldBe "FoodTrivia"
             }
@@ -63,14 +64,14 @@ class FoodTriviaRepositoryImplTest {
             Response.error(
                 501,
                 ResponseBody.create(
-                    MediaType.parse("application/json"),
+                    "application/json".toMediaTypeOrNull(),
                     "{\"key\":[\"value\"]}"
                 )
             )
         }
 
         // Act and Assert
-        val result = repository.getFoodTrivia("123")
+        val result = repository.getFoodTrivia()
         result.isFailure shouldBe true
         result.onFailure {
             it is NetworkError
