@@ -38,7 +38,9 @@ class RecipesBottomSheetFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        safeCollect(viewModel.selectedChipState) { render(it) }
+        safeCollect(viewModel.selectedChipState) {
+            render(it)
+        }
 
         applyChipState()
     }
@@ -91,9 +93,7 @@ class RecipesBottomSheetFragment(
                 selectedMealId,
                 selectedDietType,
                 selectedDietId
-            ) {
-                viewModel.fetchSafe(FetchType.Remote)
-            }
+            )
             dismiss()
         }
     }

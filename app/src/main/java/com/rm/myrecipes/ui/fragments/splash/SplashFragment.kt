@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.rm.myrecipes.databinding.FragmentSplashBinding
 import kotlinx.coroutines.delay
@@ -30,9 +30,14 @@ class SplashFragment : Fragment() {
     }
 
     private fun splashScreenDuration() {
-        viewLifecycleOwner.lifecycle.coroutineScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             delay(1500)
             findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToRecipesFragment())
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

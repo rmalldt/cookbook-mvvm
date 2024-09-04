@@ -13,8 +13,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -60,18 +62,21 @@ class RecipeViewModel @Inject constructor(
         }
         .catch {
             Timber.d("Recipe: caught: $it")
-        }
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000),
+            initialValue = UiState.Loading
+        )
 
     fun applyMealDietType(
         mealType: String,
         mealId: Int,
         dietType: String,
-        dietId: Int,
-        call: () -> Unit
+        dietId: Int
     ) {
         viewModelScope.launch {
             selectedChipUseCase.saveSelectedChipTypes(mealType, mealId, dietType, dietId)
-            call()
+            fetchSafe(FetchType.Remote)
         }
     }
 }

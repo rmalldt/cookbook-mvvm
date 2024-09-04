@@ -42,4 +42,4 @@ data class ErrorResponse(
     @SerializedName("message") val message: String?
 )
 
-class NetworkError(override val message: String) :IOException()
+class NetworkError(override val message: String) : IOException()
