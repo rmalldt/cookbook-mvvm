@@ -34,8 +34,8 @@ local.properties
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
 /.idea/deploymentTargetDropDown.xml
-
-
+/.idea/deploymentTargetSelector.xml
+/.idea/other.xml
 # OS-specific files
 .DS_Store
 .DS_Store?
